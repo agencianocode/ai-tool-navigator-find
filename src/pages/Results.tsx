@@ -242,6 +242,12 @@ const Results = () => {
         <Card>
           <CardContent className="pt-6">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/roadmap" state={{ answers, selectedTools: filteredMatches.map(match => match.tool) }}>
+                <Button className="bg-gradient-to-r from-green-600 to-teal-600">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  Generate Implementation Roadmap
+                </Button>
+              </Link>
               <Button className="bg-gradient-to-r from-purple-600 to-blue-600">
                 <Download className="mr-2 h-4 w-4" />
                 Download Report
