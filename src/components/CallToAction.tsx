@@ -34,9 +34,12 @@ const CallToAction = () => {
               <Button 
                 size="lg"
                 className="bg-white text-purple-700 hover:bg-gray-50 px-8 py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl group font-semibold"
+                asChild
               >
-                Begin Discovery Questionnaire
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                <a href="/questionnaire">
+                  Begin Discovery Questionnaire
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" />
+                </a>
               </Button>
               
               <Button 
