@@ -2,11 +2,12 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Share2, Filter, Star, ExternalLink, Plus, CheckCircle } from "lucide-react";
+import { ArrowLeft, Download, Share2, Filter, Star, CheckCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { calculateToolMatches, filterTools, ToolMatch } from "@/utils/matchingAlgorithm";
 import { categories } from "@/data/aiTools";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import ToolActions from "@/components/ToolActions";
 
 const Results = () => {
   const location = useLocation();
@@ -54,14 +55,14 @@ const Results = () => {
           <Link to="/questionnaire">
             <Button variant="ghost" className="mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Questionnaire
+              Volver al Cuestionario
             </Button>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Your AI Tool Recommendations
+            Tus Recomendaciones de Herramientas IA
           </h1>
           <p className="text-gray-600">
-            Personalized recommendations based on your responses
+            Recomendaciones personalizadas basadas en tus respuestas
           </p>
         </div>
 
@@ -72,10 +73,10 @@ const Results = () => {
               <div>
                 <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-3" />
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
-                  {filteredMatches.length} Perfect Matches Found!
+                  ¡{filteredMatches.length} Coincidencias Perfectas Encontradas!
                 </h2>
                 <p className="text-gray-600">
-                  These tools are specifically chosen for your needs and requirements.
+                  Estas herramientas han sido específicamente elegidas para tus necesidades y requerimientos.
                 </p>
               </div>
             </div>
@@ -87,19 +88,19 @@ const Results = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Filter className="h-5 w-5" />
-              Filter Results
+              Filtrar Resultados
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="text-sm font-medium mb-2 block">Category</label>
+                <label className="text-sm font-medium mb-2 block">Categoría</label>
                 <Select value={filters.category || 'all'} onValueChange={(value) => handleFilterChange('category', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="All Categories" />
+                    <SelectValue placeholder="Todas las Categorías" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Categories</SelectItem>
+                    <SelectItem value="all">Todas las Categorías</SelectItem>
                     {categories.map(category => (
                       <SelectItem key={category} value={category}>{category}</SelectItem>
                     ))}
@@ -108,34 +109,34 @@ const Results = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-2 block">Price Range</label>
+                <label className="text-sm font-medium mb-2 block">Rango de Precio</label>
                 <Select value={filters.priceRange || 'all'} onValueChange={(value) => handleFilterChange('priceRange', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="All Prices" />
+                    <SelectValue placeholder="Todos los Precios" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Prices</SelectItem>
-                    <SelectItem value="free">Free</SelectItem>
-                    <SelectItem value="low">$1-50/month</SelectItem>
-                    <SelectItem value="medium">$50-200/month</SelectItem>
-                    <SelectItem value="high">$200-500/month</SelectItem>
-                    <SelectItem value="enterprise">$500+/month</SelectItem>
+                    <SelectItem value="all">Todos los Precios</SelectItem>
+                    <SelectItem value="free">Gratis</SelectItem>
+                    <SelectItem value="low">$1-50/mes</SelectItem>
+                    <SelectItem value="medium">$50-200/mes</SelectItem>
+                    <SelectItem value="high">$200-500/mes</SelectItem>
+                    <SelectItem value="enterprise">$500+/mes</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div>
-                <label className="text-sm font-medium mb-2 block">Complexity</label>
+                <label className="text-sm font-medium mb-2 block">Complejidad</label>
                 <Select value={filters.complexityLevel || 'all'} onValueChange={(value) => handleFilterChange('complexityLevel', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="All Levels" />
+                    <SelectValue placeholder="Todos los Niveles" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Levels</SelectItem>
-                    <SelectItem value="beginner">Beginner</SelectItem>
-                    <SelectItem value="intermediate">Intermediate</SelectItem>
-                    <SelectItem value="advanced">Advanced</SelectItem>
-                    <SelectItem value="expert">Expert</SelectItem>
+                    <SelectItem value="all">Todos los Niveles</SelectItem>
+                    <SelectItem value="beginner">Principiante</SelectItem>
+                    <SelectItem value="intermediate">Intermedio</SelectItem>
+                    <SelectItem value="advanced">Avanzado</SelectItem>
+                    <SelectItem value="expert">Experto</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -167,12 +168,12 @@ const Results = () => {
                         <div className="flex items-center gap-3 mb-2">
                           <h3 className="text-xl font-semibold">{match.tool.name}</h3>
                           <span className={`${getMatchBadgeColor(match.matchPercentage)} text-white text-xs font-medium px-2.5 py-0.5 rounded-full`}>
-                            {match.matchPercentage}% match
+                            {match.matchPercentage}% coincidencia
                           </span>
                           {index < 3 && (
                             <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1">
                               <Star className="w-3 h-3" />
-                              Top Pick
+                              Mejor Opción
                             </span>
                           )}
                         </div>
@@ -184,7 +185,7 @@ const Results = () => {
 
                     {/* Why Recommended */}
                     <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Why we recommend this:</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Por qué recomendamos esto:</h4>
                       <ul className="space-y-1">
                         {match.reasons.map((reason, idx) => (
                           <li key={idx} className="text-sm text-gray-600 flex items-center gap-2">
@@ -204,25 +205,13 @@ const Results = () => {
                           </span>
                         ))}
                         {match.tool.tags.length > 4 && (
-                          <span className="text-xs text-gray-500">+{match.tool.tags.length - 4} more</span>
+                          <span className="text-xs text-gray-500">+{match.tool.tags.length - 4} más</span>
                         )}
                       </div>
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex flex-wrap gap-2">
-                      <Button size="sm" className="bg-gradient-to-r from-purple-600 to-blue-600">
-                        <ExternalLink className="mr-2 h-4 w-4" />
-                        Learn More
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        Try Free
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Plus className="mr-2 h-4 w-4" />
-                        Add to Roadmap
-                      </Button>
-                    </div>
+                    <ToolActions tool={match.tool} answers={answers} />
                   </div>
                 </div>
               </CardContent>
@@ -232,7 +221,7 @@ const Results = () => {
           {filteredMatches.length === 0 && (
             <Card>
               <CardContent className="pt-6 text-center">
-                <p className="text-gray-500">No tools match your current filters. Try adjusting your criteria.</p>
+                <p className="text-gray-500">No hay herramientas que coincidan con tus filtros actuales. Intenta ajustar tus criterios.</p>
               </CardContent>
             </Card>
           )}
@@ -244,29 +233,29 @@ const Results = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/roadmap" state={{ answers, selectedTools: filteredMatches.map(match => match.tool) }}>
                 <Button className="bg-gradient-to-r from-green-600 to-teal-600">
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  Generate Implementation Roadmap
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Generar Hoja de Ruta de Implementación
                 </Button>
               </Link>
               <Button className="bg-gradient-to-r from-purple-600 to-blue-600">
                 <Download className="mr-2 h-4 w-4" />
-                Download Report
+                Descargar Reporte
               </Button>
               <Button variant="outline">
                 <Share2 className="mr-2 h-4 w-4" />
-                Share Results
+                Compartir Resultados
               </Button>
               <Link to="/questionnaire">
                 <Button variant="outline">
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Retake Quiz
+                  Repetir Cuestionario
                 </Button>
               </Link>
             </div>
             <div className="text-center mt-4">
               <Link to="/">
                 <Button variant="ghost">
-                  Back to Home
+                  Volver al Inicio
                 </Button>
               </Link>
             </div>

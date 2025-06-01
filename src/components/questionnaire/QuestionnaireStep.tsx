@@ -83,9 +83,9 @@ const QuestionnaireStep = () => {
         <CardContent className="pt-6">
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium text-gray-600">
-              Step {currentStep} of {totalSteps}
+              Paso {currentStep} de {totalSteps}
             </span>
-            <span className="text-sm text-gray-500">{Math.round(progress)}% Complete</span>
+            <span className="text-sm text-gray-500">{Math.round(progress)}% Completado</span>
           </div>
           <Progress value={progress} className="h-2" />
         </CardContent>
@@ -106,14 +106,14 @@ const QuestionnaireStep = () => {
               disabled={currentStep === 1}
             >
               <ChevronLeft className="mr-2 h-4 w-4" />
-              Previous
+              Anterior
             </Button>
             <Button
               onClick={handleNext}
               disabled={!isStepValid()}
               className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
             >
-              {currentStep === totalSteps ? 'Complete' : 'Next'}
+              {currentStep === totalSteps ? 'Completar' : 'Siguiente'}
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

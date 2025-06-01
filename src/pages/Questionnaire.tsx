@@ -17,14 +17,14 @@ const Questionnaire = () => {
           <Link to="/">
             <Button variant="ghost" className="mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+              Volver al Inicio
             </Button>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            AI Tool Discovery Questionnaire
+            Cuestionario de Descubrimiento de Herramientas IA
           </h1>
           <p className="text-gray-600">
-            Help us find the perfect AI tools for your needs by answering a few questions.
+            Ayúdanos a encontrar las herramientas de IA perfectas para tus necesidades respondiendo algunas preguntas.
           </p>
         </div>
 
