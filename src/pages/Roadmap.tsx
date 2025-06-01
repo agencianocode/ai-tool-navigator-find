@@ -62,10 +62,10 @@ const Roadmap = () => {
       const generatedRoadmap = await generateRoadmap(answers, selectedTools);
       setRoadmap(generatedRoadmap);
     } catch (error) {
-      console.error('Error generating roadmap:', error);
+      console.error('Error generando hoja de ruta:', error);
       toast({
         title: "Error",
-        description: "Failed to generate roadmap. Please try again.",
+        description: "Error al generar la hoja de ruta. Por favor intenta de nuevo.",
         variant: "destructive",
       });
     } finally {
@@ -79,14 +79,14 @@ const Roadmap = () => {
       const generatedRoadmap = await generateRoadmap(answers, selectedTools, true);
       setRoadmap(generatedRoadmap);
       toast({
-        title: "Success",
-        description: "Alternative roadmap generated successfully!",
+        title: "Éxito",
+        description: "¡Hoja de ruta alternativa generada exitosamente!",
       });
     } catch (error) {
-      console.error('Error regenerating roadmap:', error);
+      console.error('Error regenerando hoja de ruta:', error);
       toast({
         title: "Error",
-        description: "Failed to generate alternative roadmap. Please try again.",
+        description: "Error al generar hoja de ruta alternativa. Por favor intenta de nuevo.",
         variant: "destructive",
       });
     } finally {
@@ -134,10 +134,10 @@ const Roadmap = () => {
                 <div className="text-center">
                   <Loader2 className="h-16 w-16 text-purple-600 mx-auto mb-4 animate-spin" />
                   <h2 className="text-xl font-bold text-gray-900 mb-2">
-                    Generating Your Personalized Roadmap
+                    Generando Tu Hoja de Ruta Personalizada
                   </h2>
                   <p className="text-gray-600">
-                    Our AI is analyzing your responses and creating a tailored implementation plan...
+                    Nuestra IA está analizando tus respuestas y creando un plan de implementación personalizado...
                   </p>
                 </div>
               </CardContent>
@@ -156,16 +156,16 @@ const Roadmap = () => {
           <Link to="/results">
             <Button variant="ghost" className="mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Results
+              Volver a Resultados
             </Button>
           </Link>
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Your Personalized AI Implementation Roadmap
+                Tu Hoja de Ruta Personalizada de Implementación IA
               </h1>
               <p className="text-gray-600">
-                A 12-week step-by-step plan tailored to your project and selected tools
+                Un plan paso a paso de 12 semanas adaptado a tu proyecto y herramientas seleccionadas
               </p>
             </div>
             <div className="flex gap-2">
@@ -179,11 +179,11 @@ const Roadmap = () => {
                 ) : (
                   <RefreshCw className="mr-2 h-4 w-4" />
                 )}
-                Generate Alternative Plan
+                Generar Plan Alternativo
               </Button>
               <Button className="bg-gradient-to-r from-purple-600 to-blue-600">
                 <Download className="mr-2 h-4 w-4" />
-                Export Roadmap
+                Exportar Hoja de Ruta
               </Button>
             </div>
           </div>
@@ -213,7 +213,7 @@ const Roadmap = () => {
                             <Badge variant="outline">{phase.duration}</Badge>
                           </CardTitle>
                           <p className="text-sm text-gray-600 mt-1">
-                            Click to expand details and view AI-generated insights
+                            Haz clic para expandir detalles y ver insights generados por IA
                           </p>
                         </div>
                       </div>
@@ -225,7 +225,7 @@ const Roadmap = () => {
                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {/* Tasks */}
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Key Tasks</h4>
+                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Tareas Clave</h4>
                           <ul className="space-y-2">
                             {phase.tasks.map((task, idx) => (
                               <li key={idx} className="text-sm text-gray-700 flex items-start gap-2">
@@ -238,7 +238,7 @@ const Roadmap = () => {
 
                         {/* Tools */}
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Tools to Implement</h4>
+                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Herramientas a Implementar</h4>
                           <div className="flex flex-wrap gap-2">
                             {phase.tools.map((tool, idx) => (
                               <Badge key={idx} variant="secondary">{tool}</Badge>
@@ -248,7 +248,7 @@ const Roadmap = () => {
 
                         {/* AI Insights */}
                         <div className="lg:col-span-2">
-                          <h4 className="text-sm font-semibold text-gray-900 mb-3">AI-Generated Insights</h4>
+                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Insights Generados por IA</h4>
                           <p className="text-sm text-gray-700 bg-white/70 p-3 rounded-lg border">
                             {phase.insights}
                           </p>
@@ -258,7 +258,7 @@ const Roadmap = () => {
                         <div>
                           <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
                             <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                            Potential Challenges
+                            Desafíos Potenciales
                           </h4>
                           <ul className="space-y-1">
                             {phase.challenges.map((challenge, idx) => (
@@ -269,7 +269,7 @@ const Roadmap = () => {
 
                         {/* Resources */}
                         <div>
-                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Recommended Resources</h4>
+                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Recursos Recomendados</h4>
                           <ul className="space-y-1">
                             {phase.resources.map((resource, idx) => (
                               <li key={idx} className="text-sm text-blue-600 hover:underline cursor-pointer">
@@ -291,19 +291,19 @@ const Roadmap = () => {
         <Card className="mt-8">
           <CardContent className="pt-6">
             <div className="text-center">
-              <h3 className="text-lg font-semibold mb-2">Ready to get started?</h3>
+              <h3 className="text-lg font-semibold mb-2">¿Listo para comenzar?</h3>
               <p className="text-gray-600 mb-4">
-                This roadmap is personalized based on your responses. Adjust as needed for your specific requirements.
+                Esta hoja de ruta está personalizada basada en tus respuestas. Ajústala según sea necesario para tus requerimientos específicos.
               </p>
               <div className="flex justify-center gap-4">
                 <Link to="/results">
-                  <Button variant="outline">View Tool Details</Button>
+                  <Button variant="outline">Ver Detalles de Herramientas</Button>
                 </Link>
                 <Link to="/questionnaire">
-                  <Button variant="outline">Retake Assessment</Button>
+                  <Button variant="outline">Repetir Evaluación</Button>
                 </Link>
                 <Link to="/">
-                  <Button variant="ghost">Back to Home</Button>
+                  <Button variant="ghost">Volver al Inicio</Button>
                 </Link>
               </div>
             </div>

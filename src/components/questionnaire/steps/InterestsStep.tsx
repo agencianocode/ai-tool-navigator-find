@@ -14,26 +14,26 @@ const InterestsStep = () => {
   };
 
   const interests = [
-    { id: 'content-creation', label: 'Content Creation & Marketing' },
-    { id: 'business-automation', label: 'Business Process Automation' },
-    { id: 'data-analysis', label: 'Data Analysis & Insights' },
-    { id: 'design-creative', label: 'Design & Creative Work' },
-    { id: 'development', label: 'Software Development' },
-    { id: 'education', label: 'Education & Learning' },
-    { id: 'research', label: 'Research & Writing' },
-    { id: 'customer-service', label: 'Customer Service & Support' }
+    { id: 'content-creation', label: 'Creación de Contenido y Marketing' },
+    { id: 'business-automation', label: 'Automatización de Procesos Empresariales' },
+    { id: 'data-analysis', label: 'Análisis de Datos e Insights' },
+    { id: 'design-creative', label: 'Diseño y Trabajo Creativo' },
+    { id: 'development', label: 'Desarrollo de Software' },
+    { id: 'education', label: 'Educación y Aprendizaje' },
+    { id: 'research', label: 'Investigación y Escritura' },
+    { id: 'customer-service', label: 'Atención al Cliente y Soporte' }
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Tell us about your interests and experience</CardTitle>
+        <CardTitle>Cuéntanos sobre tus intereses y experiencia</CardTitle>
       </CardHeader>
       <CardContent className="space-y-8">
         {/* Interests */}
         <div>
           <Label className="text-base font-medium mb-4 block">
-            What areas are you most interested in? (Select all that apply)
+            ¿En qué áreas estás más interesado? (Selecciona todas las que apliquen)
           </Label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {interests.map((interest) => (
@@ -61,7 +61,7 @@ const InterestsStep = () => {
         {/* Skill Level */}
         <div>
           <Label className="text-base font-medium mb-4 block">
-            How would you describe your overall technical skill level?
+            ¿Cómo describirías tu nivel técnico general?
           </Label>
           <RadioGroup
             value={answers.skillLevel || ''}
@@ -69,19 +69,19 @@ const InterestsStep = () => {
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="beginner" id="beginner" />
-              <Label htmlFor="beginner">Beginner - I'm new to using AI tools and tech solutions</Label>
+              <Label htmlFor="beginner">Principiante - Soy nuevo usando herramientas IA y soluciones tecnológicas</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="intermediate" id="intermediate" />
-              <Label htmlFor="intermediate">Intermediate - I have some experience with various tools</Label>
+              <Label htmlFor="intermediate">Intermedio - Tengo algo de experiencia con varias herramientas</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="advanced" id="advanced" />
-              <Label htmlFor="advanced">Advanced - I'm comfortable with complex tools and integrations</Label>
+              <Label htmlFor="advanced">Avanzado - Me siento cómodo con herramientas complejas e integraciones</Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="expert" id="expert" />
-              <Label htmlFor="expert">Expert - I often help others with technical solutions</Label>
+              <Label htmlFor="expert">Experto - A menudo ayudo a otros con soluciones técnicas</Label>
             </div>
           </RadioGroup>
         </div>

@@ -15,35 +15,35 @@ const BudgetStep = () => {
   const budgetRanges = [
     {
       id: 'free',
-      title: 'Free only',
-      description: 'I want to use only free tools and services'
+      title: 'Solo gratis',
+      description: 'Quiero usar únicamente herramientas y servicios gratuitos'
     },
     {
       id: 'low',
-      title: '$1 - $50/month',
-      description: 'Small budget for basic premium features'
+      title: '$1 - $50/mes',
+      description: 'Presupuesto pequeño para funciones premium básicas'
     },
     {
       id: 'medium',
-      title: '$50 - $200/month',
-      description: 'Moderate budget for professional tools'
+      title: '$50 - $200/mes',
+      description: 'Presupuesto moderado para herramientas profesionales'
     },
     {
       id: 'high',
-      title: '$200 - $500/month',
-      description: 'Higher budget for advanced solutions'
+      title: '$200 - $500/mes',
+      description: 'Presupuesto alto para soluciones avanzadas'
     },
     {
       id: 'enterprise',
-      title: '$500+/month',
-      description: 'Enterprise budget for comprehensive solutions'
+      title: '$500+/mes',
+      description: 'Presupuesto empresarial para soluciones integrales'
     }
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>What's your budget range for AI tools?</CardTitle>
+        <CardTitle>¿Cuál es tu rango de presupuesto para herramientas IA?</CardTitle>
       </CardHeader>
       <CardContent>
         <RadioGroup

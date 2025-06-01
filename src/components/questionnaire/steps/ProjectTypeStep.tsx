@@ -15,35 +15,35 @@ const ProjectTypeStep = () => {
   const projectTypes = [
     {
       id: 'business',
-      title: 'Business/Startup',
-      description: 'Building or improving a business, startup, or commercial venture'
+      title: 'Negocio/Startup',
+      description: 'Construir o mejorar un negocio, startup o empresa comercial'
     },
     {
       id: 'creative',
-      title: 'Creative Project',
-      description: 'Content creation, art, music, writing, or other creative endeavors'
+      title: 'Proyecto Creativo',
+      description: 'Creación de contenido, arte, música, escritura u otros esfuerzos creativos'
     },
     {
       id: 'technical',
-      title: 'Technical Project',
-      description: 'Software development, data analysis, or technical research'
+      title: 'Proyecto Técnico',
+      description: 'Desarrollo de software, análisis de datos o investigación técnica'
     },
     {
       id: 'educational',
-      title: 'Educational/Learning',
-      description: 'Personal learning, teaching others, or academic research'
+      title: 'Educativo/Aprendizaje',
+      description: 'Aprendizaje personal, enseñanza a otros o investigación académica'
     },
     {
       id: 'personal',
-      title: 'Personal Productivity',
-      description: 'Improving personal workflows, organization, or daily tasks'
+      title: 'Productividad Personal',
+      description: 'Mejorar flujos de trabajo personales, organización o tareas diarias'
     }
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>What type of project are you working on?</CardTitle>
+        <CardTitle>¿En qué tipo de proyecto estás trabajando?</CardTitle>
       </CardHeader>
       <CardContent>
         <RadioGroup

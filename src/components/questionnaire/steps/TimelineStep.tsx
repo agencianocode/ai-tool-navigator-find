@@ -13,29 +13,29 @@ const TimelineStep = () => {
   };
 
   const timelines = [
-    { id: 'immediate', label: 'Immediately (within days)' },
-    { id: 'weeks', label: 'Within a few weeks' },
-    { id: 'months', label: 'Within a few months' },
-    { id: 'flexible', label: 'No specific timeline' }
+    { id: 'immediate', label: 'Inmediatamente (en días)' },
+    { id: 'weeks', label: 'En unas pocas semanas' },
+    { id: 'months', label: 'En unos pocos meses' },
+    { id: 'flexible', label: 'Sin cronograma específico' }
   ];
 
   const urgencies = [
-    { id: 'critical', label: 'Critical - Need solution ASAP' },
-    { id: 'important', label: 'Important - High priority' },
-    { id: 'moderate', label: 'Moderate - Can wait for right solution' },
-    { id: 'low', label: 'Low - Just exploring options' }
+    { id: 'critical', label: 'Crítico - Necesito solución URGENTE' },
+    { id: 'important', label: 'Importante - Alta prioridad' },
+    { id: 'moderate', label: 'Moderado - Puedo esperar por la solución correcta' },
+    { id: 'low', label: 'Bajo - Solo estoy explorando opciones' }
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Timeline and urgency</CardTitle>
+        <CardTitle>Cronograma y urgencia</CardTitle>
       </CardHeader>
       <CardContent className="space-y-8">
         {/* Timeline */}
         <div>
           <Label className="text-base font-medium mb-4 block">
-            When do you need to implement these tools?
+            ¿Cuándo necesitas implementar estas herramientas?
           </Label>
           <RadioGroup
             value={answers.timeline || ''}
@@ -54,7 +54,7 @@ const TimelineStep = () => {
         {/* Urgency */}
         <div>
           <Label className="text-base font-medium mb-4 block">
-            How urgent is this project for you?
+            ¿Qué tan urgente es este proyecto para ti?
           </Label>
           <RadioGroup
             value={answers.urgency || ''}

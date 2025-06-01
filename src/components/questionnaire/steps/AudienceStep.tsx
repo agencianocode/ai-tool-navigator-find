@@ -13,30 +13,30 @@ const AudienceStep = () => {
   };
 
   const audiences = [
-    { id: 'personal', label: 'Just for me (personal use)' },
-    { id: 'small-team', label: 'Small team (2-10 people)' },
-    { id: 'company', label: 'Company/Organization (10+ people)' },
-    { id: 'public', label: 'Public audience/customers' },
-    { id: 'students', label: 'Students/learners' }
+    { id: 'personal', label: 'Solo para mí (uso personal)' },
+    { id: 'small-team', label: 'Equipo pequeño (2-10 personas)' },
+    { id: 'company', label: 'Empresa/Organización (10+ personas)' },
+    { id: 'public', label: 'Audiencia pública/clientes' },
+    { id: 'students', label: 'Estudiantes/aprendices' }
   ];
 
   const scales = [
-    { id: 'hobby', label: 'Hobby/Side project' },
-    { id: 'professional', label: 'Professional/Work project' },
-    { id: 'startup', label: 'Startup/New business' },
-    { id: 'enterprise', label: 'Large-scale/Enterprise' }
+    { id: 'hobby', label: 'Hobby/Proyecto secundario' },
+    { id: 'professional', label: 'Proyecto profesional/laboral' },
+    { id: 'startup', label: 'Startup/Nuevo negocio' },
+    { id: 'enterprise', label: 'Gran escala/Empresarial' }
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Who is your target audience and what's the scale?</CardTitle>
+        <CardTitle>¿Cuál es tu audiencia objetivo y la escala del proyecto?</CardTitle>
       </CardHeader>
       <CardContent className="space-y-8">
         {/* Target Audience */}
         <div>
           <Label className="text-base font-medium mb-4 block">
-            Who will be using or benefiting from this project?
+            ¿Quién usará o se beneficiará de este proyecto?
           </Label>
           <RadioGroup
             value={answers.targetAudience || ''}
@@ -55,7 +55,7 @@ const AudienceStep = () => {
         {/* Project Scale */}
         <div>
           <Label className="text-base font-medium mb-4 block">
-            What's the scale and scope of your project?
+            ¿Cuál es la escala y alcance de tu proyecto?
           </Label>
           <RadioGroup
             value={answers.projectScale || ''}

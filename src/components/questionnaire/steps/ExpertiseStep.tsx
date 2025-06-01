@@ -15,39 +15,39 @@ const ExpertiseStep = () => {
   const expertiseLevels = [
     {
       id: 'no-code',
-      title: 'No-code solutions only',
-      description: 'I prefer drag-and-drop interfaces and simple setup'
+      title: 'Solo soluciones sin código',
+      description: 'Prefiero interfaces de arrastrar y soltar y configuración simple'
     },
     {
       id: 'low-code',
-      title: 'Low-code solutions',
-      description: 'I can handle some configuration but prefer minimal coding'
+      title: 'Soluciones de bajo código',
+      description: 'Puedo manejar algo de configuración pero prefiero codificación mínima'
     },
     {
       id: 'some-coding',
-      title: 'Some coding is fine',
-      description: 'I can follow tutorials and do basic coding tasks'
+      title: 'Algo de código está bien',
+      description: 'Puedo seguir tutoriales y hacer tareas básicas de programación'
     },
     {
       id: 'technical',
-      title: 'Technical solutions welcome',
-      description: 'I\'m comfortable with APIs, integrations, and custom code'
+      title: 'Soluciones técnicas bienvenidas',
+      description: 'Me siento cómodo con APIs, integraciones y código personalizado'
     },
     {
       id: 'developer',
-      title: 'Developer-level',
-      description: 'I can build custom solutions and handle complex integrations'
+      title: 'Nivel desarrollador',
+      description: 'Puedo construir soluciones personalizadas y manejar integraciones complejas'
     }
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Technical expertise preference</CardTitle>
+        <CardTitle>Preferencia de experiencia técnica</CardTitle>
       </CardHeader>
       <CardContent>
         <Label className="text-base font-medium mb-4 block">
-          What level of technical complexity are you comfortable with?
+          ¿Con qué nivel de complejidad técnica te sientes cómodo?
         </Label>
         <RadioGroup
           value={answers.technicalExpertise || ''}
