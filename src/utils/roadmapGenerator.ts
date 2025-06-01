@@ -1,4 +1,6 @@
 
+import { supabase } from "@/integrations/supabase/client";
+
 interface RoadmapPhase {
   id: number;
   title: string;
@@ -11,102 +13,48 @@ interface RoadmapPhase {
   resources: string[];
 }
 
-const DEFAULT_ROADMAP_TEMPLATE: RoadmapPhase[] = [
-  {
-    id: 1,
-    title: "Phase 1: Foundation & Setup",
-    duration: "Weeks 1-2",
-    status: 'current',
-    tasks: [],
-    tools: [],
-    insights: "",
-    challenges: [],
-    resources: []
-  },
-  {
-    id: 2,
-    title: "Phase 2: Core Implementation", 
-    duration: "Weeks 3-6",
-    status: 'upcoming',
-    tasks: [],
-    tools: [],
-    insights: "",
-    challenges: [],
-    resources: []
-  },
-  {
-    id: 3,
-    title: "Phase 3: Integration & Testing",
-    duration: "Weeks 7-8", 
-    status: 'upcoming',
-    tasks: [],
-    tools: [],
-    insights: "",
-    challenges: [],
-    resources: []
-  },
-  {
-    id: 4,
-    title: "Phase 4: Launch & Optimization",
-    duration: "Weeks 9-12",
-    status: 'upcoming', 
-    tasks: [],
-    tools: [],
-    insights: "",
-    challenges: [],
-    resources: []
-  }
-];
-
-const generateClaudePrompt = (answers: Record<string, any>, selectedTools: any[], isAlternative: boolean = false) => {
-  const projectType = answers.projectType || 'general';
-  const skillLevel = answers.skillLevel || 'beginner';
-  const budget = answers.budgetRange || 'low';
-  const timeline = answers.timeline || 'flexible';
-  const toolNames = selectedTools.map(tool => tool.name).join(', ');
-
-  return `You are an AI project management expert. Create a detailed 4-phase implementation roadmap for an AI tool project.
-
-PROJECT CONTEXT:
-- Project Type: ${projectType}
-- User Skill Level: ${skillLevel}
-- Budget Range: ${budget}
-- Timeline Preference: ${timeline}
-- Selected Tools: ${toolNames}
-- Generate ${isAlternative ? 'alternative' : 'primary'} approach
-
-REQUIREMENTS:
-Generate a JSON response with 4 phases, each containing:
-- tasks: Array of 4-6 specific, actionable tasks
-- tools: Array of 2-4 relevant tool names from the selected tools
-- insights: Single paragraph with personalized advice (2-3 sentences)
-- challenges: Array of 2-3 potential obstacles
-- resources: Array of 3-4 learning resources or documentation links
-
-RESPONSE FORMAT (JSON only):
-{
-  "phases": [
-    {
-      "tasks": ["Task 1", "Task 2", ...],
-      "tools": ["Tool1", "Tool2", ...],
-      "insights": "Personalized insight paragraph...",
-      "challenges": ["Challenge 1", "Challenge 2", ...],
-      "resources": ["Resource 1", "Resource 2", ...]
-    }
-  ]
-}
-
-Make tasks specific to the project type and tools. Adjust complexity based on skill level. Consider budget constraints in recommendations.`;
-};
-
 export const generateRoadmap = async (
   answers: Record<string, any>, 
   selectedTools: any[], 
   isAlternative: boolean = false
 ): Promise<RoadmapPhase[]> => {
-  // For now, return a mock roadmap since we don't have Claude AI integration
-  // This will be replaced with actual API call when Claude integration is available
-  console.log('Generating roadmap for:', { answers, selectedTools, isAlternative });
+  console.log('Generating roadmap with Claude AI:', { answers, selectedTools, isAlternative });
+  
+  try {
+    // Get current session for authentication
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    const { data, error } = await supabase.functions.invoke('generate-roadmap', {
+      body: {
+        answers,
+        selectedTools,
+        isAlternative
+      },
+      headers: session ? {
+        Authorization: `Bearer ${session.access_token}`
+      } : {}
+    });
+
+    if (error) {
+      console.error('Error calling generate-roadmap function:', error);
+      // Fallback to mock data if API fails
+      return generateMockRoadmap(answers, selectedTools);
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error generating roadmap:', error);
+    // Fallback to mock data if API fails
+    return generateMockRoadmap(answers, selectedTools);
+  }
+};
+
+// Fallback mock roadmap generator
+const generateMockRoadmap = async (
+  answers: Record<string, any>, 
+  selectedTools: any[]
+): Promise<RoadmapPhase[]> => {
+  console.log('Using fallback mock roadmap generator');
   
   const mockRoadmap: RoadmapPhase[] = [
     {
@@ -219,36 +167,4 @@ export const generateRoadmap = async (
   await new Promise(resolve => setTimeout(resolve, 2000));
 
   return mockRoadmap;
-};
-
-// Future implementation with Claude AI API
-const generateRoadmapWithClaude = async (
-  answers: Record<string, any>,
-  selectedTools: any[],
-  isAlternative: boolean = false
-): Promise<RoadmapPhase[]> => {
-  try {
-    const prompt = generateClaudePrompt(answers, selectedTools, isAlternative);
-    
-    // This would be the actual Claude API call
-    // const response = await fetch('/api/claude', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ prompt })
-    // });
-    // const data = await response.json();
-    
-    // For now, return template with placeholder content
-    return DEFAULT_ROADMAP_TEMPLATE.map((phase, index) => ({
-      ...phase,
-      tasks: [`AI-generated task ${index + 1}`, `AI-generated task ${index + 2}`],
-      tools: selectedTools.slice(0, 2).map(tool => tool.name),
-      insights: `AI-generated insights for ${phase.title}`,
-      challenges: [`AI-generated challenge ${index + 1}`],
-      resources: [`AI-generated resource ${index + 1}`]
-    }));
-  } catch (error) {
-    console.error('Error generating roadmap with Claude:', error);
-    throw error;
-  }
 };

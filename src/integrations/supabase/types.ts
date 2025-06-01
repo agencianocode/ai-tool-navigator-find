@@ -9,7 +9,78 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+        }
+        Relationships: []
+      }
+      roadmaps: {
+        Row: {
+          budget_range: string | null
+          created_at: string | null
+          id: string
+          project_type: string | null
+          questionnaire_answers: Json | null
+          roadmap_data: Json
+          selected_tools: Json | null
+          skill_level: string | null
+          timeline: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          budget_range?: string | null
+          created_at?: string | null
+          id?: string
+          project_type?: string | null
+          questionnaire_answers?: Json | null
+          roadmap_data: Json
+          selected_tools?: Json | null
+          skill_level?: string | null
+          timeline?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          budget_range?: string | null
+          created_at?: string | null
+          id?: string
+          project_type?: string | null
+          questionnaire_answers?: Json | null
+          roadmap_data?: Json
+          selected_tools?: Json | null
+          skill_level?: string | null
+          timeline?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -2,9 +2,12 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import UserMenu from "./UserMenu";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100">
@@ -36,11 +39,15 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-105" asChild>
-              <a href="/questionnaire">Start Discovery</a>
-            </Button>
+          {/* CTA Button or User Menu */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <UserMenu />
+            ) : (
+              <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-105" asChild>
+                <a href="/auth">Iniciar Sesión</a>
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -68,9 +75,13 @@ const Navigation = () => {
                 About
               </a>
               <div className="px-3 py-2">
-                <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg transition-all duration-200" asChild>
-                  <a href="/questionnaire">Start Discovery</a>
-                </Button>
+                {user ? (
+                  <UserMenu />
+                ) : (
+                  <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg transition-all duration-200" asChild>
+                    <a href="/auth">Iniciar Sesión</a>
+                  </Button>
+                )}
               </div>
             </div>
           </div>
