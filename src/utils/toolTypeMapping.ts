@@ -9,7 +9,7 @@ export interface AITool {
   description: string;
   pricing: string;
   complexity: string;
-  complexityLevel: string;
+  complexityLevel: 'beginner' | 'intermediate' | 'advanced' | 'expert';
   tags: string[];
   logoPlaceholder: string;
   website: string;
@@ -26,8 +26,14 @@ export interface AITool {
 // Function to convert Tool to AITool format
 export const convertToolToAITool = (tool: Tool): AITool => {
   // Map complexity to complexityLevel for backward compatibility
-  const getComplexityLevel = (complexity: string): string => {
-    return complexity; // They're the same in our case
+  const getComplexityLevel = (complexity: string): 'beginner' | 'intermediate' | 'advanced' | 'expert' => {
+    switch(complexity.toLowerCase()) {
+      case 'beginner': return 'beginner';
+      case 'intermediate': return 'intermediate';
+      case 'advanced': return 'advanced';
+      case 'expert': return 'expert';
+      default: return 'intermediate'; // Default fallback
+    }
   };
 
   // Generate use cases based on category and tags
