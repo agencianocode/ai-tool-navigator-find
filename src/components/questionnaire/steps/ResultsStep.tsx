@@ -10,6 +10,7 @@ import { useState, useMemo } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import ToolActions from "@/components/ToolActions";
+import { convertToolToAITool } from "@/utils/toolTypeMapping";
 
 const ResultsStep = () => {
   const { state } = useQuestionnaire();
@@ -244,7 +245,7 @@ const ResultsStep = () => {
                   </div>
 
                   {/* Action Buttons */}
-                  <ToolActions tool={match.tool} answers={answers} />
+                  <ToolActions tool={convertToolToAITool(match.tool)} answers={answers} />
                 </div>
               </div>
             </CardContent>

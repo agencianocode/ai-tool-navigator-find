@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, Share2, Filter, Star, CheckCircle } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { calculateToolMatches, filterTools, ToolMatch } from "@/utils/matchingAlgorithm";
-import { categories } from "@/data/aiTools";
+import { categories } from "@/data/expandedAiTools";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ToolActions from "@/components/ToolActions";
+import { convertToolToAITool } from "@/utils/toolTypeMapping";
 
 const Results = () => {
   const location = useLocation();
@@ -211,7 +212,7 @@ const Results = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <ToolActions tool={match.tool} answers={answers} />
+                    <ToolActions tool={convertToolToAITool(match.tool)} answers={answers} />
                   </div>
                 </div>
               </CardContent>
