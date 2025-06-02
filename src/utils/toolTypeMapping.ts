@@ -19,6 +19,8 @@ export interface AITool {
   projectTypes: string[];
   budgetRange: string;
   features: string[];
+  timelineTypes: string[];
+  targetAudience: string[];
 }
 
 // Function to convert Tool to AITool format
@@ -123,6 +125,69 @@ export const convertToolToAITool = (tool: Tool): AITool => {
     return features.slice(0, 4); // Limit to 4 features
   };
 
+  // Generate timeline types based on category and complexity
+  const getTimelineTypes = (category: string, complexity: string): string[] => {
+    const timelines = [];
+    
+    // Base timeline based on complexity
+    switch (complexity) {
+      case 'beginner':
+        timelines.push('immediate', 'short-term');
+        break;
+      case 'intermediate':
+        timelines.push('short-term', 'medium-term');
+        break;
+      case 'advanced':
+        timelines.push('medium-term', 'long-term');
+        break;
+      case 'expert':
+        timelines.push('long-term');
+        break;
+      default:
+        timelines.push('short-term');
+    }
+
+    return timelines;
+  };
+
+  // Generate target audience based on category and complexity
+  const getTargetAudience = (category: string, complexity: string): string[] => {
+    const audiences = [];
+    
+    // Base audience based on category
+    switch (category) {
+      case 'AI Writing & Content':
+        audiences.push('marketers', 'content-creators', 'writers');
+        break;
+      case 'AI Code Assistant':
+        audiences.push('developers', 'programmers', 'tech-teams');
+        break;
+      case 'AI Image & Video':
+        audiences.push('designers', 'content-creators', 'marketers');
+        break;
+      case 'AI Business & Sales':
+        audiences.push('sales-teams', 'business-owners', 'entrepreneurs');
+        break;
+      case 'AI Research & Analysis':
+        audiences.push('researchers', 'analysts', 'academics');
+        break;
+      case 'AI Productivity & Automation':
+        audiences.push('professionals', 'teams', 'business-owners');
+        break;
+      default:
+        audiences.push('general-users', 'professionals');
+    }
+
+    // Add complexity-based audiences
+    if (complexity === 'beginner') {
+      audiences.push('beginners', 'non-technical');
+    } else if (complexity === 'expert') {
+      audiences.push('experts', 'technical-specialists');
+    }
+
+    return audiences.slice(0, 3); // Limit to 3 audiences
+  };
+
   return {
     id: tool.id,
     name: tool.name,
@@ -139,6 +204,8 @@ export const convertToolToAITool = (tool: Tool): AITool => {
     useCases: getUseCases(tool.category, tool.tags),
     projectTypes: getProjectTypes(tool.category),
     budgetRange: getBudgetRange(tool.pricing),
-    features: getFeatures(tool)
+    features: getFeatures(tool),
+    timelineTypes: getTimelineTypes(tool.category, tool.complexity),
+    targetAudience: getTargetAudience(tool.category, tool.complexity)
   };
 };
