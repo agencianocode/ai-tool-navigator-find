@@ -17,7 +17,7 @@ export interface AITool {
   freeVersion: boolean;
   useCases: string[];
   projectTypes: string[];
-  budgetRange: string;
+  budgetRange: string[];
   features: string[];
   timelineTypes: string[];
   targetAudience: string[];
@@ -90,22 +90,22 @@ export const convertToolToAITool = (tool: Tool): AITool => {
     }
   };
 
-  // Generate budget range based on pricing
-  const getBudgetRange = (pricing: string): string => {
+  // Generate budget range based on pricing - return as array
+  const getBudgetRange = (pricing: string): string[] => {
     const lowerPricing = pricing.toLowerCase();
     if (lowerPricing.includes('gratis') || lowerPricing.includes('free')) {
-      return 'free';
+      return ['free'];
     }
     if (lowerPricing.includes('$1') || lowerPricing.includes('$5') || lowerPricing.includes('$10')) {
-      return 'low';
+      return ['low'];
     }
     if (lowerPricing.includes('$50') || lowerPricing.includes('$100')) {
-      return 'medium';
+      return ['medium'];
     }
     if (lowerPricing.includes('$200') || lowerPricing.includes('$500')) {
-      return 'high';
+      return ['high'];
     }
-    return 'enterprise';
+    return ['enterprise'];
   };
 
   // Generate features based on tags and properties
