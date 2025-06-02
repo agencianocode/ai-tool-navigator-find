@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import Questionnaire from "./pages/Questionnaire";
 import Results from "./pages/Results";
 import Roadmap from "./pages/Roadmap";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,11 @@ const App = () => (
             <Route path="/roadmap" element={
               <AuthGuard>
                 <Roadmap />
+              </AuthGuard>
+            } />
+            <Route path="/dashboard" element={
+              <AuthGuard>
+                <Dashboard />
               </AuthGuard>
             } />
             <Route path="*" element={<NotFound />} />

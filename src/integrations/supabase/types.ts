@@ -40,12 +40,16 @@ export type Database = {
         Row: {
           budget_range: string | null
           created_at: string | null
+          custom_name: string | null
+          description: string | null
           id: string
+          is_favorite: boolean | null
           project_type: string | null
           questionnaire_answers: Json | null
           roadmap_data: Json
           selected_tools: Json | null
           skill_level: string | null
+          status: string | null
           timeline: string | null
           title: string
           updated_at: string | null
@@ -54,12 +58,16 @@ export type Database = {
         Insert: {
           budget_range?: string | null
           created_at?: string | null
+          custom_name?: string | null
+          description?: string | null
           id?: string
+          is_favorite?: boolean | null
           project_type?: string | null
           questionnaire_answers?: Json | null
           roadmap_data: Json
           selected_tools?: Json | null
           skill_level?: string | null
+          status?: string | null
           timeline?: string | null
           title: string
           updated_at?: string | null
@@ -68,15 +76,73 @@ export type Database = {
         Update: {
           budget_range?: string | null
           created_at?: string | null
+          custom_name?: string | null
+          description?: string | null
           id?: string
+          is_favorite?: boolean | null
           project_type?: string | null
           questionnaire_answers?: Json | null
           roadmap_data?: Json
           selected_tools?: Json | null
           skill_level?: string | null
+          status?: string | null
           timeline?: string | null
           title?: string
           updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_favorite_tools: {
+        Row: {
+          created_at: string
+          id: string
+          tool_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          tool_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          tool_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_stats: {
+        Row: {
+          completed_roadmaps: number | null
+          created_at: string
+          id: string
+          last_activity: string | null
+          total_roadmaps: number | null
+          total_tools_explored: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_roadmaps?: number | null
+          created_at?: string
+          id?: string
+          last_activity?: string | null
+          total_roadmaps?: number | null
+          total_tools_explored?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_roadmaps?: number | null
+          created_at?: string
+          id?: string
+          last_activity?: string | null
+          total_roadmaps?: number | null
+          total_tools_explored?: number | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []

@@ -13,18 +13,26 @@ interface RoadmapPhase {
   resources: string[];
 }
 
+export type AIEngine = 'claude' | 'openai';
+
 export const generateRoadmap = async (
   answers: Record<string, any>, 
   selectedTools: any[], 
-  isAlternative: boolean = false
+  isAlternative: boolean = false,
+  preferredEngine: AIEngine = 'claude'
 ): Promise<RoadmapPhase[]> => {
-  console.log('Generating roadmap with Claude AI:', { answers, selectedTools, isAlternative });
+  console.log('Generating roadmap with AI engine:', preferredEngine, { answers, selectedTools, isAlternative });
   
   try {
     // Get current session for authentication
     const { data: { session } } = await supabase.auth.getSession();
     
-    const { data, error } = await supabase.functions.invoke('generate-roadmap', {
+    // Choose function based on preferred engine
+    const functionName = preferredEngine === 'openai' ? 'generate-roadmap-openai' : 'generate-roadmap';
+    
+    console.log(`Calling ${functionName} function`);
+    
+    const { data, error } = await supabase.functions.invoke(functionName, {
       body: {
         answers,
         selectedTools,
@@ -36,15 +44,28 @@ export const generateRoadmap = async (
     });
 
     if (error) {
-      console.error('Error calling generate-roadmap function:', error);
-      // Fallback to mock data if API fails
-      return generateMockRoadmap(answers, selectedTools);
+      console.error(`Error calling ${functionName} function:`, error);
+      
+      // If preferred engine fails, try the alternative engine
+      if (preferredEngine === 'openai') {
+        console.log('OpenAI failed, trying Claude as fallback...');
+        return generateRoadmap(answers, selectedTools, isAlternative, 'claude');
+      } else {
+        console.log('Claude failed, trying OpenAI as fallback...');
+        return generateRoadmap(answers, selectedTools, isAlternative, 'openai');
+      }
+    }
+
+    if (!data || !Array.isArray(data)) {
+      console.error('Invalid data received from function:', data);
+      throw new Error('Invalid response format from AI service');
     }
 
     return data;
   } catch (error) {
     console.error('Error generating roadmap:', error);
-    // Fallback to mock data if API fails
+    
+    // Final fallback to mock data if both engines fail
     return generateMockRoadmap(answers, selectedTools);
   }
 };

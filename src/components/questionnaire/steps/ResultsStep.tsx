@@ -1,13 +1,14 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Download, Share2, RefreshCw, Filter, Star, ExternalLink } from "lucide-react";
+import { CheckCircle, Download, Share2, RefreshCw, Filter, Star, ExternalLink, Zap } from "lucide-react";
 import { useQuestionnaire } from "../QuestionnaireContext";
 import { Link } from "react-router-dom";
 import { calculateToolMatches, filterTools, ToolMatch } from "@/utils/matchingAlgorithm";
-import { categories } from "@/data/aiTools";
+import { categories } from "@/data/expandedAiTools";
 import { useState, useMemo } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 import ToolActions from "@/components/ToolActions";
 
 const ResultsStep = () => {
@@ -20,7 +21,9 @@ const ResultsStep = () => {
     complexityLevel: ''
   });
 
-  // Calculate matches using the real algorithm
+  const [selectedAiEngine, setSelectedAiEngine] = useState<'claude' | 'openai'>('claude');
+
+  // Calculate matches using the expanded algorithm
   const allMatches = useMemo(() => calculateToolMatches(answers), [answers]);
   const filteredMatches = useMemo(() => filterTools(allMatches, filters), [allMatches, filters]);
 
@@ -49,10 +52,56 @@ const ResultsStep = () => {
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 ¡Tus Recomendaciones de Herramientas IA Están Listas!
               </h2>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Basándose en tus respuestas, hemos encontrado {filteredMatches.length} herramientas de IA que se ajustan a tus necesidades.
               </p>
+              <Badge variant="secondary" className="text-sm">
+                Ahora con 100+ herramientas en nuestra base de datos ✨
+              </Badge>
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* AI Engine Selector */}
+      <Card className="border-purple-200 bg-gradient-to-r from-purple-50 to-blue-50">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Zap className="h-5 w-5 text-purple-600" />
+            Elige tu Motor de IA para la Hoja de Ruta
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="flex-1">
+              <Select value={selectedAiEngine} onValueChange={(value: 'claude' | 'openai') => setSelectedAiEngine(value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona el motor de IA" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="claude">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                      Claude AI (Anthropic) - Recomendado
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="openai">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      OpenAI GPT-4 - Alternativo
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <div className="text-sm text-gray-600">
+            <p className="mb-2">
+              <strong>Claude AI:</strong> Especializado en análisis detallado y recomendaciones estratégicas.
+            </p>
+            <p>
+              <strong>OpenAI GPT-4:</strong> Excelente para creatividad e innovación en la planificación.
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -150,6 +199,16 @@ const ResultsStep = () => {
                             Mejor Opción
                           </span>
                         )}
+                        {match.tool.freeVersion && (
+                          <Badge variant="outline" className="text-green-600 border-green-600">
+                            Gratis
+                          </Badge>
+                        )}
+                        {match.tool.apiAvailable && (
+                          <Badge variant="outline" className="text-blue-600 border-blue-600">
+                            API
+                          </Badge>
+                        )}
                       </div>
                       <p className="text-sm text-gray-500 mb-2">{match.tool.category}</p>
                       <p className="text-gray-700 mb-3">{match.tool.description}</p>
@@ -205,10 +264,20 @@ const ResultsStep = () => {
       <Card>
         <CardContent className="pt-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/roadmap" state={{ answers, selectedTools: filteredMatches.map(match => match.tool) }}>
+            <Link to="/roadmap" state={{ 
+              answers, 
+              selectedTools: filteredMatches.map(match => match.tool),
+              preferredEngine: selectedAiEngine
+            }}>
               <Button className="bg-gradient-to-r from-green-600 to-teal-600">
                 <ExternalLink className="mr-2 h-4 w-4" />
-                Generar Hoja de Ruta de Implementación
+                Generar Hoja de Ruta con {selectedAiEngine === 'claude' ? 'Claude AI' : 'OpenAI GPT-4'}
+              </Button>
+            </Link>
+            <Link to="/dashboard">
+              <Button className="bg-gradient-to-r from-purple-600 to-blue-600">
+                <Zap className="mr-2 h-4 w-4" />
+                Ver Dashboard
               </Button>
             </Link>
             <Button className="bg-gradient-to-r from-purple-600 to-blue-600">
