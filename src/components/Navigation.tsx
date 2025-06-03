@@ -30,6 +30,9 @@ const Navigation = () => {
               <a href="/" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
                 Inicio
               </a>
+              <a href="/integrations" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                Integraciones
+              </a>
               <a href="#how-it-works" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
                 Cómo Funciona
               </a>
@@ -67,6 +70,9 @@ const Navigation = () => {
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white/90 backdrop-blur-md rounded-lg mt-2 border border-purple-100">
               <a href="/" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
                 Inicio
+              </a>
+              <a href="/integrations" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                Integraciones
               </a>
               <a href="#how-it-works" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
                 Cómo Funciona

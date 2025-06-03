@@ -8,6 +8,8 @@ import Roadmap from './pages/Roadmap';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Integrations from './pages/Integrations';
+import Subscriptions from './pages/Subscriptions';
+import BudgetPlanner from './pages/BudgetPlanner';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from "@/components/ui/toaster"
 
@@ -29,6 +31,8 @@ function App() {
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/integrations" element={<Integrations />} />
+              <Route path="/subscriptions" element={<Subscriptions />} />
+              <Route path="/budget-planner" element={<BudgetPlanner />} />
               <Route path="/tool/:toolId" element={<ToolDetails />} />
             </Routes>
           </div>

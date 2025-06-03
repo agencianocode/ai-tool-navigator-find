@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -207,7 +208,10 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
     <div className="space-y-4">
       {reviews.map((review) => {
         const userVote = getUserVote(review.id);
-        const profileName = review.profiles?.full_name ?? 'Usuario anónimo';
+        // Verificación explícita de null para resolver el error de TypeScript
+        const profileName = (review.profiles !== null && review.profiles?.full_name) 
+          ? review.profiles.full_name 
+          : 'Usuario anónimo';
         
         return (
           <Card key={review.id}>
