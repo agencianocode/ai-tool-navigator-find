@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -57,7 +56,7 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
         ...review,
         profiles: review.profiles && typeof review.profiles === 'object' && 'full_name' in review.profiles
           ? review.profiles as { full_name: string | null }
-          : { full_name: null }
+          : null
       })) || [];
       
       setReviews(validReviews);
