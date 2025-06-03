@@ -7,6 +7,7 @@ import Results from './pages/Results';
 import Roadmap from './pages/Roadmap';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import Integrations from './pages/Integrations';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from "@/components/ui/toaster"
 
@@ -27,6 +28,7 @@ function App() {
               <Route path="/results" element={<Results />} />
               <Route path="/roadmap" element={<Roadmap />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/integrations" element={<Integrations />} />
               <Route path="/tool/:toolId" element={<ToolDetails />} />
             </Routes>
           </div>

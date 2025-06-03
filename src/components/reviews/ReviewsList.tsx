@@ -207,6 +207,8 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
     <div className="space-y-4">
       {reviews.map((review) => {
         const userVote = getUserVote(review.id);
+        const profileName = review.profiles?.full_name ?? 'Usuario anónimo';
+        
         return (
           <Card key={review.id}>
             <CardContent className="pt-6">
@@ -215,7 +217,7 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
                   <div className="flex items-center gap-2 mb-1">
                     {renderStars(review.rating)}
                     <span className="text-sm text-gray-500">
-                      por {review.profiles?.full_name || 'Usuario anónimo'}
+                      por {profileName}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-400">
