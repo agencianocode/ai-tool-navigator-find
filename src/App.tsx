@@ -1,57 +1,36 @@
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import Questionnaire from './pages/Questionnaire';
+import Results from './pages/Results';
+import Roadmap from './pages/Roadmap';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import { QueryClient } from 'react-query';
+import { Toaster } from "@/components/ui/toaster"
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "@/contexts/AuthContext";
-import AuthGuard from "@/components/AuthGuard";
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import Questionnaire from "./pages/Questionnaire";
-import Results from "./pages/Results";
-import Roadmap from "./pages/Roadmap";
-import Dashboard from "./pages/Dashboard";
-import NotFound from "./pages/NotFound";
+import ToolDetails from "@/pages/ToolDetails";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+function App() {
+  return (
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/questionnaire" element={
-              <AuthGuard>
-                <Questionnaire />
-              </AuthGuard>
-            } />
-            <Route path="/results" element={
-              <AuthGuard>
-                <Results />
-              </AuthGuard>
-            } />
-            <Route path="/roadmap" element={
-              <AuthGuard>
-                <Roadmap />
-              </AuthGuard>
-            } />
-            <Route path="/dashboard" element={
-              <AuthGuard>
-                <Dashboard />
-              </AuthGuard>
-            } />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <QueryClient>
+        <Router>
+          <div className="min-h-screen bg-background font-sans antialiased">
+            <Toaster />
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/questionnaire" element={<Questionnaire />} />
+              <Route path="/results" element={<Results />} />
+              <Route path="/roadmap" element={<Roadmap />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/tool/:toolId" element={<ToolDetails />} />
+            </Routes>
+          </div>
+        </Router>
+      </QueryClient>
     </AuthProvider>
-  </QueryClientProvider>
-);
+  );
+}
 
 export default App;

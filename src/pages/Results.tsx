@@ -2,13 +2,21 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Share2, Filter, Star, CheckCircle } from "lucide-react";
+import { ArrowLeft, Download, Share2, Filter, Star, CheckCircle, ExternalLink } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { calculateToolMatches, filterTools, ToolMatch } from "@/utils/matchingAlgorithm";
 import { categories } from "@/data/expandedAiTools";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ToolActions from "@/components/ToolActions";
 import { convertToolToAITool } from "@/utils/toolTypeMapping";
+import { supabase } from "@/integrations/supabase/client";
+
+interface ToolRatings {
+  [toolId: string]: {
+    averageRating: number;
+    totalReviews: number;
+  };
+}
 
 const Results = () => {
   const location = useLocation();
@@ -18,6 +26,7 @@ const Results = () => {
     priceRange: '',
     complexityLevel: ''
   });
+  const [toolRatings, setToolRatings] = useState<ToolRatings>({});
 
   useEffect(() => {
     // Get answers from location state or localStorage
@@ -34,6 +43,50 @@ const Results = () => {
   const allMatches = calculateToolMatches(answers);
   const filteredMatches = filterTools(allMatches, filters);
 
+  useEffect(() => {
+    loadToolRatings();
+  }, [filteredMatches]);
+
+  const loadToolRatings = async () => {
+    const toolIds = filteredMatches.map(match => match.tool.id);
+    if (toolIds.length === 0) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('tool_reviews')
+        .select('tool_id, rating')
+        .in('tool_id', toolIds);
+
+      if (error) throw error;
+
+      const ratingsMap: ToolRatings = {};
+      
+      toolIds.forEach(toolId => {
+        const toolReviews = data?.filter(review => review.tool_id === toolId) || [];
+        const totalReviews = toolReviews.length;
+        
+        if (totalReviews > 0) {
+          const sum = toolReviews.reduce((acc, review) => acc + review.rating, 0);
+          const averageRating = sum / totalReviews;
+          
+          ratingsMap[toolId] = {
+            averageRating: Math.round(averageRating * 10) / 10,
+            totalReviews
+          };
+        } else {
+          ratingsMap[toolId] = {
+            averageRating: 0,
+            totalReviews: 0
+          };
+        }
+      });
+
+      setToolRatings(ratingsMap);
+    } catch (error) {
+      console.error('Error loading tool ratings:', error);
+    }
+  };
+
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({
       ...prev,
@@ -46,6 +99,23 @@ const Results = () => {
     if (percentage >= 80) return 'bg-blue-500';
     if (percentage >= 70) return 'bg-yellow-500';
     return 'bg-gray-500';
+  };
+
+  const renderStars = (rating: number) => {
+    return (
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`w-4 h-4 ${
+              star <= Math.round(rating)
+                ? 'fill-yellow-400 text-yellow-400'
+                : 'text-gray-300'
+            }`}
+          />
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -147,77 +217,108 @@ const Results = () => {
 
         {/* Tool Recommendations */}
         <div className="space-y-4 mb-6">
-          {filteredMatches.map((match: ToolMatch, index) => (
-            <Card key={match.tool.id} className="hover:shadow-lg transition-shadow">
-              <CardContent className="pt-6">
-                <div className="flex flex-col lg:flex-row gap-6">
-                  {/* Tool Logo/Image */}
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center">
-                      <img
-                        src={`https://images.unsplash.com/${match.tool.logoPlaceholder}?w=64&h=64&fit=crop&crop=center`}
-                        alt={match.tool.name}
-                        className="w-12 h-12 rounded object-cover"
-                      />
+          {filteredMatches.map((match: ToolMatch, index) => {
+            const toolRating = toolRatings[match.tool.id] || { averageRating: 0, totalReviews: 0 };
+            
+            return (
+              <Card key={match.tool.id} className="hover:shadow-lg transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex flex-col lg:flex-row gap-6">
+                    {/* Tool Logo/Image */}
+                    <div className="flex-shrink-0">
+                      <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg flex items-center justify-center">
+                        <img
+                          src={`https://images.unsplash.com/${match.tool.logoPlaceholder}?w=64&h=64&fit=crop&crop=center`}
+                          alt={match.tool.name}
+                          className="w-12 h-12 rounded object-cover"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Tool Info */}
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-xl font-semibold">{match.tool.name}</h3>
-                          <span className={`${getMatchBadgeColor(match.matchPercentage)} text-white text-xs font-medium px-2.5 py-0.5 rounded-full`}>
-                            {match.matchPercentage}% coincidencia
-                          </span>
-                          {index < 3 && (
-                            <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1">
-                              <Star className="w-3 h-3" />
-                              Mejor Opción
+                    {/* Tool Info */}
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="text-xl font-semibold">{match.tool.name}</h3>
+                            <span className={`${getMatchBadgeColor(match.matchPercentage)} text-white text-xs font-medium px-2.5 py-0.5 rounded-full`}>
+                              {match.matchPercentage}% coincidencia
                             </span>
+                            {index < 3 && (
+                              <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full flex items-center gap-1">
+                                <Star className="w-3 h-3" />
+                                Mejor Opción
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-500 mb-2">{match.tool.category}</p>
+                          
+                          {/* Rating */}
+                          {toolRating.totalReviews > 0 ? (
+                            <div className="flex items-center gap-2 mb-2">
+                              {renderStars(toolRating.averageRating)}
+                              <span className="text-sm font-medium">{toolRating.averageRating}</span>
+                              <span className="text-sm text-gray-500">
+                                ({toolRating.totalReviews} reseña{toolRating.totalReviews !== 1 ? 's' : ''})
+                              </span>
+                            </div>
+                          ) : (
+                            <p className="text-sm text-gray-500 mb-2">Sin reseñas aún</p>
+                          )}
+                          
+                          <p className="text-gray-700 mb-3">{match.tool.description}</p>
+                          <p className="text-sm font-medium text-purple-600 mb-3">{match.tool.pricing}</p>
+                        </div>
+                      </div>
+
+                      {/* Why Recommended */}
+                      <div className="mb-4">
+                        <h4 className="text-sm font-semibold text-gray-900 mb-2">Por qué recomendamos esto:</h4>
+                        <ul className="space-y-1">
+                          {match.reasons.map((reason, idx) => (
+                            <li key={idx} className="text-sm text-gray-600 flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                              {reason}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Tags */}
+                      <div className="mb-4">
+                        <div className="flex flex-wrap gap-2">
+                          {match.tool.tags.slice(0, 4).map((tag) => (
+                            <span key={tag} className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md">
+                              {tag}
+                            </span>
+                          ))}
+                          {match.tool.tags.length > 4 && (
+                            <span className="text-xs text-gray-500">+{match.tool.tags.length - 4} más</span>
                           )}
                         </div>
-                        <p className="text-sm text-gray-500 mb-2">{match.tool.category}</p>
-                        <p className="text-gray-700 mb-3">{match.tool.description}</p>
-                        <p className="text-sm font-medium text-purple-600 mb-3">{match.tool.pricing}</p>
                       </div>
-                    </div>
 
-                    {/* Why Recommended */}
-                    <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Por qué recomendamos esto:</h4>
-                      <ul className="space-y-1">
-                        {match.reasons.map((reason, idx) => (
-                          <li key={idx} className="text-sm text-gray-600 flex items-center gap-2">
-                            <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                            {reason}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Tags */}
-                    <div className="mb-4">
+                      {/* Action Buttons */}
                       <div className="flex flex-wrap gap-2">
-                        {match.tool.tags.slice(0, 4).map((tag) => (
-                          <span key={tag} className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-md">
-                            {tag}
-                          </span>
-                        ))}
-                        {match.tool.tags.length > 4 && (
-                          <span className="text-xs text-gray-500">+{match.tool.tags.length - 4} más</span>
-                        )}
+                        <ToolActions tool={convertToolToAITool(match.tool)} answers={answers} />
+                        <Link to={`/tool/${match.tool.id}`}>
+                          <Button variant="outline" size="sm">
+                            Ver Detalles y Reseñas
+                          </Button>
+                        </Link>
+                        <Button variant="outline" size="sm" asChild>
+                          <a href={match.tool.website} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="mr-1 h-3 w-3" />
+                            Sitio Web
+                          </a>
+                        </Button>
                       </div>
                     </div>
-
-                    {/* Action Buttons */}
-                    <ToolActions tool={convertToolToAITool(match.tool)} answers={answers} />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            );
+          })}
 
           {filteredMatches.length === 0 && (
             <Card>

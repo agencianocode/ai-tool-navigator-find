@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      notification_preferences: {
+        Row: {
+          created_at: string
+          email_new_tools: boolean | null
+          email_reviews: boolean | null
+          email_roadmap_updates: boolean | null
+          email_weekly_digest: boolean | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_new_tools?: boolean | null
+          email_reviews?: boolean | null
+          email_roadmap_updates?: boolean | null
+          email_weekly_digest?: boolean | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_new_tools?: boolean | null
+          email_reviews?: boolean | null
+          email_roadmap_updates?: boolean | null
+          email_weekly_digest?: boolean | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -35,6 +68,38 @@ export type Database = {
           username?: string | null
         }
         Relationships: []
+      }
+      review_votes: {
+        Row: {
+          created_at: string
+          id: string
+          is_helpful: boolean
+          review_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_helpful: boolean
+          review_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_helpful?: boolean
+          review_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "review_votes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "tool_reviews"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       roadmaps: {
         Row: {
@@ -89,6 +154,48 @@ export type Database = {
           timeline?: string | null
           title?: string
           updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      tool_reviews: {
+        Row: {
+          created_at: string
+          helpful_count: number | null
+          id: string
+          is_verified: boolean | null
+          rating: number
+          review_content: string | null
+          review_title: string | null
+          tool_id: string
+          tool_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          is_verified?: boolean | null
+          rating: number
+          review_content?: string | null
+          review_title?: string | null
+          tool_id: string
+          tool_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          helpful_count?: number | null
+          id?: string
+          is_verified?: boolean | null
+          rating?: number
+          review_content?: string | null
+          review_title?: string | null
+          tool_id?: string
+          tool_name?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
