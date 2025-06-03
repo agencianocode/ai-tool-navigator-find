@@ -1,11 +1,10 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Star, Users, DollarSign, Clock } from "lucide-react";
-import { aiTools } from "@/data/expandedAiTools";
+import { expandedAiTools } from "@/data/expandedAiTools";
 import { ReviewsSection } from "@/components/reviews/ReviewsSection";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,7 +17,7 @@ const ToolDetails = () => {
   const { toolId } = useParams<{ toolId: string }>();
   const [toolStats, setToolStats] = useState<ToolStats>({ averageRating: 0, totalReviews: 0 });
   
-  const tool = aiTools.find(t => t.id === toolId);
+  const tool = expandedAiTools.find(t => t.id === toolId);
 
   useEffect(() => {
     if (toolId) {

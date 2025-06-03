@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
@@ -6,15 +7,17 @@ import Results from './pages/Results';
 import Roadmap from './pages/Roadmap';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import { QueryClient } from 'react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from "@/components/ui/toaster"
 
 import ToolDetails from "@/pages/ToolDetails";
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
     <AuthProvider>
-      <QueryClient>
+      <QueryClientProvider client={queryClient}>
         <Router>
           <div className="min-h-screen bg-background font-sans antialiased">
             <Toaster />
@@ -28,7 +31,7 @@ function App() {
             </Routes>
           </div>
         </Router>
-      </QueryClient>
+      </QueryClientProvider>
     </AuthProvider>
   );
 }

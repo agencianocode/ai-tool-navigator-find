@@ -45,21 +45,30 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
         .from('tool_reviews')
         .select(`
           *,
-          profiles!inner(full_name)
+          profiles(full_name)
         `)
         .eq('tool_id', toolId)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setReviews(reviewsData || []);
+      
+      // Filter out reviews with profile errors and set default values
+      const validReviews = reviewsData?.map(review => ({
+        ...review,
+        profiles: review.profiles && typeof review.profiles === 'object' && 'full_name' in review.profiles
+          ? review.profiles as { full_name: string | null }
+          : { full_name: null }
+      })) || [];
+      
+      setReviews(validReviews);
 
       // Load user votes if logged in
-      if (user) {
+      if (user && validReviews.length > 0) {
         const { data: votesData, error: votesError } = await supabase
           .from('review_votes')
           .select('review_id, is_helpful')
           .eq('user_id', user.id)
-          .in('review_id', reviewsData?.map(r => r.id) || []);
+          .in('review_id', validReviews.map(r => r.id));
 
         if (votesError) throw votesError;
         setUserVotes(votesData || []);
