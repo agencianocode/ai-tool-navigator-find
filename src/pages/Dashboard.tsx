@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,6 +23,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+
+// Import components with error boundaries
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import RecentRoadmaps from "@/components/dashboard/RecentRoadmaps";
 import FavoriteTools from "@/components/dashboard/FavoriteTools";
@@ -49,64 +50,83 @@ interface Roadmap {
 }
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [recentRoadmaps, setRecentRoadmaps] = useState<Roadmap[]>([]);
   const [favoriteTools, setFavoriteTools] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) {
+    if (!authLoading && user) {
       loadDashboardData();
+    } else if (!authLoading && !user) {
+      setIsLoading(false);
     }
-  }, [user]);
+  }, [user, authLoading]);
 
   const loadDashboardData = async () => {
     try {
       setIsLoading(true);
+      setError(null);
 
-      // Load user stats
-      const { data: stats, error: statsError } = await supabase
-        .from('user_stats')
-        .select('*')
-        .eq('user_id', user?.id)
-        .single();
+      console.log('Loading dashboard data for user:', user?.id);
 
-      if (statsError && statsError.code !== 'PGRST116') {
-        console.error('Error loading stats:', statsError);
-      } else {
-        setUserStats(stats);
+      // Load user stats with error handling
+      try {
+        const { data: stats, error: statsError } = await supabase
+          .from('user_stats')
+          .select('*')
+          .eq('user_id', user?.id)
+          .single();
+
+        if (statsError && statsError.code !== 'PGRST116') {
+          console.error('Error loading stats:', statsError);
+        } else {
+          setUserStats(stats);
+        }
+      } catch (error) {
+        console.error('Stats loading failed:', error);
       }
 
-      // Load recent roadmaps
-      const { data: roadmaps, error: roadmapsError } = await supabase
-        .from('roadmaps')
-        .select('*')
-        .eq('user_id', user?.id)
-        .order('updated_at', { ascending: false })
-        .limit(5);
+      // Load recent roadmaps with error handling
+      try {
+        const { data: roadmaps, error: roadmapsError } = await supabase
+          .from('roadmaps')
+          .select('*')
+          .eq('user_id', user?.id)
+          .order('updated_at', { ascending: false })
+          .limit(5);
 
-      if (roadmapsError) {
-        console.error('Error loading roadmaps:', roadmapsError);
-      } else {
-        setRecentRoadmaps(roadmaps || []);
+        if (roadmapsError) {
+          console.error('Error loading roadmaps:', roadmapsError);
+        } else {
+          setRecentRoadmaps(roadmaps || []);
+        }
+      } catch (error) {
+        console.error('Roadmaps loading failed:', error);
       }
 
-      // Load favorite tools
-      const { data: tools, error: toolsError } = await supabase
-        .from('user_favorite_tools')
-        .select('tool_name')
-        .eq('user_id', user?.id);
+      // Load favorite tools with error handling
+      try {
+        const { data: tools, error: toolsError } = await supabase
+          .from('user_favorite_tools')
+          .select('tool_name')
+          .eq('user_id', user?.id);
 
-      if (toolsError) {
-        console.error('Error loading favorite tools:', toolsError);
-      } else {
-        setFavoriteTools(tools?.map(t => t.tool_name) || []);
+        if (toolsError) {
+          console.error('Error loading favorite tools:', toolsError);
+        } else {
+          setFavoriteTools(tools?.map(t => t.tool_name) || []);
+        }
+      } catch (error) {
+        console.error('Favorite tools loading failed:', error);
       }
 
     } catch (error) {
       console.error('Error loading dashboard data:', error);
+      setError('Error al cargar los datos del dashboard');
       toast({
         title: "Error",
         description: "Error al cargar los datos del dashboard",
@@ -177,7 +197,8 @@ const Dashboard = () => {
     }
   };
 
-  if (isLoading) {
+  // Show loading state while checking authentication
+  if (authLoading || isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -189,6 +210,42 @@ const Dashboard = () => {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-red-600 mb-4">Error al cargar el dashboard</h1>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <Button onClick={loadDashboardData}>Reintentar</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect to auth if not logged in
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Bienvenido a AI Tools Evaluator
+          </h1>
+          <p className="text-gray-600 mb-8">
+            Inicia sesión para acceder a tu dashboard personalizado
+          </p>
+          <Link to="/auth">
+            <Button className="bg-gradient-to-r from-purple-600 to-blue-600">
+              Iniciar Sesión
+            </Button>
+          </Link>
         </div>
       </div>
     );
@@ -217,12 +274,12 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards with error boundary */}
         <DashboardStats stats={userStats} />
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* Recent Roadmaps */}
+          {/* Recent Roadmaps with error boundary */}
           <div className="lg:col-span-2">
             <RecentRoadmaps 
               roadmaps={recentRoadmaps}
@@ -233,10 +290,10 @@ const Dashboard = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Quick Actions */}
+            {/* Quick Actions with error boundary */}
             <QuickActions />
 
-            {/* Favorite Tools */}
+            {/* Favorite Tools with error boundary */}
             <FavoriteTools favoriteTools={favoriteTools} />
           </div>
         </div>

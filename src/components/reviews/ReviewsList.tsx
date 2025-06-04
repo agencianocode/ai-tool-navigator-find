@@ -9,6 +9,10 @@ import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
+interface Profile {
+  full_name: string | null;
+}
+
 interface Review {
   id: string;
   user_id: string;
@@ -17,9 +21,7 @@ interface Review {
   review_content: string | null;
   helpful_count: number;
   created_at: string;
-  profiles: {
-    full_name: string | null;
-  } | null;
+  profiles: Profile | null;
 }
 
 interface ReviewVote {
@@ -52,13 +54,21 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
 
       if (error) throw error;
       
-      // Filter out reviews with profile errors and set default values
-      const validReviews = reviewsData?.map(review => ({
-        ...review,
-        profiles: review.profiles && typeof review.profiles === 'object' && 'full_name' in review.profiles
-          ? review.profiles as { full_name: string | null }
-          : null
-      })) || [];
+      // Ensure type safety for profiles data
+      const validReviews = (reviewsData || []).map(review => {
+        // Safely handle the profiles data
+        const profilesData = review.profiles;
+        let profiles: Profile | null = null;
+        
+        if (profilesData && typeof profilesData === 'object' && 'full_name' in profilesData) {
+          profiles = { full_name: profilesData.full_name || null };
+        }
+        
+        return {
+          ...review,
+          profiles
+        } as Review;
+      });
       
       setReviews(validReviews);
 
@@ -208,7 +218,7 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
     <div className="space-y-4">
       {reviews.map((review) => {
         const userVote = getUserVote(review.id);
-        // Corrección del error de tipado - usando verificación segura
+        // Now TypeScript knows profiles can be null and we handle it safely
         const profileName = review.profiles?.full_name || 'Usuario anónimo';
         
         return (
