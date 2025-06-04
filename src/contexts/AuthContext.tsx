@@ -1,45 +1,51 @@
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string, fullName?: string) => Promise<{ error: any }>;
+  subscriptionStatus: {
+    subscribed: boolean;
+    subscription_tier: string | null;
+    subscription_end: string | null;
+  };
+  checkSubscription: () => Promise<void>;
   signOut: () => Promise<void>;
-  signInWithGoogle: () => Promise<{ error: any }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
+  const [subscriptionStatus, setSubscriptionStatus] = useState({
+    subscribed: false,
+    subscription_tier: null,
+    subscription_end: null,
+  });
+
+  const checkSubscription = async () => {
+    if (!session) return;
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('check-subscription');
+      if (error) throw error;
+      
+      setSubscriptionStatus({
+        subscribed: data.subscribed || false,
+        subscription_tier: data.subscription_tier || null,
+        subscription_end: data.subscription_end || null,
+      });
+    } catch (error) {
+      console.error('Error checking subscription:', error);
+    }
+  };
 
   useEffect(() => {
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
-
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -47,104 +53,50 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false);
     });
 
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+        
+        // Check subscription when user logs in
+        if (event === 'SIGNED_IN' && session) {
+          await checkSubscription();
+        }
+        
+        // Clear subscription status when user logs out
+        if (event === 'SIGNED_OUT') {
+          setSubscriptionStatus({
+            subscribed: false,
+            subscription_tier: null,
+            subscription_end: null,
+          });
+        }
+      }
+    );
+
     return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    
-    if (error) {
-      toast({
-        title: "Error de inicio de sesión",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "¡Bienvenido!",
-        description: "Has iniciado sesión correctamente.",
-      });
+  // Check subscription when session is available
+  useEffect(() => {
+    if (session && user) {
+      checkSubscription();
     }
-    
-    return { error };
-  };
-
-  const signUp = async (email: string, password: string, fullName?: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: redirectUrl,
-        data: fullName ? { full_name: fullName } : undefined,
-      }
-    });
-    
-    if (error) {
-      toast({
-        title: "Error de registro",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "¡Registro exitoso!",
-        description: "Revisa tu correo para confirmar tu cuenta.",
-      });
-    }
-    
-    return { error };
-  };
-
-  const signInWithGoogle = async () => {
-    const redirectUrl = `${window.location.origin}/`;
-    
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: redirectUrl,
-      }
-    });
-    
-    if (error) {
-      toast({
-        title: "Error con Google",
-        description: error.message,
-        variant: "destructive",
-      });
-    }
-    
-    return { error };
-  };
+  }, [session, user]);
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        title: "Error al cerrar sesión",
-        description: error.message,
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Sesión cerrada",
-        description: "Has cerrado sesión correctamente.",
-      });
-    }
+    await supabase.auth.signOut();
   };
 
   const value = {
     user,
     session,
     loading,
-    signIn,
-    signUp,
+    subscriptionStatus,
+    checkSubscription,
     signOut,
-    signInWithGoogle,
   };
 
   return (
@@ -152,4 +104,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}

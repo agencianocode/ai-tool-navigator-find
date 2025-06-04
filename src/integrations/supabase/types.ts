@@ -9,6 +9,75 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      budget_templates: {
+        Row: {
+          base_cost: number
+          category: string
+          cost_per_feature: number | null
+          cost_per_user: number | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          base_cost: number
+          category: string
+          cost_per_feature?: number | null
+          cost_per_user?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          base_cost?: number
+          category?: string
+          cost_per_feature?: number | null
+          cost_per_user?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      generated_budgets: {
+        Row: {
+          budget_items: Json
+          created_at: string
+          id: string
+          monthly_cost: number
+          project_details: Json | null
+          project_name: string
+          total_cost: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          budget_items: Json
+          created_at?: string
+          id?: string
+          monthly_cost: number
+          project_details?: Json | null
+          project_name: string
+          total_cost: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          budget_items?: Json
+          created_at?: string
+          id?: string
+          monthly_cost?: number
+          project_details?: Json | null
+          project_name?: string
+          total_cost?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       notification_preferences: {
         Row: {
           created_at: string
@@ -155,6 +224,42 @@ export type Database = {
           title?: string
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          stripe_customer_id: string | null
+          subscribed: boolean
+          subscription_end: string | null
+          subscription_tier: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          stripe_customer_id?: string | null
+          subscribed?: boolean
+          subscription_end?: string | null
+          subscription_tier?: string | null
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
