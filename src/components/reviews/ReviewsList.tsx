@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -56,11 +55,14 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
       
       // Ensure type safety for profiles data
       const validReviews = (reviewsData || []).map(review => {
-        // Safely handle the profiles data
+        // Safely handle the profiles data with proper null checks
         const profilesData = review.profiles;
         let profiles: Profile | null = null;
         
-        if (profilesData && typeof profilesData === 'object' && 'full_name' in profilesData) {
+        if (profilesData && 
+            typeof profilesData === 'object' && 
+            profilesData !== null &&
+            'full_name' in profilesData) {
           profiles = { full_name: profilesData.full_name || null };
         }
         
@@ -218,7 +220,7 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
     <div className="space-y-4">
       {reviews.map((review) => {
         const userVote = getUserVote(review.id);
-        // Now TypeScript knows profiles can be null and we handle it safely
+        // Safe access to profiles with null check
         const profileName = review.profiles?.full_name || 'Usuario anónimo';
         
         return (
