@@ -59,9 +59,10 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
         const profilesData = review.profiles;
         let profiles: Profile | null = null;
         
-        if (profilesData && 
+        // More explicit null checking to satisfy TypeScript
+        if (profilesData !== null && 
+            profilesData !== undefined && 
             typeof profilesData === 'object' && 
-            profilesData !== null &&
             'full_name' in profilesData) {
           profiles = { full_name: profilesData.full_name || null };
         }
