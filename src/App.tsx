@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import Integrations from './pages/Integrations';
 import Subscriptions from './pages/Subscriptions';
 import BudgetPlanner from './pages/BudgetPlanner';
+import Auth from './pages/Auth';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from "@/components/ui/toaster"
 
@@ -26,6 +27,7 @@ function App() {
             <Toaster />
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/auth" element={<Auth />} />
               <Route path="/questionnaire" element={<Questionnaire />} />
               <Route path="/results" element={<Results />} />
               <Route path="/roadmap" element={<Roadmap />} />
