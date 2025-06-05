@@ -32,14 +32,18 @@ const QuickActions = () => {
             Explorar Herramientas
           </Button>
         </Link>
-        <Button className="w-full justify-start" variant="outline">
-          <BookOpen className="mr-2 h-4 w-4" />
-          Guías y Tutoriales
-        </Button>
-        <Button className="w-full justify-start" variant="outline">
-          <Settings className="mr-2 h-4 w-4" />
-          Configuración
-        </Button>
+        <Link to="/guides" className="block">
+          <Button className="w-full justify-start" variant="outline">
+            <BookOpen className="mr-2 h-4 w-4" />
+            Guías y Tutoriales
+          </Button>
+        </Link>
+        <Link to="/settings" className="block">
+          <Button className="w-full justify-start" variant="outline">
+            <Settings className="mr-2 h-4 w-4" />
+            Configuración
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );
