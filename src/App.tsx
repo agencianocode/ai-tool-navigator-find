@@ -2,6 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import Home from './pages/Home';
 import Questionnaire from './pages/Questionnaire';
 import Results from './pages/Results';
 import Roadmap from './pages/Roadmap';
@@ -14,10 +15,11 @@ import Auth from './pages/Auth';
 import Tools from './pages/Tools';
 import Guides from './pages/Guides';
 import Settings from './pages/Settings';
+import NotFound from './pages/NotFound';
+import ToolDetails from "./pages/ToolDetails";
+import AuthGuard from './components/AuthGuard';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from "@/components/ui/toaster"
-
-import ToolDetails from "@/pages/ToolDetails";
 
 const queryClient = new QueryClient();
 
@@ -29,19 +31,54 @@ function App() {
           <div className="min-h-screen bg-background font-sans antialiased">
             <Toaster />
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              {/* Public routes */}
+              <Route path="/" element={<Home />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/questionnaire" element={<Questionnaire />} />
               <Route path="/results" element={<Results />} />
-              <Route path="/roadmap" element={<Roadmap />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/integrations" element={<Integrations />} />
-              <Route path="/subscriptions" element={<Subscriptions />} />
-              <Route path="/budget-planner" element={<BudgetPlanner />} />
               <Route path="/tools" element={<Tools />} />
-              <Route path="/guides" element={<Guides />} />
-              <Route path="/settings" element={<Settings />} />
               <Route path="/tool/:toolId" element={<ToolDetails />} />
+              <Route path="/guides" element={<Guides />} />
+              
+              {/* Protected routes */}
+              <Route path="/dashboard" element={
+                <AuthGuard>
+                  <Dashboard />
+                </AuthGuard>
+              } />
+              <Route path="/roadmap" element={
+                <AuthGuard>
+                  <Roadmap />
+                </AuthGuard>
+              } />
+              <Route path="/profile" element={
+                <AuthGuard>
+                  <Profile />
+                </AuthGuard>
+              } />
+              <Route path="/integrations" element={
+                <AuthGuard>
+                  <Integrations />
+                </AuthGuard>
+              } />
+              <Route path="/subscriptions" element={
+                <AuthGuard>
+                  <Subscriptions />
+                </AuthGuard>
+              } />
+              <Route path="/budget-planner" element={
+                <AuthGuard>
+                  <BudgetPlanner />
+                </AuthGuard>
+              } />
+              <Route path="/settings" element={
+                <AuthGuard>
+                  <Settings />
+                </AuthGuard>
+              } />
+              
+              {/* 404 route */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </Router>

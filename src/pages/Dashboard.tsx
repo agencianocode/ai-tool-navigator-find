@@ -236,7 +236,7 @@ const Dashboard = () => {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Bienvenido a AI Tools Evaluator
+            Bienvenido al Evaluador de Herramientas IA
           </h1>
           <p className="text-gray-600 mb-8">
             Inicia sesión para acceder a tu dashboard personalizado

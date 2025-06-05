@@ -9,8 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User, Settings } from "lucide-react";
+import { LogOut, User, Settings, LayoutDashboard } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 const UserMenu = () => {
   const { user, signOut } = useAuth();
@@ -43,13 +44,23 @@ const UserMenu = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <User className="mr-2 h-4 w-4" />
-          <span>Perfil</span>
+        <DropdownMenuItem asChild>
+          <Link to="/dashboard">
+            <LayoutDashboard className="mr-2 h-4 w-4" />
+            <span>Dashboard</span>
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4" />
-          <span>Configuración</span>
+        <DropdownMenuItem asChild>
+          <Link to="/profile">
+            <User className="mr-2 h-4 w-4" />
+            <span>Perfil</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/settings">
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Configuración</span>
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut}>

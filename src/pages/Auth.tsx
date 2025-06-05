@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, Mail, Lock, User, Chrome } from "lucide-react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -16,10 +17,11 @@ const Auth = () => {
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
   const { user, signIn, signUp, signInWithGoogle } = useAuth();
+  const { toast } = useToast();
 
   // Redirect authenticated users
   if (user) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,10 +30,56 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        await signIn(email, password);
+        const { error } = await signIn(email, password);
+        if (error) {
+          if (error.message.includes('Invalid login credentials')) {
+            toast({
+              title: "Error de autenticación",
+              description: "Email o contraseña incorrectos. Por favor, verifica tus credenciales.",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Error al iniciar sesión",
+              description: error.message,
+              variant: "destructive",
+            });
+          }
+        } else {
+          toast({
+            title: "¡Bienvenido de nuevo!",
+            description: "Has iniciado sesión correctamente.",
+          });
+        }
       } else {
-        await signUp(email, password, fullName);
+        const { error } = await signUp(email, password, fullName);
+        if (error) {
+          if (error.message.includes('User already registered')) {
+            toast({
+              title: "Usuario ya registrado",
+              description: "Este email ya está registrado. ¿Quieres iniciar sesión?",
+              variant: "destructive",
+            });
+          } else {
+            toast({
+              title: "Error al registrarse",
+              description: error.message,
+              variant: "destructive",
+            });
+          }
+        } else {
+          toast({
+            title: "¡Cuenta creada!",
+            description: "Tu cuenta ha sido creada exitosamente. Revisa tu email para confirmar.",
+          });
+        }
       }
+    } catch (error) {
+      toast({
+        title: "Error inesperado",
+        description: "Ha ocurrido un error. Por favor, inténtalo de nuevo.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -40,7 +88,20 @@ const Auth = () => {
   const handleGoogleAuth = async () => {
     setLoading(true);
     try {
-      await signInWithGoogle();
+      const { error } = await signInWithGoogle();
+      if (error) {
+        toast({
+          title: "Error con Google",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error inesperado",
+        description: "Ha ocurrido un error con la autenticación de Google.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }

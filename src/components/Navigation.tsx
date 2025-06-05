@@ -30,15 +30,20 @@ const Navigation = () => {
               <a href="/" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
                 Inicio
               </a>
-              <a href="/integrations" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Integraciones
+              <a href="/tools" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                Herramientas
               </a>
-              <a href="#how-it-works" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Cómo Funciona
+              <a href="/questionnaire" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                Evaluación
               </a>
-              <a href="#about" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Acerca de
+              <a href="/guides" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                Guías
               </a>
+              {user && (
+                <a href="/dashboard" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                  Dashboard
+                </a>
+              )}
             </div>
           </div>
 
@@ -71,15 +76,20 @@ const Navigation = () => {
               <a href="/" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
                 Inicio
               </a>
-              <a href="/integrations" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Integraciones
+              <a href="/tools" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                Herramientas
               </a>
-              <a href="#how-it-works" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Cómo Funciona
+              <a href="/questionnaire" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                Evaluación
               </a>
-              <a href="#about" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Acerca de
+              <a href="/guides" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                Guías
               </a>
+              {user && (
+                <a href="/dashboard" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
+                  Dashboard
+                </a>
+              )}
               <div className="px-3 py-2">
                 {user ? (
                   <UserMenu />
