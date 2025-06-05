@@ -96,14 +96,14 @@ const Tools = () => {
                 </p>
                 
                 <div className="flex flex-wrap gap-1 mb-4">
-                  {tool.features?.slice(0, 3).map((feature, idx) => (
+                  {tool.tags?.slice(0, 3).map((tag, idx) => (
                     <Badge key={idx} variant="outline" className="text-xs">
-                      {feature}
+                      {tag}
                     </Badge>
                   ))}
-                  {tool.features && tool.features.length > 3 && (
+                  {tool.tags && tool.tags.length > 3 && (
                     <Badge variant="outline" className="text-xs">
-                      +{tool.features.length - 3} más
+                      +{tool.tags.length - 3} más
                     </Badge>
                   )}
                 </div>
