@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 // Error monitoring utility
 export class ErrorMonitor {
   private static instance: ErrorMonitor;
@@ -91,31 +93,3 @@ export class PerformanceMonitor {
     this.metrics = [];
   }
 }
-
-// React Error Boundary
-export const withErrorBoundary = (Component: React.ComponentType<any>) => {
-  return class extends React.Component {
-    state = { hasError: false };
-
-    static getDerivedStateFromError(error: Error) {
-      return { hasError: true };
-    }
-
-    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-      ErrorMonitor.getInstance().logError(error, errorInfo);
-    }
-
-    render() {
-      if (this.state.hasError) {
-        return (
-          <div className="p-4 text-center">
-            <h2>Algo salió mal</h2>
-            <p>Ha ocurrido un error inesperado. Por favor, recarga la página.</p>
-          </div>
-        );
-      }
-
-      return <Component {...this.props} />;
-    }
-  };
-};
