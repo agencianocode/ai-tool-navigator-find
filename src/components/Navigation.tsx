@@ -1,102 +1,195 @@
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { 
+  Menu, 
+  X, 
+  Zap, 
+  Target, 
+  BookOpen, 
+  Settings, 
+  LogIn,
+  LayoutDashboard
+} from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import UserMenu from "./UserMenu";
 
 const Navigation = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const { user, loading } = useAuth();
+
+  const navigation = [
+    { name: "Inicio", href: "/", icon: null },
+    { name: "Herramientas", href: "/tools", icon: Zap },
+    { name: "Guías", href: "/guides", icon: BookOpen },
+  ];
+
+  const authenticatedNavigation = [
+    { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+    { name: "Hoja de Ruta", href: "/roadmap", icon: Target },
+  ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100">
+    <nav className="bg-white/95 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <a href="/">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                  Buscador de Herramientas IA
-                </h1>
-              </a>
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
+              <Zap className="h-5 w-5 text-white" />
             </div>
-          </div>
+            <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+              ToolFinder AI
+            </span>
+            <Badge variant="secondary" className="hidden sm:inline-flex">
+              Beta
+            </Badge>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
-              <a href="/" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Inicio
-              </a>
-              <a href="/tools" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Herramientas
-              </a>
-              <a href="/questionnaire" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Evaluación
-              </a>
-              <a href="/guides" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Guías
-              </a>
-              {user && (
-                <a href="/dashboard" className="text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                  Dashboard
-                </a>
-              )}
-            </div>
+          <div className="hidden md:flex items-center space-x-8">
+            {/* Public Navigation */}
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
+
+            {/* Authenticated Navigation */}
+            {user && authenticatedNavigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="text-gray-700 hover:text-purple-600 px-3 py-2 text-sm font-medium transition-colors flex items-center gap-2"
+                >
+                  {Icon && <Icon className="h-4 w-4" />}
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
 
-          {/* CTA Button or User Menu */}
+          {/* Auth Section */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
+            {loading ? (
+              <div className="w-8 h-8 animate-pulse bg-gray-200 rounded-full" />
+            ) : user ? (
               <UserMenu />
             ) : (
-              <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-2 rounded-lg transition-all duration-200 transform hover:scale-105" asChild>
-                <a href="/auth">Iniciar Sesión</a>
-              </Button>
+              <>
+                <Button variant="ghost" asChild>
+                  <Link to="/auth?tab=signin">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Iniciar Sesión
+                  </Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/auth?tab=signup">
+                    Crear Cuenta
+                  </Link>
+                </Button>
+              </>
             )}
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-purple-600 transition-colors duration-200"
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </Button>
           </div>
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
+        {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white/90 backdrop-blur-md rounded-lg mt-2 border border-purple-100">
-              <a href="/" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Inicio
-              </a>
-              <a href="/tools" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Herramientas
-              </a>
-              <a href="/questionnaire" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Evaluación
-              </a>
-              <a href="/guides" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                Guías
-              </a>
-              {user && (
-                <a href="/dashboard" className="block px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors duration-200 font-medium">
-                  Dashboard
-                </a>
-              )}
-              <div className="px-3 py-2">
-                {user ? (
-                  <UserMenu />
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
+              {/* Public Navigation */}
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className="text-gray-700 hover:text-purple-600 block px-3 py-2 text-base font-medium"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
+
+              {/* Authenticated Navigation */}
+              {user && authenticatedNavigation.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className="text-gray-700 hover:text-purple-600 block px-3 py-2 text-base font-medium flex items-center gap-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {Icon && <Icon className="h-4 w-4" />}
+                    {item.name}
+                  </Link>
+                );
+              })}
+
+              {/* Mobile Auth */}
+              <div className="border-t border-gray-200 pt-4">
+                {loading ? (
+                  <div className="px-3 py-2">
+                    <div className="w-24 h-4 animate-pulse bg-gray-200 rounded" />
+                  </div>
+                ) : user ? (
+                  <div className="px-3 py-2">
+                    <p className="text-sm text-gray-700">
+                      {user.user_metadata?.full_name || user.email}
+                    </p>
+                    <div className="mt-2 space-y-1">
+                      <Link
+                        to="/profile"
+                        className="block text-sm text-gray-600 hover:text-purple-600"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Mi Perfil
+                      </Link>
+                      <Link
+                        to="/settings"
+                        className="block text-sm text-gray-600 hover:text-purple-600"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Configuración
+                      </Link>
+                    </div>
+                  </div>
                 ) : (
-                  <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg transition-all duration-200" asChild>
-                    <a href="/auth">Iniciar Sesión</a>
-                  </Button>
+                  <div className="px-3 py-2 space-y-2">
+                    <Button variant="ghost" asChild className="w-full justify-start">
+                      <Link to="/auth?tab=signin" onClick={() => setIsOpen(false)}>
+                        <LogIn className="mr-2 h-4 w-4" />
+                        Iniciar Sesión
+                      </Link>
+                    </Button>
+                    <Button asChild className="w-full">
+                      <Link to="/auth?tab=signup" onClick={() => setIsOpen(false)}>
+                        Crear Cuenta
+                      </Link>
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
