@@ -1,0 +1,34 @@
+
+import { render, screen } from '../../../test/utils/test-utils';
+import DashboardStats from '../DashboardStats';
+
+describe('DashboardStats', () => {
+  const mockStats = {
+    total_roadmaps: 5,
+    completed_roadmaps: 3,
+    total_tools_explored: 15,
+    last_activity: '2024-01-15'
+  };
+
+  it('renders dashboard stats correctly', () => {
+    render(<DashboardStats stats={mockStats} />);
+    
+    expect(screen.getByText('5')).toBeInTheDocument();
+    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('15')).toBeInTheDocument();
+    expect(screen.getByText('Total generadas')).toBeInTheDocument();
+  });
+
+  it('handles null stats gracefully', () => {
+    render(<DashboardStats stats={null} />);
+    
+    expect(screen.getByText('0')).toBeInTheDocument();
+    expect(screen.getByText('Nunca')).toBeInTheDocument();
+  });
+
+  it('calculates completion rate correctly', () => {
+    render(<DashboardStats stats={mockStats} />);
+    
+    expect(screen.getByText('60% de tasa de éxito')).toBeInTheDocument();
+  });
+});
