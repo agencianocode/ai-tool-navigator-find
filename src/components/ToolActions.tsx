@@ -4,15 +4,23 @@ import { ExternalLink, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { AITool } from "@/data/aiTools";
 import { useToast } from "@/hooks/use-toast";
+import FavoriteButton from "./FavoriteButton";
 
 interface ToolActionsProps {
   tool: AITool;
   answers?: Record<string, any>;
   size?: "sm" | "default" | "lg";
   variant?: "default" | "outline";
+  showFavorite?: boolean;
 }
 
-const ToolActions = ({ tool, answers, size = "sm", variant = "outline" }: ToolActionsProps) => {
+const ToolActions = ({ 
+  tool, 
+  answers, 
+  size = "sm", 
+  variant = "outline",
+  showFavorite = true
+}: ToolActionsProps) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -59,6 +67,13 @@ const ToolActions = ({ tool, answers, size = "sm", variant = "outline" }: ToolAc
         <Plus className="mr-2 h-4 w-4" />
         Agregar a Hoja de Ruta
       </Button>
+      {showFavorite && (
+        <FavoriteButton 
+          toolName={tool.name} 
+          size={size} 
+          variant={variant}
+        />
+      )}
     </div>
   );
 };

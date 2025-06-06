@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
@@ -17,6 +16,7 @@ import Guides from './pages/Guides';
 import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
 import ToolDetails from "./pages/ToolDetails";
+import Favorites from "./pages/Favorites";
 import AuthGuard from './components/AuthGuard';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from "@/components/ui/toaster"
@@ -51,6 +51,11 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={
                 <AuthGuard>
                   <Dashboard />
+                </AuthGuard>
+              } />
+              <Route path="/favorites" element={
+                <AuthGuard>
+                  <Favorites />
                 </AuthGuard>
               } />
               <Route path="/roadmap" element={

@@ -6,7 +6,8 @@ import {
   Search, 
   BookOpen, 
   Settings,
-  Zap
+  Zap,
+  Heart
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -30,6 +31,12 @@ const QuickActions = () => {
           <Button className="w-full justify-start" variant="outline">
             <Search className="mr-2 h-4 w-4" />
             Explorar Herramientas
+          </Button>
+        </Link>
+        <Link to="/favorites" className="block">
+          <Button className="w-full justify-start" variant="outline">
+            <Heart className="mr-2 h-4 w-4" />
+            Mis Favoritos
           </Button>
         </Link>
         <Link to="/guides" className="block">

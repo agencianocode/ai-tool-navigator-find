@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { ReportReviewDialog } from "./ReportReviewDialog";
 
 interface Profile {
   full_name: string | null;
@@ -242,6 +242,7 @@ export const ReviewsList = ({ toolId, refreshTrigger }: ReviewsListProps) => {
                     {format(new Date(review.created_at), "d 'de' MMMM, yyyy", { locale: es })}
                   </div>
                 </div>
+                <ReportReviewDialog reviewId={review.id} />
               </div>
 
               {review.review_title && (
