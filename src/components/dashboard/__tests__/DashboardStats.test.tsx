@@ -1,6 +1,7 @@
 
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '../../../test/utils/test-utils';
+import { render, screen } from '@testing-library/react';
+import { render as customRender } from '../../../test/utils/test-utils';
 import DashboardStats from '../DashboardStats';
 
 describe('DashboardStats', () => {
@@ -12,7 +13,7 @@ describe('DashboardStats', () => {
   };
 
   it('renders dashboard stats correctly', () => {
-    render(<DashboardStats stats={mockStats} />);
+    customRender(<DashboardStats stats={mockStats} />);
     
     expect(screen.getByText('5')).toBeInTheDocument();
     expect(screen.getByText('3')).toBeInTheDocument();
@@ -21,14 +22,14 @@ describe('DashboardStats', () => {
   });
 
   it('handles null stats gracefully', () => {
-    render(<DashboardStats stats={null} />);
+    customRender(<DashboardStats stats={null} />);
     
     expect(screen.getByText('0')).toBeInTheDocument();
     expect(screen.getByText('Nunca')).toBeInTheDocument();
   });
 
   it('calculates completion rate correctly', () => {
-    render(<DashboardStats stats={mockStats} />);
+    customRender(<DashboardStats stats={mockStats} />);
     
     expect(screen.getByText('60% de tasa de éxito')).toBeInTheDocument();
   });

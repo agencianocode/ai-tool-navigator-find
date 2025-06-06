@@ -1,11 +1,12 @@
 
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '../../../test/utils/test-utils';
+import { render, screen } from '@testing-library/react';
+import { render as customRender } from '../../../test/utils/test-utils';
 import QuickActions from '../QuickActions';
 
 describe('QuickActions', () => {
   it('renders all quick action buttons', () => {
-    render(<QuickActions />);
+    customRender(<QuickActions />);
     
     expect(screen.getByText('Nueva Evaluación')).toBeInTheDocument();
     expect(screen.getByText('Explorar Herramientas')).toBeInTheDocument();
@@ -15,7 +16,7 @@ describe('QuickActions', () => {
   });
 
   it('has correct navigation links', () => {
-    render(<QuickActions />);
+    customRender(<QuickActions />);
     
     const newEvaluationLink = screen.getByText('Nueva Evaluación').closest('a');
     expect(newEvaluationLink).toHaveAttribute('href', '/questionnaire');
