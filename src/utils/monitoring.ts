@@ -1,6 +1,4 @@
 
-import React from 'react';
-
 // Error monitoring utility
 export class ErrorMonitor {
   private static instance: ErrorMonitor;
