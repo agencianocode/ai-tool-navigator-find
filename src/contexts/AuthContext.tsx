@@ -23,7 +23,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
@@ -182,47 +182,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  useEffect(() => {
-    // Configurar listener de auth state PRIMERO
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        console.log('Auth state changed:', event, session?.user?.email);
-        
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-        
-        // Manejar eventos específicos
-        if (event === 'SIGNED_IN' && session) {
-          // Defer la verificación de suscripción para evitar problemas
-          setTimeout(() => {
-            checkSubscription();
-          }, 100);
-        }
-        
-        if (event === 'SIGNED_OUT') {
-          setSubscriptionStatus({
-            subscribed: false,
-            subscription_tier: null,
-            subscription_end: null,
-          });
-        }
-      }
-    );
-
-    // LUEGO verificar sesión existente
-    supabase.auth.getSession().then(({ data: { session }, error }) => {
-      if (error) {
-        console.error('Error getting session:', error);
-      }
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
@@ -238,6 +197,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     }
   };
+
+  useEffect(() => {
+    let mounted = true;
+
+    // Configurar listener de auth state PRIMERO
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (!mounted) return;
+        
+        console.log('Auth state changed:', event, session?.user?.email);
+        
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+        
+        // Manejar eventos específicos
+        if (event === 'SIGNED_IN' && session) {
+          // Defer la verificación de suscripción para evitar problemas
+          setTimeout(() => {
+            if (mounted) {
+              checkSubscription();
+            }
+          }, 100);
+        }
+        
+        if (event === 'SIGNED_OUT') {
+          setSubscriptionStatus({
+            subscribed: false,
+            subscription_tier: null,
+            subscription_end: null,
+          });
+        }
+      }
+    );
+
+    // LUEGO verificar sesión existente
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (!mounted) return;
+      
+      if (error) {
+        console.error('Error getting session:', error);
+      }
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const value = {
     user,
@@ -257,7 +268,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
 export function useAuth() {
   const context = useContext(AuthContext);
