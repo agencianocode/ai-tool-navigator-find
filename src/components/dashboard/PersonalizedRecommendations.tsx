@@ -59,18 +59,18 @@ const PersonalizedRecommendations = () => {
       const scoredTools = availableTools.map(tool => {
         let score = 0;
         
-        // Higher score for tools matching user interests
-        if (tool.categories.some(cat => interests.has(cat))) score += 3;
+        // Higher score for tools matching user interests - use category instead of categories
+        if (interests.has(tool.category)) score += 3;
         
-        // Higher score for tools matching project types
-        const toolCategories = tool.categories.join(' ').toLowerCase();
+        // Higher score for tools matching project types - use category instead of categories
+        const toolCategory = tool.category.toLowerCase();
         projectTypes.forEach(projectType => {
-          if (toolCategories.includes(projectType.toLowerCase())) score += 2;
+          if (toolCategory.includes(projectType.toLowerCase())) score += 2;
         });
         
         // Boost for trending/popular tools
-        if (tool.pricing.includes('Free')) score += 1;
-        if (tool.features.length > 8) score += 1; // Feature-rich tools
+        if (tool.pricing.includes('Free') || tool.pricing.includes('Gratis')) score += 1;
+        if (tool.tags.length > 5) score += 1; // Feature-rich tools (use tags instead of features)
         
         return { ...tool, score };
       });
@@ -195,7 +195,7 @@ const PersonalizedRecommendations = () => {
                 <div className="flex items-start justify-between mb-2">
                   <h4 className="font-medium">{tool.name}</h4>
                   <Badge variant="secondary" className="text-xs">
-                    {tool.categories[0]}
+                    {tool.category}
                   </Badge>
                 </div>
                 <p className="text-sm text-gray-600 mb-3 line-clamp-2">{tool.description}</p>
