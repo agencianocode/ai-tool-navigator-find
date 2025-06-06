@@ -1,15 +1,18 @@
-
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, BarChart3, TrendingUp, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import RecentRoadmaps from "@/components/dashboard/RecentRoadmaps";
 import FavoriteTools from "@/components/dashboard/FavoriteTools";
 import QuickActions from "@/components/dashboard/QuickActions";
+import ActivityHistory from "@/components/dashboard/ActivityHistory";
+import UsageMetrics from "@/components/dashboard/UsageMetrics";
+import PersonalizedRecommendations from "@/components/dashboard/PersonalizedRecommendations";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -163,67 +166,102 @@ const Dashboard = () => {
         {/* Estadísticas */}
         <DashboardStats stats={userStats} />
 
-        {/* Grid de contenido */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Columna principal */}
-          <div className="lg:col-span-2 space-y-8">
-            <RecentRoadmaps
-              roadmaps={recentRoadmaps}
-              onDelete={handleDeleteRoadmap}
-              onToggleFavorite={handleToggleFavorite}
-            />
-          </div>
+        {/* Tabs for different views */}
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4" />
+              Resumen
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center gap-2">
+              <TrendingUp className="h-4 w-4" />
+              Analytics
+            </TabsTrigger>
+            <TabsTrigger value="recommendations" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Recomendaciones
+            </TabsTrigger>
+            <TabsTrigger value="activity" className="flex items-center gap-2">
+              Actividad
+            </TabsTrigger>
+          </TabsList>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            <QuickActions />
-            <FavoriteTools favoriteTools={favoriteTools} />
-            
-            {/* Card de bienvenida */}
-            <Card>
-              <CardHeader>
-                <CardTitle>¿Nuevo aquí?</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-sm text-gray-600">
-                  Comienza creando tu primera hoja de ruta personalizada para encontrar las mejores herramientas para tu proyecto.
-                </p>
-                <Button asChild className="w-full">
-                  <Link to="/questionnaire">
-                    Crear Mi Primera Hoja de Ruta
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
+          <TabsContent value="overview" className="space-y-6">
+            {/* Grid de contenido */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Columna principal */}
+              <div className="lg:col-span-2 space-y-8">
+                <RecentRoadmaps
+                  roadmaps={recentRoadmaps}
+                  onDelete={handleDeleteRoadmap}
+                  onToggleFavorite={handleToggleFavorite}
+                />
+              </div>
 
-            {/* Recursos útiles */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recursos Útiles</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <Link
-                  to="/guides"
-                  className="block text-sm text-purple-600 hover:text-purple-800"
-                >
-                  → Guías y Tutoriales
-                </Link>
-                <Link
-                  to="/tools"
-                  className="block text-sm text-purple-600 hover:text-purple-800"
-                >
-                  → Explorar Herramientas
-                </Link>
-                <Link
-                  to="/budget-planner"
-                  className="block text-sm text-purple-600 hover:text-purple-800"
-                >
-                  → Planificador de Presupuesto
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+              {/* Sidebar */}
+              <div className="space-y-6">
+                <QuickActions />
+                <FavoriteTools favoriteTools={favoriteTools} />
+                
+                {/* Card de bienvenida */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>¿Nuevo aquí?</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-sm text-gray-600">
+                      Comienza creando tu primera hoja de ruta personalizada para encontrar las mejores herramientas para tu proyecto.
+                    </p>
+                    <Button asChild className="w-full">
+                      <Link to="/questionnaire">
+                        Crear Mi Primera Hoja de Ruta
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Recursos útiles */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recursos Útiles</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <Link
+                      to="/guides"
+                      className="block text-sm text-purple-600 hover:text-purple-800"
+                    >
+                      → Guías y Tutoriales
+                    </Link>
+                    <Link
+                      to="/tools"
+                      className="block text-sm text-purple-600 hover:text-purple-800"
+                    >
+                      → Explorar Herramientas
+                    </Link>
+                    <Link
+                      to="/budget-planner"
+                      className="block text-sm text-purple-600 hover:text-purple-800"
+                    >
+                      → Planificador de Presupuesto
+                    </Link>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="analytics" className="space-y-6">
+            <UsageMetrics />
+          </TabsContent>
+
+          <TabsContent value="recommendations" className="space-y-6">
+            <PersonalizedRecommendations />
+          </TabsContent>
+
+          <TabsContent value="activity" className="space-y-6">
+            <ActivityHistory />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );

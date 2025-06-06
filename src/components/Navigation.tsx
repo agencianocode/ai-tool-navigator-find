@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import UserMenu from "./UserMenu";
+import { NotificationCenter } from "./NotificationCenter";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,7 +83,10 @@ const Navigation = () => {
             {loading ? (
               <div className="w-8 h-8 animate-pulse bg-gray-200 rounded-full" />
             ) : user ? (
-              <UserMenu />
+              <div className="flex items-center gap-2">
+                <NotificationCenter />
+                <UserMenu />
+              </div>
             ) : (
               <>
                 <Button variant="ghost" asChild>

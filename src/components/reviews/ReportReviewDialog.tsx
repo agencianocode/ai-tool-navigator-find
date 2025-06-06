@@ -52,18 +52,16 @@ export const ReportReviewDialog = ({ reviewId }: ReportReviewDialogProps) => {
     setIsSubmitting(true);
 
     try {
-      // Use a raw query to insert into review_reports table
-      const { error } = await supabase.rpc('insert_review_report', {
-        p_review_id: reviewId,
-        p_reporter_id: user.id,
-        p_reason: reason,
-        p_description: description.trim() || null,
+      const { error } = await supabase.functions.invoke('insert-review-report', {
+        body: {
+          review_id: reviewId,
+          reporter_id: user.id,
+          reason: reason,
+          description: description.trim() || null,
+        },
       });
 
-      if (error) {
-        console.error('Error details:', error);
-        throw error;
-      }
+      if (error) throw error;
 
       toast({
         title: "Reporte enviado",
@@ -75,36 +73,11 @@ export const ReportReviewDialog = ({ reviewId }: ReportReviewDialogProps) => {
       setDescription("");
     } catch (error) {
       console.error('Error submitting report:', error);
-      
-      // Fallback: try direct insert (this will work once types are updated)
-      try {
-        const { error: insertError } = await (supabase as any)
-          .from('review_reports')
-          .insert({
-            review_id: reviewId,
-            reporter_id: user.id,
-            reason,
-            description: description.trim() || null,
-          });
-
-        if (insertError) throw insertError;
-
-        toast({
-          title: "Reporte enviado",
-          description: "Gracias por tu reporte. Lo revisaremos pronto.",
-        });
-
-        setIsOpen(false);
-        setReason("");
-        setDescription("");
-      } catch (fallbackError) {
-        console.error('Fallback error:', fallbackError);
-        toast({
-          title: "Error",
-          description: "Error al enviar el reporte. Por favor intenta nuevamente.",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Error",
+        description: "Error al enviar el reporte. Por favor intenta nuevamente.",
+        variant: "destructive",
+      });
     } finally {
       setIsSubmitting(false);
     }
