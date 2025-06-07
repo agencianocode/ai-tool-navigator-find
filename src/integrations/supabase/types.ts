@@ -253,6 +253,81 @@ export type Database = {
           },
         ]
       }
+      roadmap_templates: {
+        Row: {
+          author_id: string | null
+          author_name: string | null
+          author_type: string | null
+          category: string
+          created_at: string | null
+          description: string | null
+          difficulty_level: string | null
+          downloads_count: number | null
+          estimated_timeline: string | null
+          id: string
+          industry: string
+          is_featured: boolean | null
+          is_premium: boolean | null
+          preview_image: string | null
+          price: number | null
+          rating: number | null
+          reviews_count: number | null
+          tags: string[] | null
+          template_data: Json
+          title: string
+          tools_included: Json
+          updated_at: string | null
+        }
+        Insert: {
+          author_id?: string | null
+          author_name?: string | null
+          author_type?: string | null
+          category: string
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: string | null
+          downloads_count?: number | null
+          estimated_timeline?: string | null
+          id?: string
+          industry: string
+          is_featured?: boolean | null
+          is_premium?: boolean | null
+          preview_image?: string | null
+          price?: number | null
+          rating?: number | null
+          reviews_count?: number | null
+          tags?: string[] | null
+          template_data: Json
+          title: string
+          tools_included: Json
+          updated_at?: string | null
+        }
+        Update: {
+          author_id?: string | null
+          author_name?: string | null
+          author_type?: string | null
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: string | null
+          downloads_count?: number | null
+          estimated_timeline?: string | null
+          id?: string
+          industry?: string
+          is_featured?: boolean | null
+          is_premium?: boolean | null
+          preview_image?: string | null
+          price?: number | null
+          rating?: number | null
+          reviews_count?: number | null
+          tags?: string[] | null
+          template_data?: Json
+          title?: string
+          tools_included?: Json
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       roadmaps: {
         Row: {
           budget_range: string | null
@@ -345,6 +420,88 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      template_purchases: {
+        Row: {
+          id: string
+          purchase_price: number
+          purchased_at: string | null
+          stripe_payment_intent_id: string | null
+          template_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          purchase_price: number
+          purchased_at?: string | null
+          stripe_payment_intent_id?: string | null
+          template_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          purchase_price?: number
+          purchased_at?: string | null
+          stripe_payment_intent_id?: string | null
+          template_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_purchases_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "roadmap_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      template_reviews: {
+        Row: {
+          created_at: string | null
+          helpful_count: number | null
+          id: string
+          is_verified: boolean | null
+          rating: number
+          review_content: string | null
+          review_title: string | null
+          template_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          helpful_count?: number | null
+          id?: string
+          is_verified?: boolean | null
+          rating: number
+          review_content?: string | null
+          review_title?: string | null
+          template_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          helpful_count?: number | null
+          id?: string
+          is_verified?: boolean | null
+          rating?: number
+          review_content?: string | null
+          review_title?: string | null
+          template_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "template_reviews_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "roadmap_templates"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tool_reviews: {
         Row: {
