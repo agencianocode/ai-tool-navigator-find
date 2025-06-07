@@ -1,3 +1,4 @@
+
 export { aiWritingContentTools } from './aiWritingContent';
 export { aiImageVideoTools } from './aiImageVideo';
 export { noCodePlatformsTools } from './noCodePlatforms';
@@ -18,11 +19,11 @@ export { businessAutomationTools } from './businessAutomationTools';
 export { aiResearchAnalysisTools } from './aiResearchAnalysisTools';
 export { aiDataAnalyticsTools } from './aiDataAnalyticsTools';
 
-// Update empty arrays for categories that now have content
-export const aiTranslationLanguageTools = [];
-export const aiCybersecurityTools = [];
-export const aiEducationLearningTools = [];
-export const aiHealthWellnessTools = [];
-export const aiFinanceToolsData = [];
-export const aiGamingEntertainmentTools = [];
-export const blockchainWeb3Tools = [];
+// Add the newest category exports
+export { aiTranslationLanguageTools } from './aiTranslationLanguageTools';
+export { aiCybersecurityTools } from './aiCybersecurityTools';
+export { aiEducationLearningTools } from './aiEducationLearningTools';
+export { aiHealthWellnessTools } from './aiHealthWellnessTools';
+export { aiFinanceToolsData } from './aiFinanceToolsData';
+export { aiGamingEntertainmentTools } from './aiGamingEntertainmentTools';
+export { blockchainWeb3Tools } from './blockchainWeb3Tools';

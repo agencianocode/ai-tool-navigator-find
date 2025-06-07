@@ -54,7 +54,7 @@ export const expandedToolsDatabase: EnhancedTool[] = [
   ...blockchainWeb3Tools,
   // Additional tools to complete the collection
   {
-    id: 'notion-49',
+    id: 'notion-76',
     name: 'Notion',
     category: 'Productivity',
     subcategory: 'Workspace',
@@ -236,7 +236,22 @@ export const subcategories = [
   'Work OS',
   'CRM & Marketing',
   'Community Chat',
-  'Development Platform'
+  'Development Platform',
+  'Translation',
+  'Grammar Check',
+  'Tutoring',
+  'Course Assistance',
+  'Symptom Checker',
+  'Fitness Tracking',
+  'Mental Health',
+  'Robo-Advisor',
+  'Business Finance',
+  'Graphics Enhancement',
+  'Music Streaming',
+  'Content Moderation',
+  'Crypto Wallet',
+  'NFT Marketplace',
+  'DeFi Exchange'
 ];
 
 export const difficultyLevels = ['beginner', 'intermediate', 'advanced', 'expert'];
