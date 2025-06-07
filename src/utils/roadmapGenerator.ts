@@ -19,7 +19,7 @@ export const generateRoadmap = async (
   answers: Record<string, any>, 
   selectedTools: any[], 
   isAlternative: boolean = false,
-  preferredEngine: AIEngine = 'claude'
+  preferredEngine: AIEngine = 'openai'
 ): Promise<RoadmapPhase[]> => {
   console.log('Generating roadmap with AI engine:', preferredEngine, { answers, selectedTools, isAlternative });
   

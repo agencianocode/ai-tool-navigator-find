@@ -81,23 +81,17 @@ export const useAIIntegration = () => {
     }
   }, []);
 
-  const analyzeUserNeedsFromText = useCallback(async (description: string) => {
+  const analyzeUserNeedsFromText = useCallback(async (description: string, answers: Record<string, any>) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      // Simulate AI analysis for now
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const analysis = {
-        detectedNeeds: ['automation', 'design', 'collaboration'],
-        suggestedTools: ['Zapier', 'Figma', 'Slack'],
-        complexityLevel: 'intermediate' as const,
-        estimatedTimeline: '4-6 weeks',
-        priorityAreas: ['workflow optimization', 'team communication']
-      };
+      const { data, error } = await supabase.functions.invoke('analyze-user-needs', {
+        body: { description, answers }
+      });
 
-      return analysis;
+      if (error) throw error;
+      return data;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error analyzing needs');
       return null;

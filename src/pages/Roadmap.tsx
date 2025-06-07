@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -59,7 +58,7 @@ const Roadmap = () => {
   const generateInitialRoadmap = async () => {
     setIsGenerating(true);
     try {
-      const generatedRoadmap = await generateRoadmap(answers, selectedTools);
+      const generatedRoadmap = await generateRoadmap(answers, selectedTools, false, 'openai');
       setRoadmap(generatedRoadmap);
     } catch (error) {
       console.error('Error generando hoja de ruta:', error);
@@ -76,11 +75,11 @@ const Roadmap = () => {
   const handleRegenerateRoadmap = async () => {
     setIsGenerating(true);
     try {
-      const generatedRoadmap = await generateRoadmap(answers, selectedTools, true);
+      const generatedRoadmap = await generateRoadmap(answers, selectedTools, true, 'openai');
       setRoadmap(generatedRoadmap);
       toast({
         title: "Éxito",
-        description: "¡Hoja de ruta alternativa generada exitosamente!",
+        description: "¡Hoja de ruta alternativa generada exitosamente con OpenAI!",
       });
     } catch (error) {
       console.error('Error regenerando hoja de ruta:', error);
@@ -134,10 +133,10 @@ const Roadmap = () => {
                 <div className="text-center">
                   <Loader2 className="h-16 w-16 text-purple-600 mx-auto mb-4 animate-spin" />
                   <h2 className="text-xl font-bold text-gray-900 mb-2">
-                    Generando Tu Hoja de Ruta Personalizada
+                    Generando Tu Hoja de Ruta Personalizada con IA
                   </h2>
                   <p className="text-gray-600">
-                    Nuestra IA está analizando tus respuestas y creando un plan de implementación personalizado...
+                    OpenAI está analizando tus respuestas y creando un plan de implementación personalizado...
                   </p>
                 </div>
               </CardContent>
@@ -165,7 +164,7 @@ const Roadmap = () => {
                 Tu Hoja de Ruta Personalizada de Implementación IA
               </h1>
               <p className="text-gray-600">
-                Un plan paso a paso de 12 semanas adaptado a tu proyecto y herramientas seleccionadas
+                Un plan paso a paso de 12 semanas generado con OpenAI y adaptado a tu proyecto
               </p>
             </div>
             <div className="flex gap-2">
@@ -213,7 +212,7 @@ const Roadmap = () => {
                             <Badge variant="outline">{phase.duration}</Badge>
                           </CardTitle>
                           <p className="text-sm text-gray-600 mt-1">
-                            Haz clic para expandir detalles y ver insights generados por IA
+                            Haz clic para expandir detalles y ver insights generados por OpenAI
                           </p>
                         </div>
                       </div>
@@ -248,7 +247,7 @@ const Roadmap = () => {
 
                         {/* AI Insights */}
                         <div className="lg:col-span-2">
-                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Insights Generados por IA</h4>
+                          <h4 className="text-sm font-semibold text-gray-900 mb-3">Insights Generados por OpenAI</h4>
                           <p className="text-sm text-gray-700 bg-white/70 p-3 rounded-lg border">
                             {phase.insights}
                           </p>
@@ -293,7 +292,7 @@ const Roadmap = () => {
             <div className="text-center">
               <h3 className="text-lg font-semibold mb-2">¿Listo para comenzar?</h3>
               <p className="text-gray-600 mb-4">
-                Esta hoja de ruta está personalizada basada en tus respuestas. Ajústala según sea necesario para tus requerimientos específicos.
+                Esta hoja de ruta está personalizada basada en tus respuestas usando OpenAI. Ajústala según sea necesario para tus requerimientos específicos.
               </p>
               <div className="flex justify-center gap-4">
                 <Link to="/results">
