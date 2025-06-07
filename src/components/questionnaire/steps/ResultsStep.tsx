@@ -1,20 +1,21 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Download, Share2, RefreshCw, Filter, Star, ExternalLink, Zap } from "lucide-react";
+import { CheckCircle, Download, Share2, RefreshCw, Filter, Star, ExternalLink, Zap, Brain, Target } from "lucide-react";
 import { useQuestionnaire } from "../QuestionnaireContext";
 import { Link } from "react-router-dom";
-import { calculateToolMatches, filterTools, ToolMatch } from "@/utils/matchingAlgorithm";
-import { categories } from "@/data/expandedAiTools";
 import { useState, useMemo } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import ToolActions from "@/components/ToolActions";
 import { convertToolToAITool } from "@/utils/toolTypeMapping";
+import { useQuery } from "@tanstack/react-query";
+import { generateIntelligentRecommendations } from "@/utils/intelligentMatchingAlgorithm";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ResultsStep = () => {
   const { state } = useQuestionnaire();
   const { answers } = state;
+  const { user } = useAuth();
 
   const [filters, setFilters] = useState({
     category: '',
@@ -24,9 +25,40 @@ const ResultsStep = () => {
 
   const [selectedAiEngine, setSelectedAiEngine] = useState<'claude' | 'openai'>('claude');
 
-  // Calculate matches using the expanded algorithm
-  const allMatches = useMemo(() => calculateToolMatches(answers), [answers]);
-  const filteredMatches = useMemo(() => filterTools(allMatches, filters), [allMatches, filters]);
+  // Obtener recomendaciones inteligentes
+  const { data: intelligentResult, isLoading } = useQuery({
+    queryKey: ['intelligent-recommendations', answers, user?.id],
+    queryFn: () => generateIntelligentRecommendations(answers, user?.id),
+    staleTime: 5 * 60 * 1000, // 5 minutos
+  });
+
+  // Aplicar filtros a las recomendaciones
+  const filteredMatches = useMemo(() => {
+    if (!intelligentResult?.recommendations) return [];
+    
+    return intelligentResult.recommendations.filter(match => {
+      if (filters.category && match.tool.category !== filters.category) return false;
+      if (filters.complexityLevel && match.tool.complexity !== filters.complexityLevel) return false;
+      if (filters.priceRange) {
+        const pricing = match.tool.pricing.toLowerCase();
+        switch (filters.priceRange) {
+          case 'free':
+            return pricing.includes('gratis') || pricing.includes('free');
+          case 'low':
+            return pricing.includes('$') && !pricing.includes('$100');
+          case 'medium':
+            return pricing.includes('$100') || pricing.includes('$50');
+          case 'high':
+            return pricing.includes('$200') || pricing.includes('$500');
+          case 'enterprise':
+            return pricing.includes('enterprise') || pricing.includes('$1000');
+          default:
+            return true;
+        }
+      }
+      return true;
+    });
+  }, [intelligentResult?.recommendations, filters]);
 
   const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({
@@ -42,9 +74,34 @@ const ResultsStep = () => {
     return 'bg-gray-500';
   };
 
+  const getScoreBreakdownBadges = (scoreBreakdown: any) => {
+    const badges = [];
+    if (scoreBreakdown.functionality > 70) badges.push({ label: 'Funcionalidad', value: scoreBreakdown.functionality, color: 'blue' });
+    if (scoreBreakdown.personalized > 15) badges.push({ label: 'Personalizado', value: scoreBreakdown.personalized, color: 'purple' });
+    if (scoreBreakdown.easeOfUse > 80) badges.push({ label: 'Fácil de usar', value: scoreBreakdown.easeOfUse, color: 'green' });
+    return badges.slice(0, 2); // Mostrar máximo 2 badges
+  };
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-center py-8">
+            <div className="flex items-center gap-3">
+              <Brain className="h-6 w-6 animate-pulse text-purple-600" />
+              <span>Generando recomendaciones inteligentes con IA...</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const categories = [...new Set(intelligentResult?.recommendations?.map(r => r.tool.category) || [])];
+
   return (
     <div className="space-y-6">
-      {/* Success Header */}
+      {/* Success Header with AI Enhancement */}
       <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
         <CardContent className="pt-6">
           <div className="flex items-center justify-center text-center">
@@ -54,15 +111,67 @@ const ResultsStep = () => {
                 ¡Tus Recomendaciones de Herramientas IA Están Listas!
               </h2>
               <p className="text-gray-600 mb-4">
-                Basándose en tus respuestas, hemos encontrado {filteredMatches.length} herramientas de IA que se ajustan a tus necesidades.
+                Encontramos {filteredMatches.length} herramientas perfectas usando nuestro algoritmo inteligente.
               </p>
-              <Badge variant="secondary" className="text-sm">
-                Ahora con 100+ herramientas en nuestra base de datos ✨
-              </Badge>
+              <div className="flex items-center justify-center gap-2">
+                <Badge variant="secondary" className="text-sm">
+                  <Target className="w-3 h-3 mr-1" />
+                  100+ herramientas analizadas
+                </Badge>
+                {intelligentResult?.metadata?.algorithmVersion === '2.0' && (
+                  <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-700">
+                    <Brain className="w-3 h-3 mr-1" />
+                    IA Avanzada v2.0
+                  </Badge>
+                )}
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      {/* AI Algorithm Info */}
+      {intelligentResult?.metadata && (
+        <Card className="border-purple-200 bg-gradient-to-r from-purple-50 to-blue-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Brain className="h-5 w-5 text-purple-600" />
+              Análisis Inteligente Aplicado
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-purple-600">
+                  {intelligentResult.metadata.algorithmVersion}
+                </div>
+                <div className="text-sm text-gray-600">Versión del Algoritmo</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {intelligentResult.metadata.personalizedFactors.length}
+                </div>
+                <div className="text-sm text-gray-600">Factores Personalizados</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  {intelligentResult.metadata.totalToolsAnalyzed}
+                </div>
+                <div className="text-sm text-gray-600">Herramientas Analizadas</div>
+              </div>
+            </div>
+            
+            {intelligentResult.metadata.personalizedFactors.includes('semantic_analysis') && (
+              <div className="mt-4 p-3 bg-white rounded-lg border border-purple-200">
+                <div className="flex items-center gap-2 text-sm text-purple-700">
+                  <Zap className="w-4 h-4" />
+                  <strong>Análisis semántico activado:</strong> Tus respuestas han sido analizadas con IA para generar recomendaciones más precisas.
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* AI Engine Selector */}
       <Card className="border-purple-200 bg-gradient-to-r from-purple-50 to-blue-50">
@@ -168,9 +277,9 @@ const ResultsStep = () => {
         </CardContent>
       </Card>
 
-      {/* Tool Recommendations */}
+      {/* Enhanced Tool Recommendations */}
       <div className="space-y-4">
-        {filteredMatches.map((match: ToolMatch, index) => (
+        {filteredMatches.map((match, index) => (
           <Card key={match.tool.id} className="hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <div className="flex flex-col lg:flex-row gap-6">
@@ -216,6 +325,24 @@ const ResultsStep = () => {
                       <p className="text-sm font-medium text-purple-600 mb-3">{match.tool.pricing}</p>
                     </div>
                   </div>
+
+                  {/* AI Score Breakdown */}
+                  {match.scoreBreakdown && (
+                    <div className="mb-4">
+                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Análisis IA:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {getScoreBreakdownBadges(match.scoreBreakdown).map((badge, idx) => (
+                          <Badge key={idx} variant="outline" className={`text-xs ${
+                            badge.color === 'purple' ? 'text-purple-600 border-purple-300' :
+                            badge.color === 'blue' ? 'text-blue-600 border-blue-300' :
+                            'text-green-600 border-green-300'
+                          }`}>
+                            {badge.label}: {badge.value}%
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Why Recommended */}
                   <div className="mb-4">
