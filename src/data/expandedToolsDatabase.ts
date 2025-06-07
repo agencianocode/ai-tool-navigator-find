@@ -1,7 +1,7 @@
 import { EnhancedTool } from "./types";
 
 // Export the EnhancedTool type for other files to use
-export { EnhancedTool } from "./types";
+export type { EnhancedTool } from "./types";
 
 // Exported constants for filters
 export const difficultyLevels = ['beginner', 'intermediate', 'advanced', 'expert'] as const;
