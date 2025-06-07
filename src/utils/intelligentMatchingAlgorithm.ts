@@ -1,4 +1,3 @@
-
 import { EnhancedTool } from '@/data/types';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -80,7 +79,15 @@ export async function generateIntelligentRecommendations(
     
     // Fallback al algoritmo básico si falla el inteligente
     console.log('Falling back to basic matching algorithm...');
-    return await fallbackToBasicMatching(answers, targetTools || []);
+    
+    // Ensure we have tools for the fallback
+    let fallbackTools = tools;
+    if (!fallbackTools) {
+      const { expandedToolsDatabase } = await import('@/data/expandedToolsDatabase');
+      fallbackTools = expandedToolsDatabase;
+    }
+    
+    return await fallbackToBasicMatching(answers, fallbackTools);
   }
 }
 
