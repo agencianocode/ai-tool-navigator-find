@@ -22,33 +22,36 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
     template_purchases: 0
   });
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
-      fetchUsage();
-      checkAdminStatus();
+      checkAdminStatusAndFetchUsage();
     }
-  }, [user]);
+  }, [user, subscriptionStatus]);
 
-  const checkAdminStatus = async () => {
+  const checkAdminStatusAndFetchUsage = async () => {
     if (!user) return;
     
-    console.log('Checking admin status for usage limits...');
-    const { data } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .eq('role', 'admin')
-      .single();
+    console.log('🔍 Checking admin status and usage for user:', user.email);
+    console.log('🔍 Current subscription status:', subscriptionStatus);
     
-    console.log('Admin status result:', !!data);
-    setIsAdmin(!!data);
-  };
-
-  const fetchUsage = async () => {
-    if (!user) return;
-
     try {
+      setLoading(true);
+      
+      // Check admin status
+      const { data: adminData, error: adminError } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .single();
+      
+      console.log('👑 Admin check result:', { adminData, adminError });
+      const userIsAdmin = !!adminData;
+      setIsAdmin(userIsAdmin);
+
+      // Fetch usage stats
       const { data: stats } = await supabase
         .from('user_stats')
         .select('total_roadmaps, total_tools_explored')
@@ -71,14 +74,25 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
         budget_plans: budgets?.length || 0,
         template_purchases: purchases?.length || 0
       });
+
+      console.log('📊 Final state:', {
+        isAdmin: userIsAdmin,
+        subscriptionTier: subscriptionStatus.subscription_tier,
+        subscribed: subscriptionStatus.subscribed,
+        usage
+      });
+
     } catch (error) {
-      console.error('Error fetching usage:', error);
+      console.error('❌ Error checking admin status or fetching usage:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getLimits = () => {
     // Los admins tienen acceso ilimitado
     if (isAdmin) {
+      console.log('🚀 Admin detected - returning unlimited limits');
       return { 
         roadmaps: -1, 
         tools_explored: -1, 
@@ -94,6 +108,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
 
     // Enterprise users tienen acceso ilimitado
     if (subscriptionStatus.subscription_tier === 'enterprise') {
+      console.log('🏢 Enterprise subscription detected - returning unlimited limits');
       return { 
         roadmaps: -1, 
         tools_explored: -1, 
@@ -169,10 +184,10 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
 
   const getPlanName = () => {
     if (isAdmin) return "Admin";
+    if (subscriptionStatus.subscription_tier === 'enterprise') return "Enterprise";
     if (!subscriptionStatus.subscribed) return "Free";
     return subscriptionStatus.subscription_tier === 'basic' ? 'Pro' : 
            subscriptionStatus.subscription_tier === 'premium' ? 'Premium' :
-           subscriptionStatus.subscription_tier === 'enterprise' ? 'Enterprise' :
            'Free';
   };
 
@@ -181,6 +196,25 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
     if (subscriptionStatus.subscribed) return "secondary";
     return "outline";
   };
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="h-5 w-5" />
+            Cargando plan...
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="animate-pulse space-y-2">
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>

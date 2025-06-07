@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -38,40 +37,46 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (!session) return;
     
     try {
-      console.log('Checking subscription status...');
+      console.log('🔍 Checking subscription status for user:', session.user.email);
       
-      // Primero intentar obtener desde la base de datos directamente
+      // Obtener desde la base de datos directamente
       const { data: dbData, error: dbError } = await supabase
         .from('subscribers')
         .select('*')
         .eq('user_id', session.user.id)
         .single();
 
+      console.log('📊 Subscription data from DB:', { dbData, dbError });
+
       if (!dbError && dbData) {
-        console.log('Subscription from DB:', dbData);
-        setSubscriptionStatus({
+        const newStatus = {
           subscribed: dbData.subscribed || false,
           subscription_tier: dbData.subscription_tier || null,
           subscription_end: dbData.subscription_end || null,
-        });
+        };
+        console.log('✅ Setting subscription status:', newStatus);
+        setSubscriptionStatus(newStatus);
         return;
       }
 
-      // Fallback a la función edge
+      // Fallback a la función edge solo si no hay datos en DB
+      console.log('⚠️ No data in DB, trying edge function fallback...');
       const { data, error } = await supabase.functions.invoke('check-subscription');
       if (error) {
-        console.error('Error checking subscription via function:', error);
+        console.error('❌ Error checking subscription via function:', error);
         return;
       }
       
-      console.log('Subscription from function:', data);
-      setSubscriptionStatus({
+      console.log('📊 Subscription from function:', data);
+      const fallbackStatus = {
         subscribed: data.subscribed || false,
         subscription_tier: data.subscription_tier || null,
         subscription_end: data.subscription_end || null,
-      });
+      };
+      console.log('✅ Setting fallback subscription status:', fallbackStatus);
+      setSubscriptionStatus(fallbackStatus);
     } catch (error) {
-      console.error('Error checking subscription:', error);
+      console.error('❌ Error checking subscription:', error);
     }
   };
 
@@ -230,7 +235,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       async (event, session) => {
         if (!mounted) return;
         
-        console.log('Auth state changed:', event, session?.user?.email);
+        console.log('🔐 Auth state changed:', event, session?.user?.email);
         
         setSession(session);
         setUser(session?.user ?? null);
@@ -238,6 +243,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         
         // Manejar eventos específicos
         if (event === 'SIGNED_IN' && session) {
+          console.log('✅ User signed in, checking subscription...');
           // Forzar verificación inmediata de suscripción
           setTimeout(() => {
             if (mounted) {
@@ -247,6 +253,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
         
         if (event === 'SIGNED_OUT') {
+          console.log('🚪 User signed out, resetting subscription status');
           setSubscriptionStatus({
             subscribed: false,
             subscription_tier: null,
@@ -261,14 +268,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (!mounted) return;
       
       if (error) {
-        console.error('Error getting session:', error);
+        console.error('❌ Error getting session:', error);
       }
+      console.log('🔐 Initial session check:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
       
       // Si ya hay una sesión, verificar suscripción inmediatamente
       if (session) {
+        console.log('✅ Existing session found, checking subscription...');
         checkSubscription();
       }
     });

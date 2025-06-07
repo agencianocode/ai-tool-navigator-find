@@ -16,47 +16,57 @@ export const SubscriptionInfo = () => {
     updated_at: null,
     stripe_customer_id: null
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
-      checkAdminStatus();
-      fetchSubscriptionDetails();
+      checkAdminStatusAndFetchDetails();
     }
-  }, [user]);
+  }, [user, subscriptionStatus]);
 
-  const checkAdminStatus = async () => {
+  const checkAdminStatusAndFetchDetails = async () => {
     if (!user) return;
     
-    const { data } = await supabase
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .eq('role', 'admin')
-      .single();
-    
-    setIsAdmin(!!data);
-  };
+    try {
+      setLoading(true);
+      console.log('🔍 Fetching subscription details for profile...');
+      
+      // Check admin status
+      const { data: adminData } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .single();
+      
+      const userIsAdmin = !!adminData;
+      setIsAdmin(userIsAdmin);
+      console.log('👑 Admin status for profile:', userIsAdmin);
 
-  const fetchSubscriptionDetails = async () => {
-    if (!user) return;
+      // Fetch subscription details
+      const { data } = await supabase
+        .from('subscribers')
+        .select('created_at, updated_at, stripe_customer_id')
+        .eq('user_id', user.id)
+        .single();
 
-    const { data } = await supabase
-      .from('subscribers')
-      .select('created_at, updated_at, stripe_customer_id')
-      .eq('user_id', user.id)
-      .single();
-
-    if (data) {
-      setSubscriptionDetails(data);
+      if (data) {
+        setSubscriptionDetails(data);
+        console.log('📊 Subscription details:', data);
+      }
+    } catch (error) {
+      console.error('❌ Error fetching subscription details:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const getPlanName = () => {
     if (isAdmin) return "Administrator";
+    if (subscriptionStatus.subscription_tier === 'enterprise') return "Enterprise";
     if (!subscriptionStatus.subscribed) return "Free";
     return subscriptionStatus.subscription_tier === 'basic' ? 'Pro' : 
            subscriptionStatus.subscription_tier === 'premium' ? 'Premium' :
-           subscriptionStatus.subscription_tier === 'enterprise' ? 'Enterprise' :
            'Free';
   };
 
@@ -90,6 +100,25 @@ export const SubscriptionInfo = () => {
     return endDate < now;
   };
 
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Crown className="h-5 w-5" />
+            Información de Suscripción
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="animate-pulse space-y-2">
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -112,9 +141,11 @@ export const SubscriptionInfo = () => {
               <p className="text-sm text-gray-600">
                 {isAdmin 
                   ? "Acceso administrativo completo" 
-                  : subscriptionStatus.subscribed 
-                    ? "Suscripción activa" 
-                    : "Plan gratuito"
+                  : subscriptionStatus.subscription_tier === 'enterprise'
+                    ? "Plan Enterprise con acceso ilimitado"
+                    : subscriptionStatus.subscribed 
+                      ? "Suscripción activa" 
+                      : "Plan gratuito"
                 }
               </p>
             </div>
@@ -228,11 +259,11 @@ export const SubscriptionInfo = () => {
             </>
           )}
 
-          {isAdmin && (
+          {(isAdmin || subscriptionStatus.subscription_tier === 'enterprise') && (
             <div className="p-3 rounded-lg bg-purple-50 text-center">
               <Shield className="h-6 w-6 mx-auto mb-2 text-purple-600" />
               <p className="text-sm font-medium text-purple-800">
-                Tienes acceso administrativo completo
+                {isAdmin ? "Tienes acceso administrativo completo" : "Plan Enterprise Activo"}
               </p>
               <p className="text-xs text-purple-600">
                 Sin límites en el uso de la plataforma
