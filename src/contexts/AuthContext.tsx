@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -213,12 +214,38 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const signOut = async () => {
     try {
-      await supabase.auth.signOut();
-      toast({
-        title: "Sesión cerrada",
-        description: "Has cerrado sesión exitosamente.",
+      console.log('🚪 Attempting to sign out...');
+      
+      // Limpiar estados locales ANTES de llamar a signOut
+      setUser(null);
+      setSession(null);
+      setSubscriptionStatus({
+        subscribed: false,
+        subscription_tier: null,
+        subscription_end: null,
       });
+      
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('❌ Error during signOut:', error);
+        toast({
+          title: "Error",
+          description: "Ocurrió un error al cerrar sesión.",
+          variant: "destructive",
+        });
+      } else {
+        console.log('✅ Successfully signed out');
+        toast({
+          title: "Sesión cerrada",
+          description: "Has cerrado sesión exitosamente.",
+        });
+        
+        // Forzar navegación a la página principal después del logout
+        window.location.href = '/';
+      }
     } catch (error) {
+      console.error('❌ Unexpected error during signOut:', error);
       toast({
         title: "Error",
         description: "Ocurrió un error al cerrar sesión.",
