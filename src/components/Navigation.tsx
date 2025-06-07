@@ -13,10 +13,11 @@ import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { ModeToggle } from "./ModeToggle";
 import { useAuth } from "@/contexts/AuthContext";
+import UserMenu from "./UserMenu";
 
 const Navigation = () => {
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
@@ -31,12 +32,19 @@ const Navigation = () => {
     { href: "/emerging-tech", label: "IA & AR/VR" },
   ];
 
+  const authenticatedItems = [
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/favorites", label: "Favoritos" },
+    { href: "/analytics", label: "Analytics" },
+  ];
+
   return (
     <header className="bg-background sticky top-0 z-50 border-b">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="font-bold text-2xl">
           AI Tool Navigator
         </Link>
+        
         <div className="hidden md:flex items-center space-x-6">
           {navigationItems.map((item) => (
             <Link
@@ -49,20 +57,30 @@ const Navigation = () => {
               {item.label}
             </Link>
           ))}
+          
+          {user && authenticatedItems.map((item) => (
+            <Link
+              key={item.label}
+              to={item.href}
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive(item.href) ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+          
           <ModeToggle />
+          
           {user ? (
-            <>
-              <Link to="/dashboard">Dashboard</Link>
-              <Button size="sm" onClick={signOut}>
-                Logout
-              </Button>
-            </>
+            <UserMenu />
           ) : (
             <Link to="/auth">
-              <Button size="sm">Get Started</Button>
+              <Button size="sm">Iniciar Sesión</Button>
             </Link>
           )}
         </div>
+
         <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <SheetTrigger asChild className="md:hidden">
             <Button variant="ghost" size="sm">
@@ -73,7 +91,7 @@ const Navigation = () => {
             <SheetHeader>
               <SheetTitle>Menu</SheetTitle>
               <SheetDescription>
-                Explore the AI Tool Navigator
+                Explora AI Tool Navigator
               </SheetDescription>
             </SheetHeader>
             <div className="grid gap-4 py-4">
@@ -84,21 +102,32 @@ const Navigation = () => {
                   className={`text-sm font-medium transition-colors hover:text-primary ${
                     isActive(item.href) ? "text-primary" : "text-muted-foreground"
                   }`}
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {item.label}
                 </Link>
               ))}
+              
+              {user && authenticatedItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    isActive(item.href) ? "text-primary" : "text-muted-foreground"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              
               <ModeToggle />
+              
               {user ? (
-                <>
-                  <Link to="/dashboard">Dashboard</Link>
-                  <Button size="sm" onClick={signOut}>
-                    Logout
-                  </Button>
-                </>
+                <UserMenu />
               ) : (
-                <Link to="/auth">
-                  <Button size="sm">Get Started</Button>
+                <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                  <Button size="sm">Iniciar Sesión</Button>
                 </Link>
               )}
             </div>

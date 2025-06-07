@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './contexts/AuthContext';
+import { ThemeProvider } from './components/ThemeProvider';
 import { Toaster } from "@/components/ui/toaster"
 
 import Index from './pages/Index';
@@ -41,99 +42,101 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <HelmetProvider>
-      <Router>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <Toaster />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route
-                path="/dashboard"
-                element={
-                  <AuthGuard>
-                    <Dashboard />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/questionnaire"
-                element={
-                  <AuthGuard>
-                    <Questionnaire />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/results"
-                element={
-                  <AuthGuard>
-                    <Results />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/roadmap/:id"
-                element={
-                  <AuthGuard>
-                    <Roadmap />
-                  </AuthGuard>
-                }
-              />
-              <Route path="/tools" element={<EnhancedTools />} />
-              <Route path="/tools/:id" element={<ToolDetails />} />
-              <Route
-                path="/favorites"
-                element={
-                  <AuthGuard>
-                    <Favorites />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/budget-planner"
-                element={
-                  <AuthGuard>
-                    <BudgetPlanner />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/analytics"
-                element={
-                  <AuthGuard>
-                    <Analytics />
-                  </AuthGuard>
-                }
-              />
-              <Route path="/community" element={<Community />} />
-              <Route path="/content" element={<ContentHubPage />} />
-              <Route path="/emerging-tech" element={<EmergingTech />} />
-              <Route
-                path="/profile"
-                element={
-                  <AuthGuard>
-                    <Profile />
-                  </AuthGuard>
-                }
-              />
-              <Route
-                path="/settings"
-                element={
-                  <AuthGuard>
-                    <Settings />
-                  </AuthGuard>
-                }
-              />
-              <Route path="/guides" element={<Guides />} />
-              <Route path="/integrations" element={<Integrations />} />
-              <Route path="/subscriptions" element={<Subscriptions />} />
-              <Route path="/templates" element={<Templates />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AuthProvider>
-        </QueryClientProvider>
-      </Router>
+      <ThemeProvider defaultTheme="system" storageKey="ai-tool-navigator-theme">
+        <Router>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+              <Toaster />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <AuthGuard>
+                      <Dashboard />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/questionnaire"
+                  element={
+                    <AuthGuard>
+                      <Questionnaire />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/results"
+                  element={
+                    <AuthGuard>
+                      <Results />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/roadmap/:id"
+                  element={
+                    <AuthGuard>
+                      <Roadmap />
+                    </AuthGuard>
+                  }
+                />
+                <Route path="/tools" element={<EnhancedTools />} />
+                <Route path="/tools/:id" element={<ToolDetails />} />
+                <Route
+                  path="/favorites"
+                  element={
+                    <AuthGuard>
+                      <Favorites />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/budget-planner"
+                  element={
+                    <AuthGuard>
+                      <BudgetPlanner />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/analytics"
+                  element={
+                    <AuthGuard>
+                      <Analytics />
+                    </AuthGuard>
+                  }
+                />
+                <Route path="/community" element={<Community />} />
+                <Route path="/content" element={<ContentHubPage />} />
+                <Route path="/emerging-tech" element={<EmergingTech />} />
+                <Route
+                  path="/profile"
+                  element={
+                    <AuthGuard>
+                      <Profile />
+                    </AuthGuard>
+                  }
+                />
+                <Route
+                  path="/settings"
+                  element={
+                    <AuthGuard>
+                      <Settings />
+                    </AuthGuard>
+                  }
+                />
+                <Route path="/guides" element={<Guides />} />
+                <Route path="/integrations" element={<Integrations />} />
+                <Route path="/subscriptions" element={<Subscriptions />} />
+                <Route path="/templates" element={<Templates />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthProvider>
+          </QueryClientProvider>
+        </Router>
+      </ThemeProvider>
     </HelmetProvider>
   );
 }
