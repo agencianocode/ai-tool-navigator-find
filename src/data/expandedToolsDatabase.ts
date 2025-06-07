@@ -1,4 +1,5 @@
 import { EnhancedTool } from "./types";
+export type { EnhancedTool } from "./types";
 
 export const expandedToolsDatabase: EnhancedTool[] = [
   {
