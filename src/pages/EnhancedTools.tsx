@@ -1,3 +1,4 @@
+
 import { useState, useMemo, useEffect } from "react";
 import { Search, Filter, SlidersHorizontal, X, RefreshCw } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,7 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { EnhancedToolCard } from "@/components/enhanced/EnhancedToolCard";
 import { CategoryFilter } from "@/components/enhanced/CategoryFilter";
 import { AdvancedFilters } from "@/components/enhanced/AdvancedFilters";
-import { enhancedToolsDatabase, EnhancedTool } from "@/data/expandedToolsDatabase";
+import { expandedToolsDatabase, EnhancedTool } from "@/data/expandedToolsDatabase";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { CardSkeleton } from "@/components/ui/card-skeleton";
@@ -29,6 +30,18 @@ const EnhancedTools = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Advanced filters state
+  const [advancedFilters, setAdvancedFilters] = useState({
+    difficultyRange: [1, 10] as [number, number],
+    learningCurve: null as string | null,
+    communitySize: null as string | null,
+    hasApi: null as boolean | null,
+    hasFreeVersion: null as boolean | null,
+    minRating: 1,
+    maxPricing: 1000,
+    integrationOptions: [] as string[]
+  });
   
   const isMobile = useIsMobile();
 
@@ -52,7 +65,7 @@ const EnhancedTools = () => {
   }, [searchTerm]);
 
   const filteredAndSortedTools = useMemo(() => {
-    let filtered = enhancedToolsDatabase.filter((tool) => {
+    let filtered = expandedToolsDatabase.filter((tool) => {
       const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           tool.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           tool.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -81,8 +94,19 @@ const EnhancedTools = () => {
       
       const matchesFreeTrial = hasFreeTrial === null || tool.freeVersion === hasFreeTrial;
       
+      // Advanced filters
+      const matchesAdvancedDifficulty = tool.difficulty_level >= advancedFilters.difficultyRange[0] && 
+                                       tool.difficulty_level <= advancedFilters.difficultyRange[1];
+      const matchesLearningCurve = !advancedFilters.learningCurve || tool.learning_curve === advancedFilters.learningCurve;
+      const matchesCommunitySize = !advancedFilters.communitySize || tool.community_size === advancedFilters.communitySize;
+      const matchesApiFilter = advancedFilters.hasApi === null || tool.apiAvailable === advancedFilters.hasApi;
+      const matchesFreeFilter = advancedFilters.hasFreeVersion === null || tool.freeVersion === advancedFilters.hasFreeVersion;
+      const matchesRating = tool.user_rating >= advancedFilters.minRating;
+      
       return matchesSearch && matchesCategory && matchesSubcategory && 
-             matchesPrice && matchesDifficulty && matchesFreeTrial;
+             matchesPrice && matchesDifficulty && matchesFreeTrial &&
+             matchesAdvancedDifficulty && matchesLearningCurve && matchesCommunitySize &&
+             matchesApiFilter && matchesFreeFilter && matchesRating;
     });
 
     // Sorting logic
@@ -102,11 +126,11 @@ const EnhancedTools = () => {
     });
 
     return filtered;
-  }, [searchTerm, selectedCategory, selectedSubcategory, priceRange, difficultyLevel, hasFreeTrial, sortBy]);
+  }, [searchTerm, selectedCategory, selectedSubcategory, priceRange, difficultyLevel, hasFreeTrial, sortBy, advancedFilters]);
 
   const toolCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    enhancedToolsDatabase.forEach(tool => {
+    expandedToolsDatabase.forEach(tool => {
       counts[tool.category] = (counts[tool.category] || 0) + 1;
     });
     return counts;
@@ -127,6 +151,16 @@ const EnhancedTools = () => {
     setDifficultyLevel(null);
     setHasFreeTrial(null);
     setSortBy("rating");
+    setAdvancedFilters({
+      difficultyRange: [1, 10],
+      learningCurve: null,
+      communitySize: null,
+      hasApi: null,
+      hasFreeVersion: null,
+      minRating: 1,
+      maxPricing: 1000,
+      integrationOptions: []
+    });
   };
 
   const activeFiltersCount = [
@@ -297,16 +331,18 @@ const EnhancedTools = () => {
                       </SheetHeader>
                       <div className="mt-6">
                         <AdvancedFilters
-                          priceRange={priceRange}
-                          setPriceRange={setPriceRange}
-                          difficultyLevel={difficultyLevel}
-                          setDifficultyLevel={setDifficultyLevel}
-                          hasFreeTrial={hasFreeTrial}
-                          setHasFreeTrial={setHasFreeTrial}
-                          sortBy={sortBy}
-                          setSortBy={setSortBy}
-                          viewMode={viewMode}
-                          setViewMode={setViewMode}
+                          filters={advancedFilters}
+                          onFiltersChange={setAdvancedFilters}
+                          onClearFilters={() => setAdvancedFilters({
+                            difficultyRange: [1, 10],
+                            learningCurve: null,
+                            communitySize: null,
+                            hasApi: null,
+                            hasFreeVersion: null,
+                            minRating: 1,
+                            maxPricing: 1000,
+                            integrationOptions: []
+                          })}
                         />
                       </div>
                     </SheetContent>
