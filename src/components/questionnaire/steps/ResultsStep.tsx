@@ -93,8 +93,9 @@ const ResultsStep = () => {
         throw new Error('No se pudo generar la hoja de ruta');
       }
 
-      // Convertir roadmapData a JSON compatible
+      // Convertir roadmapData y selectedTools a JSON compatible
       const roadmapDataJson = JSON.parse(JSON.stringify(roadmapData));
+      const selectedToolsJson = JSON.parse(JSON.stringify(selectedTools));
 
       // Guardar la hoja de ruta en la base de datos
       const { data: savedRoadmap, error } = await supabase
@@ -109,7 +110,7 @@ const ResultsStep = () => {
           timeline: answers.timeline,
           questionnaire_answers: answers,
           roadmap_data: roadmapDataJson,
-          selected_tools: selectedTools,
+          selected_tools: selectedToolsJson,
           custom_name: customName
         })
         .select()
