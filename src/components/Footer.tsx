@@ -1,19 +1,7 @@
-
 import { Badge } from "@/components/ui/badge";
-import { 
-  Facebook, 
-  Twitter, 
-  Linkedin, 
-  Github, 
-  Mail, 
-  MapPin, 
-  Phone,
-  Heart
-} from "lucide-react";
-
+import { Facebook, Twitter, Linkedin, Github, Mail, MapPin, Phone, Heart } from "lucide-react";
 const Footer = () => {
-  return (
-    <footer className="bg-gray-900 text-white">
+  return <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -76,12 +64,8 @@ const Footer = () => {
               Recibe las últimas noticias sobre herramientas IA y actualizaciones de nuestra plataforma.
             </p>
             <div className="flex gap-2">
-              <input 
-                type="email" 
-                placeholder="tu@email.com" 
-                className="flex-1 px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-              <button className="px-6 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg font-medium transition-all duration-200">
+              <input type="email" placeholder="tu@email.com" className="flex-1 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 px-[12px]" />
+              <button className="py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg font-medium transition-all duration-200 px-[21px]">
                 Suscribirse
               </button>
             </div>
@@ -131,8 +115,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
