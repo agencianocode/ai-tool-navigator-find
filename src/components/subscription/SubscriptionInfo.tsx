@@ -9,8 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 
 export const SubscriptionInfo = () => {
-  const { user, subscriptionStatus } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { user, subscriptionStatus, isAdmin, loading: authLoading } = useAuth();
   const [subscriptionDetails, setSubscriptionDetails] = useState({
     created_at: null,
     updated_at: null,
@@ -19,29 +18,18 @@ export const SubscriptionInfo = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      checkAdminStatusAndFetchDetails();
+    if (user && !authLoading) {
+      fetchSubscriptionDetails();
     }
-  }, [user, subscriptionStatus]);
+  }, [user, authLoading, subscriptionStatus]);
 
-  const checkAdminStatusAndFetchDetails = async () => {
+  const fetchSubscriptionDetails = async () => {
     if (!user) return;
     
     try {
       setLoading(true);
       console.log('🔍 Fetching subscription details for profile...');
-      
-      // Check admin status
-      const { data: adminData } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
-        .single();
-      
-      const userIsAdmin = !!adminData;
-      setIsAdmin(userIsAdmin);
-      console.log('👑 Admin status for profile:', userIsAdmin);
+      console.log('🔍 Current auth state:', { isAdmin, subscriptionStatus });
 
       // Fetch subscription details
       const { data } = await supabase
@@ -100,7 +88,7 @@ export const SubscriptionInfo = () => {
     return endDate < now;
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <Card>
         <CardHeader>
@@ -171,7 +159,7 @@ export const SubscriptionInfo = () => {
             </p>
           </div>
 
-          {subscriptionStatus.subscription_end && (
+          {subscriptionStatus.subscription_end && !isAdmin && (
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4 text-gray-500" />
@@ -191,6 +179,18 @@ export const SubscriptionInfo = () => {
                     Próximo a vencer
                   </span>
                 )}
+              </p>
+            </div>
+          )}
+
+          {isAdmin && (
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-sm">
+                <Shield className="h-4 w-4 text-gray-500" />
+                <span className="text-gray-600">Acceso:</span>
+              </div>
+              <p className="font-medium text-green-600">
+                Sin límite de tiempo
               </p>
             </div>
           )}

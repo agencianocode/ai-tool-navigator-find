@@ -14,42 +14,29 @@ interface UsageLimitsProps {
 }
 
 export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
-  const { user, subscriptionStatus } = useAuth();
+  const { user, subscriptionStatus, isAdmin, loading: authLoading } = useAuth();
   const [usage, setUsage] = useState({
     roadmaps: 0,
     tools_explored: 0,
     budget_plans: 0,
     template_purchases: 0
   });
-  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      checkAdminStatusAndFetchUsage();
+    if (user && !authLoading) {
+      fetchUsage();
     }
-  }, [user, subscriptionStatus]);
+  }, [user, authLoading]);
 
-  const checkAdminStatusAndFetchUsage = async () => {
+  const fetchUsage = async () => {
     if (!user) return;
     
-    console.log('🔍 Checking admin status and usage for user:', user.email);
-    console.log('🔍 Current subscription status:', subscriptionStatus);
+    console.log('🔍 Fetching usage for user:', user.email);
+    console.log('🔍 Current auth state:', { isAdmin, subscriptionStatus });
     
     try {
       setLoading(true);
-      
-      // Check admin status
-      const { data: adminData, error: adminError } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
-        .single();
-      
-      console.log('👑 Admin check result:', { adminData, adminError });
-      const userIsAdmin = !!adminData;
-      setIsAdmin(userIsAdmin);
 
       // Fetch usage stats
       const { data: stats } = await supabase
@@ -75,15 +62,15 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
         template_purchases: purchases?.length || 0
       });
 
-      console.log('📊 Final state:', {
-        isAdmin: userIsAdmin,
+      console.log('📊 Usage data fetched:', {
+        isAdmin,
         subscriptionTier: subscriptionStatus.subscription_tier,
         subscribed: subscriptionStatus.subscribed,
         usage
       });
 
     } catch (error) {
-      console.error('❌ Error checking admin status or fetching usage:', error);
+      console.error('❌ Error fetching usage:', error);
     } finally {
       setLoading(false);
     }
@@ -183,7 +170,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
   };
 
   const getPlanName = () => {
-    if (isAdmin) return "Admin";
+    if (isAdmin) return "Administrator";
     if (subscriptionStatus.subscription_tier === 'enterprise') return "Enterprise";
     if (!subscriptionStatus.subscribed) return "Free";
     return subscriptionStatus.subscription_tier === 'basic' ? 'Pro' : 
@@ -197,7 +184,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
     return "outline";
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <Card>
         <CardHeader>

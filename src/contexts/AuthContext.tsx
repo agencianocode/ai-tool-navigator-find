@@ -8,6 +8,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  isAdmin: boolean;
   subscriptionStatus: {
     subscribed: boolean;
     subscription_tier: string | null;
@@ -27,6 +28,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [subscriptionStatus, setSubscriptionStatus] = useState({
     subscribed: false,
     subscription_tier: null,
@@ -35,12 +37,38 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const { toast } = useToast();
 
   const checkSubscription = async () => {
-    if (!session) return;
+    if (!session) {
+      setIsAdmin(false);
+      return;
+    }
     
     try {
-      console.log('🔍 Checking subscription status for user:', session.user.email);
+      console.log('🔍 Checking subscription and admin status for user:', session.user.email);
       
-      // Obtener desde la base de datos directamente
+      // 1. Verificar rol de admin PRIMERO usando la nueva función segura
+      const { data: roleData, error: roleError } = await supabase
+        .rpc('get_user_role', { target_user_id: session.user.id });
+
+      console.log('👑 Role check result:', { roleData, roleError });
+      
+      const userIsAdmin = roleData === 'admin';
+      setIsAdmin(userIsAdmin);
+      console.log('✅ Admin status set to:', userIsAdmin);
+
+      // 2. Si es admin, establecer tier enterprise automáticamente
+      if (userIsAdmin) {
+        console.log('🚀 Admin detected - setting enterprise tier');
+        const enterpriseStatus = {
+          subscribed: true,
+          subscription_tier: 'enterprise',
+          subscription_end: null, // Sin límite para admins
+        };
+        setSubscriptionStatus(enterpriseStatus);
+        console.log('✅ Enterprise status set for admin:', enterpriseStatus);
+        return;
+      }
+
+      // 3. Para usuarios no-admin, verificar suscripción normal
       const { data: dbData, error: dbError } = await supabase
         .from('subscribers')
         .select('*')
@@ -55,12 +83,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           subscription_tier: dbData.subscription_tier || null,
           subscription_end: dbData.subscription_end || null,
         };
-        console.log('✅ Setting subscription status:', newStatus);
+        console.log('✅ Setting regular subscription status:', newStatus);
         setSubscriptionStatus(newStatus);
         return;
       }
 
-      // Fallback a la función edge solo si no hay datos en DB
+      // 4. Fallback a la función edge solo si no hay datos en DB
       console.log('⚠️ No data in DB, trying edge function fallback...');
       const { data, error } = await supabase.functions.invoke('check-subscription');
       if (error) {
@@ -78,6 +106,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSubscriptionStatus(fallbackStatus);
     } catch (error) {
       console.error('❌ Error checking subscription:', error);
+      setIsAdmin(false);
     }
   };
 
@@ -219,6 +248,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       // Limpiar estados locales ANTES de llamar a signOut
       setUser(null);
       setSession(null);
+      setIsAdmin(false);
       setSubscriptionStatus({
         subscribed: false,
         subscription_tier: null,
@@ -270,8 +300,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         
         // Manejar eventos específicos
         if (event === 'SIGNED_IN' && session) {
-          console.log('✅ User signed in, checking subscription...');
-          // Forzar verificación inmediata de suscripción
+          console.log('✅ User signed in, checking subscription and admin status...');
+          // Forzar verificación inmediata de suscripción y admin
           setTimeout(() => {
             if (mounted) {
               checkSubscription();
@@ -280,7 +310,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
         
         if (event === 'SIGNED_OUT') {
-          console.log('🚪 User signed out, resetting subscription status');
+          console.log('🚪 User signed out, resetting all states');
+          setIsAdmin(false);
           setSubscriptionStatus({
             subscribed: false,
             subscription_tier: null,
@@ -302,9 +333,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(session?.user ?? null);
       setLoading(false);
       
-      // Si ya hay una sesión, verificar suscripción inmediatamente
+      // Si ya hay una sesión, verificar suscripción y admin inmediatamente
       if (session) {
-        console.log('✅ Existing session found, checking subscription...');
+        console.log('✅ Existing session found, checking subscription and admin...');
         checkSubscription();
       }
     });
@@ -319,6 +350,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     user,
     session,
     loading,
+    isAdmin,
     subscriptionStatus,
     checkSubscription,
     signIn,

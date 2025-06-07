@@ -17,30 +17,10 @@ interface WithUsageLimitProps {
 
 export const withUsageLimit = (WrappedComponent: React.ComponentType<any>) => {
   return (props: any) => {
-    const { user, subscriptionStatus } = useAuth();
+    const { user, subscriptionStatus, isAdmin } = useAuth();
     const [showLimitDialog, setShowLimitDialog] = useState(false);
     const [currentUsage, setCurrentUsage] = useState(0);
     const [limit, setLimit] = useState(0);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    useEffect(() => {
-      const checkAdminStatus = async () => {
-        if (!user) return;
-        
-        console.log('Checking admin status for user:', user.id);
-        const { data } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'admin')
-          .single();
-        
-        console.log('Admin check result:', data);
-        setIsAdmin(!!data);
-      };
-
-      checkAdminStatus();
-    }, [user]);
 
     const checkUsageLimit = async (feature: FeatureType) => {
       if (!user) return false;
