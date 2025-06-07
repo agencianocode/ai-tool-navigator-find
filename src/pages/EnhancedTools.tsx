@@ -1,8 +1,7 @@
-
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, Grid, List, SortAsc } from "lucide-react";
+import { Search, Filter, Grid, List, SortAsc, X } from "lucide-react";
 import { expandedToolsDatabase, EnhancedTool } from "@/data/expandedToolsDatabase";
 import { EnhancedToolCard } from "@/components/enhanced/EnhancedToolCard";
 import { CategoryFilter } from "@/components/enhanced/CategoryFilter";
@@ -10,6 +9,8 @@ import { AdvancedFilters } from "@/components/enhanced/AdvancedFilters";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const EnhancedTools = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,6 +19,8 @@ const EnhancedTools = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('name');
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const isMobile = useIsMobile();
   
   const [advancedFilters, setAdvancedFilters] = useState({
     difficultyRange: [1, 10] as [number, number],
@@ -112,44 +115,62 @@ const EnhancedTools = () => {
     });
   };
 
+  const FiltersContent = () => (
+    <div className="space-y-6">
+      <CategoryFilter
+        selectedCategory={selectedCategory}
+        selectedSubcategory={selectedSubcategory}
+        onCategoryChange={setSelectedCategory}
+        onSubcategoryChange={setSelectedSubcategory}
+        toolCounts={toolCounts}
+      />
+
+      {showAdvancedFilters && (
+        <AdvancedFilters
+          filters={advancedFilters}
+          onFiltersChange={setAdvancedFilters}
+          onClearFilters={clearAllFilters}
+        />
+      )}
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
             Explorar Herramientas AI y No-Code
           </h1>
-          <p className="text-gray-600 mb-4">
+          <p className="text-sm md:text-base text-gray-600 mb-4">
             Descubre más de 500+ herramientas organizadas en categorías especializadas
           </p>
           
           {/* Stats */}
-          <div className="flex gap-6 text-sm text-gray-600">
-            <div className="flex items-center gap-2">
-              <Badge variant="outline">{expandedToolsDatabase.length} herramientas</Badge>
-              <Badge variant="outline">{Object.keys(toolCounts).length} categorías</Badge>
-              <Badge variant="outline">{filteredTools.length} resultados</Badge>
-            </div>
+          <div className="flex flex-wrap gap-2 md:gap-6 text-sm text-gray-600">
+            <Badge variant="outline">{expandedToolsDatabase.length} herramientas</Badge>
+            <Badge variant="outline">{Object.keys(toolCounts).length} categorías</Badge>
+            <Badge variant="outline">{filteredTools.length} resultados</Badge>
           </div>
         </div>
 
         {/* Search and Controls */}
         <div className="mb-6 space-y-4">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
-                placeholder="Buscar herramientas por nombre, descripción o tags..."
+                placeholder="Buscar herramientas..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-11 md:h-10"
               />
             </div>
             
             <div className="flex gap-2">
               <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-48">
+                <SelectTrigger className="w-36 md:w-48 h-11 md:h-10">
                   <SelectValue placeholder="Ordenar por..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -165,40 +186,60 @@ const EnhancedTools = () => {
                 variant="outline"
                 size="icon"
                 onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                className="h-11 w-11 md:h-10 md:w-10"
               >
                 {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
               </Button>
 
-              <Button
-                variant="outline"
-                onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-              >
-                <Filter className="mr-2 h-4 w-4" />
-                Filtros
-              </Button>
+              {/* Mobile Filters Button */}
+              {isMobile ? (
+                <Sheet open={isFiltersOpen} onOpenChange={setIsFiltersOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" className="h-11 md:h-10">
+                      <Filter className="mr-2 h-4 w-4" />
+                      Filtros
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+                    <SheetHeader>
+                      <SheetTitle>Filtros de Herramientas</SheetTitle>
+                    </SheetHeader>
+                    <div className="mt-6">
+                      <div className="mb-4">
+                        <Button
+                          variant="outline"
+                          onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                          className="w-full"
+                        >
+                          <Filter className="mr-2 h-4 w-4" />
+                          Filtros Avanzados
+                        </Button>
+                      </div>
+                      <FiltersContent />
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              ) : (
+                <Button
+                  variant="outline"
+                  onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+                  className="h-11 md:h-10"
+                >
+                  <Filter className="mr-2 h-4 w-4" />
+                  Filtros
+                </Button>
+              )}
             </div>
           </div>
         </div>
 
         <div className="flex gap-6">
-          {/* Sidebar */}
-          <div className="w-80 space-y-6">
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              selectedSubcategory={selectedSubcategory}
-              onCategoryChange={setSelectedCategory}
-              onSubcategoryChange={setSelectedSubcategory}
-              toolCounts={toolCounts}
-            />
-
-            {showAdvancedFilters && (
-              <AdvancedFilters
-                filters={advancedFilters}
-                onFiltersChange={setAdvancedFilters}
-                onClearFilters={clearAllFilters}
-              />
-            )}
-          </div>
+          {/* Desktop Sidebar */}
+          {!isMobile && (
+            <div className="w-80 space-y-6">
+              <FiltersContent />
+            </div>
+          )}
 
           {/* Main Content */}
           <div className="flex-1">
@@ -217,8 +258,8 @@ const EnhancedTools = () => {
             ) : (
               <div className={
                 viewMode === 'grid' 
-                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                  : "space-y-4"
+                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6"
+                  : "space-y-3 md:space-y-4"
               }>
                 {filteredTools.map((tool) => (
                   <EnhancedToolCard

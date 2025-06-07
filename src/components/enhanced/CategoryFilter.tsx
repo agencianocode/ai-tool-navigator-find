@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { enhancedCategories, subcategories } from "@/data/expandedToolsDatabase";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface CategoryFilterProps {
   selectedCategory: string | null;
@@ -19,6 +20,8 @@ export const CategoryFilter = ({
   onSubcategoryChange,
   toolCounts = {}
 }: CategoryFilterProps) => {
+  const isMobile = useIsMobile();
+  
   const mainCategories = [
     'AI Writing & Content',
     'No-Code Platforms',
@@ -56,7 +59,7 @@ export const CategoryFilter = ({
   const CategoryButton = ({ category }: { category: string }) => (
     <Button
       variant={selectedCategory === category ? "default" : "outline"}
-      size="sm"
+      size={isMobile ? "default" : "sm"}
       onClick={() => {
         if (selectedCategory === category) {
           onCategoryChange(null);
@@ -66,24 +69,24 @@ export const CategoryFilter = ({
           onSubcategoryChange(null);
         }
       }}
-      className="justify-between w-full"
+      className={`justify-between w-full ${isMobile ? 'h-11 text-sm' : 'h-9'} transition-colors`}
     >
-      <span className="truncate">{category}</span>
-      <Badge variant="secondary" className="ml-2">
+      <span className="truncate text-left">{category}</span>
+      <Badge variant="secondary" className={`ml-2 ${isMobile ? 'text-xs px-2' : 'text-xs'}`}>
         {getToolCount(category)}
       </Badge>
     </Button>
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 md:space-y-6">
       <Tabs defaultValue="main" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="main">Principales</TabsTrigger>
-          <TabsTrigger value="ai">IA Especializada</TabsTrigger>
+        <TabsList className={`grid w-full grid-cols-2 ${isMobile ? 'h-11' : ''}`}>
+          <TabsTrigger value="main" className={isMobile ? 'text-sm' : ''}>Principales</TabsTrigger>
+          <TabsTrigger value="ai" className={isMobile ? 'text-sm' : ''}>IA Especializada</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="main" className="space-y-2">
+        <TabsContent value="main" className="space-y-2 mt-4">
           <div className="grid grid-cols-1 gap-2">
             {mainCategories.map(category => (
               <CategoryButton key={category} category={category} />
@@ -91,7 +94,7 @@ export const CategoryFilter = ({
           </div>
         </TabsContent>
         
-        <TabsContent value="ai" className="space-y-2">
+        <TabsContent value="ai" className="space-y-2 mt-4">
           <div className="grid grid-cols-1 gap-2">
             {aiSpecificCategories.map(category => (
               <CategoryButton key={category} category={category} />
@@ -102,8 +105,10 @@ export const CategoryFilter = ({
 
       {/* Subcategory filters */}
       {selectedCategory && (
-        <div className="space-y-2">
-          <h4 className="text-sm font-medium text-gray-700">Subcategorías</h4>
+        <div className="space-y-3">
+          <h4 className={`font-medium text-gray-700 ${isMobile ? 'text-sm' : 'text-sm'}`}>
+            Subcategorías
+          </h4>
           <div className="flex flex-wrap gap-2">
             {subcategories.map(subcategory => (
               <Button
@@ -117,7 +122,7 @@ export const CategoryFilter = ({
                     onSubcategoryChange(subcategory);
                   }
                 }}
-                className="text-xs"
+                className={`text-xs transition-colors ${isMobile ? 'h-9 px-3' : 'h-8'}`}
               >
                 {subcategory}
               </Button>
@@ -130,12 +135,12 @@ export const CategoryFilter = ({
       {(selectedCategory || selectedSubcategory) && (
         <Button
           variant="ghost"
-          size="sm"
+          size={isMobile ? "default" : "sm"}
           onClick={() => {
             onCategoryChange(null);
             onSubcategoryChange(null);
           }}
-          className="w-full"
+          className={`w-full text-gray-600 hover:text-gray-900 ${isMobile ? 'h-11' : ''}`}
         >
           Limpiar filtros
         </Button>
