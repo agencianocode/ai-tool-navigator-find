@@ -3,106 +3,106 @@ import { EnhancedTool } from '../types';
 
 export const aiImageVideoTools: EnhancedTool[] = [
   {
-    id: 'midjourney-8',
+    id: 'midjourney-6',
     name: 'Midjourney',
     category: 'AI Image & Video',
     subcategory: 'Image Generation',
-    description: 'Midjourney es una herramienta de IA que genera imágenes artísticas de alta calidad a partir de descripciones de texto.',
-    pricing: '$10/mes Basic, $30/mes Standard',
+    description: 'Midjourney es una herramienta de IA que genera imágenes artísticas a partir de descripciones de texto.',
+    pricing: 'Basic $10/mes, Standard $30/mes, Pro $60/mes',
     complexity: 'intermediate',
-    difficulty_level: 5,
+    difficulty_level: 4,
     learning_curve: 'moderate',
-    community_size: 'large',
-    integration_options: ['Discord Bot', 'API Beta'],
-    tags: ['arte', 'diseño', 'ilustración', 'creatividad'],
-    logoPlaceholder: 'photo-1547036967-23d11aacaee0',
+    community_size: 'massive',
+    integration_options: ['Discord', 'API (próximamente)', 'Web interface'],
+    tags: ['generación de imágenes', 'arte', 'creativo', 'Discord'],
+    logoPlaceholder: 'photo-1547658719-da2b51169166',
     website: 'https://midjourney.com',
-    apiAvailable: true,
+    apiAvailable: false,
     freeVersion: false,
     use_case_examples: [
-      'Ilustraciones para artículos',
-      'Conceptos de diseño',
-      'Arte digital',
-      'Mockups creativos'
+      'Arte conceptual',
+      'Ilustraciones',
+      'Diseño de personajes',
+      'Inspiración visual'
     ],
     comparison_matrix: {
-      ease_of_use: 6,
+      ease_of_use: 7,
       feature_richness: 9,
       pricing_value: 7,
-      support_quality: 7,
+      support_quality: 6,
       scalability: 8
     },
-    similar_tools: ['dall-e-9', 'stable-diffusion-10'],
-    founded_year: 2022,
-    user_rating: 4.5,
+    similar_tools: ['dall-e-7', 'stable-diffusion-8'],
+    founded_year: 2021,
+    user_rating: 4.3,
     monthly_active_users: '15M+',
     key_features: [
-      'Generación de imágenes artísticas',
-      'Estilos personalizables',
-      'Alta resolución',
-      'Interfaz Discord'
+      'Calidad artística superior',
+      'Estilos variados',
+      'Upscaling',
+      'Variations'
     ],
     pros: [
-      'Calidad artística excepcional',
+      'Calidad de imagen excepcional',
       'Comunidad activa',
-      'Estilos únicos'
+      'Resultados artísticos'
     ],
     cons: [
-      'Solo funciona en Discord',
-      'Sin versión gratuita',
+      'Usa Discord',
+      'No hay plan gratuito',
       'Curva de aprendizaje'
     ],
     best_for: [
       'Artistas digitales',
-      'Diseñadores gráficos',
-      'Creadores de contenido'
+      'Diseñadores',
+      'Creativos'
     ],
-    alternatives: ['DALL-E', 'Stable Diffusion', 'Leonardo AI']
+    alternatives: ['DALL-E', 'Stable Diffusion', 'Adobe Firefly']
   },
   {
-    id: 'dall-e-9',
+    id: 'dall-e-7',
     name: 'DALL-E 3',
     category: 'AI Image & Video',
     subcategory: 'Image Generation',
     description: 'DALL-E 3 de OpenAI genera imágenes realistas y artísticas a partir de descripciones en lenguaje natural.',
-    pricing: 'Incluido en ChatGPT Plus $20/mes, API $0.04-0.12/imagen',
+    pricing: 'Incluido en ChatGPT Plus $20/mes',
     complexity: 'beginner',
-    difficulty_level: 3,
-    learning_curve: 'gentle',
-    community_size: 'massive',
-    integration_options: ['ChatGPT', 'OpenAI API', 'Microsoft Designer'],
-    tags: ['generación', 'realista', 'OpenAI', 'texto a imagen'],
-    logoPlaceholder: 'photo-1677442136019-21780ecad995',
+    difficulty_level: 2,
+    learning_curve: 'immediate',
+    community_size: 'large',
+    integration_options: ['ChatGPT', 'API OpenAI', 'Bing Image Creator'],
+    tags: ['generación de imágenes', 'OpenAI', 'realista', 'fácil'],
+    logoPlaceholder: 'photo-1547658719-da2b51169166',
     website: 'https://openai.com/dall-e-3',
     apiAvailable: true,
-    freeVersion: false,
+    freeVersion: true,
     use_case_examples: [
-      'Ilustraciones de productos',
-      'Contenido para redes sociales',
+      'Imágenes para contenido',
       'Conceptos visuales',
-      'Arte personalizado'
+      'Marketing materials',
+      'Presentaciones'
     ],
     comparison_matrix: {
-      ease_of_use: 9,
+      ease_of_use: 10,
       feature_richness: 8,
-      pricing_value: 7,
+      pricing_value: 8,
       support_quality: 8,
       scalability: 8
     },
-    similar_tools: ['midjourney-8', 'leonardo-ai-10'],
-    founded_year: 2021,
+    similar_tools: ['midjourney-6', 'stable-diffusion-8'],
+    founded_year: 2023,
     user_rating: 4.4,
-    monthly_active_users: '20M+',
+    monthly_active_users: '10M+',
     key_features: [
       'Integración con ChatGPT',
-      'Interpretación natural',
-      'Imágenes realistas',
-      'Seguridad integrada'
+      'Comprende texto complejo',
+      'Edición de imágenes',
+      'Múltiples estilos'
     ],
     pros: [
       'Muy fácil de usar',
       'Integrado con ChatGPT',
-      'Resultados consistentes'
+      'Comprende bien el contexto'
     ],
     cons: [
       'Requiere suscripción',
@@ -111,139 +111,139 @@ export const aiImageVideoTools: EnhancedTool[] = [
     ],
     best_for: [
       'Usuarios de ChatGPT',
-      'Contenido comercial',
+      'Content creators',
       'Principiantes'
     ],
-    alternatives: ['Midjourney', 'Leonardo AI', 'Firefly']
+    alternatives: ['Midjourney', 'Stable Diffusion', 'Adobe Firefly']
   },
   {
-    id: 'leonardo-ai-10',
-    name: 'Leonardo AI',
+    id: 'stable-diffusion-8',
+    name: 'Stable Diffusion',
     category: 'AI Image & Video',
     subcategory: 'Image Generation',
-    description: 'Leonardo AI se especializa en generación de imágenes para gaming, arte conceptual y assets creativos.',
-    pricing: 'Gratis hasta 150 tokens/día, $10/mes Apprentice',
-    complexity: 'intermediate',
-    difficulty_level: 4,
-    learning_curve: 'moderate',
-    community_size: 'medium',
-    integration_options: ['API', 'Plugins', 'Web interface'],
-    tags: ['gaming', 'arte conceptual', 'assets', 'creatividad'],
-    logoPlaceholder: 'photo-1618005182384-a83a8bd57fbe',
-    website: 'https://leonardo.ai',
+    description: 'Stable Diffusion es un modelo de IA open source para generar imágenes de alta calidad.',
+    pricing: 'Gratis (open source), servicios desde $10/mes',
+    complexity: 'advanced',
+    difficulty_level: 7,
+    learning_curve: 'steep',
+    community_size: 'large',
+    integration_options: ['Local installation', 'Hugging Face', 'Various UIs'],
+    tags: ['open source', 'local', 'personalizable', 'técnico'],
+    logoPlaceholder: 'photo-1547658719-da2b51169166',
+    website: 'https://stability.ai',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Arte conceptual para juegos',
-      'Assets para videojuegos',
-      'Ilustraciones fantasy',
-      'Diseño de personajes'
+      'Modelos personalizados',
+      'Arte generativo',
+      'Investigación',
+      'Aplicaciones comerciales'
     ],
     comparison_matrix: {
-      ease_of_use: 7,
-      feature_richness: 8,
-      pricing_value: 8,
-      support_quality: 7,
-      scalability: 7
+      ease_of_use: 4,
+      feature_richness: 10,
+      pricing_value: 10,
+      support_quality: 6,
+      scalability: 9
     },
-    similar_tools: ['midjourney-8', 'dall-e-9'],
+    similar_tools: ['midjourney-6', 'dall-e-7'],
     founded_year: 2022,
-    user_rating: 4.3,
-    monthly_active_users: '5M+',
+    user_rating: 4.1,
+    monthly_active_users: '2M+',
     key_features: [
-      'Modelos especializados',
-      'Control de generación',
-      'Fine-tuning',
-      'Múltiples estilos'
+      'Completamente open source',
+      'Ejecución local',
+      'Modelos personalizables',
+      'Sin censura'
     ],
     pros: [
-      'Especializado en gaming',
-      'Plan gratuito generoso',
-      'Control avanzado'
+      'Gratis y open source',
+      'Muy personalizable',
+      'Sin limitaciones de contenido'
     ],
     cons: [
-      'Interfaz más compleja',
-      'Menos conocido',
-      'Comunidad más pequeña'
+      'Requiere conocimiento técnico',
+      'Setup complejo',
+      'Demanda recursos'
     ],
     best_for: [
-      'Desarrolladores de juegos',
-      'Artistas conceptuales',
-      'Diseñadores creativos'
+      'Desarrolladores',
+      'Investigadores',
+      'Usuarios avanzados'
     ],
-    alternatives: ['Midjourney', 'DALL-E', 'Stable Diffusion']
+    alternatives: ['Midjourney', 'DALL-E', 'Adobe Firefly']
   },
   {
-    id: 'runway-ml-11',
-    name: 'Runway ML',
+    id: 'runway-9',
+    name: 'Runway',
     category: 'AI Image & Video',
     subcategory: 'Video Creation',
-    description: 'Runway ML es una plataforma de IA que permite crear y editar videos con herramientas de machine learning.',
-    pricing: 'Gratis básico, $12/mes Standard',
-    complexity: 'advanced',
-    difficulty_level: 6,
-    learning_curve: 'steep',
+    description: 'Runway es una plataforma de IA para crear y editar videos con herramientas generativas avanzadas.',
+    pricing: 'Gratis con límites, Standard $12/mes, Pro $28/mes',
+    complexity: 'intermediate',
+    difficulty_level: 5,
+    learning_curve: 'moderate',
     community_size: 'medium',
-    integration_options: ['Adobe Premiere', 'After Effects', 'API'],
-    tags: ['video', 'edición', 'machine learning', 'creativo'],
-    logoPlaceholder: 'photo-1536240478700-b869070f9279',
+    integration_options: ['Adobe Premiere', 'After Effects', 'APIs'],
+    tags: ['video IA', 'edición', 'generativo', 'profesional'],
+    logoPlaceholder: 'photo-1574375927938-d5a98e8ffe85',
     website: 'https://runwayml.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Generación de video desde texto',
-      'Edición automática',
-      'Efectos visuales',
-      'Animación de imágenes'
+      'Edición de video automática',
+      'Generación de video',
+      'Efectos especiales',
+      'Rotoscoping'
     ],
     comparison_matrix: {
-      ease_of_use: 6,
+      ease_of_use: 7,
       feature_richness: 9,
       pricing_value: 7,
       support_quality: 7,
       scalability: 8
     },
-    similar_tools: ['synthesia-12', 'pictory-13'],
+    similar_tools: ['pika-labs-10', 'synthesia-11'],
     founded_year: 2018,
     user_rating: 4.2,
-    monthly_active_users: '1M+',
+    monthly_active_users: '500K+',
     key_features: [
-      'Generación de video AI',
-      'Green screen automático',
-      'Inpainting de video',
-      'Múltiples herramientas ML'
+      'Text to video',
+      'Video editing AI',
+      'Background removal',
+      'Style transfer'
     ],
     pros: [
-      'Tecnología muy avanzada',
-      'Múltiples herramientas',
-      'Resultados impresionantes'
+      'Muy innovador',
+      'Múltiples herramientas IA',
+      'Calidad profesional'
     ],
     cons: [
-      'Curva de aprendizaje pronunciada',
-      'Requiere poder de cómputo',
-      'Puede ser costoso'
+      'Precio puede ser alto',
+      'Curva de aprendizaje',
+      'Requiere buenos prompts'
     ],
     best_for: [
-      'Editores profesionales',
-      'Creadores de contenido avanzados',
-      'Estudios creativos'
+      'Editores de video',
+      'Content creators',
+      'Productoras'
     ],
-    alternatives: ['Synthesia', 'Pictory', 'Luma AI']
+    alternatives: ['Pika Labs', 'Synthesia', 'Adobe Premiere']
   },
   {
-    id: 'canva-ai-12',
-    name: 'Canva AI',
+    id: 'canva-10',
+    name: 'Canva',
     category: 'AI Image & Video',
     subcategory: 'Design Assets',
-    description: 'Canva integra herramientas de IA para generar imágenes, textos y diseños automáticamente.',
-    pricing: 'Gratis básico, Pro $12.99/mes',
+    description: 'Canva es una plataforma de diseño gráfico con herramientas de IA para crear contenido visual.',
+    pricing: 'Gratis con límites, Pro $12.99/mes, Teams $14.99/mes',
     complexity: 'beginner',
     difficulty_level: 2,
     learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['Canva Apps', 'Social media platforms', 'Cloud storage'],
-    tags: ['diseño', 'plantillas', 'redes sociales', 'marketing'],
-    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
+    integration_options: ['Social media platforms', 'Google Drive', 'Dropbox'],
+    tags: ['diseño gráfico', 'templates', 'social media', 'marketing'],
+    logoPlaceholder: 'photo-1558655146-d09347e92766',
     website: 'https://canva.com',
     apiAvailable: true,
     freeVersion: true,
@@ -251,40 +251,40 @@ export const aiImageVideoTools: EnhancedTool[] = [
       'Posts para redes sociales',
       'Presentaciones',
       'Logos y branding',
-      'Material de marketing'
+      'Marketing materials'
     ],
     comparison_matrix: {
       ease_of_use: 10,
-      feature_richness: 7,
+      feature_richness: 8,
       pricing_value: 9,
       support_quality: 8,
-      scalability: 8
+      scalability: 7
     },
-    similar_tools: ['adobe-express-13', 'figma-16'],
+    similar_tools: ['adobe-express-11', 'figma-19'],
     founded_year: 2013,
-    user_rating: 4.6,
-    monthly_active_users: '130M+',
+    user_rating: 4.7,
+    monthly_active_users: '135M+',
     key_features: [
-      'Magic Design',
-      'Text to Image',
-      'Background Remover',
-      'Plantillas inteligentes'
+      'Miles de templates',
+      'Magic Design (IA)',
+      'Brand kit',
+      'Colaboración en equipo'
     ],
     pros: [
       'Extremadamente fácil',
-      'Miles de plantillas',
-      'AI integrada naturalmente'
+      'Gran biblioteca de assets',
+      'IA integrada'
     ],
     cons: [
-      'Limitaciones en personalización',
-      'Dependiente de plantillas',
-      'Algunas funciones requieren Pro'
+      'Limitado para diseño avanzado',
+      'Dependiente de templates',
+      'Branding en plan gratuito'
     ],
     best_for: [
-      'No-diseñadores',
-      'Marketing digital',
-      'Contenido rápido'
+      'Small businesses',
+      'Social media managers',
+      'Principiantes en diseño'
     ],
-    alternatives: ['Adobe Express', 'Figma', 'Piktochart']
+    alternatives: ['Adobe Express', 'Figma', 'Sketch']
   }
 ];

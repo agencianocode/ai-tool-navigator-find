@@ -3,174 +3,174 @@ import { EnhancedTool } from '../types';
 
 export const businessAutomationTools: EnhancedTool[] = [
   {
-    id: 'make-46',
-    name: 'Make (Integromat)',
+    id: 'zapier-automation-77',
+    name: 'Zapier',
     category: 'Business Automation',
     subcategory: 'Workflow Automation',
-    description: 'Make es una plataforma de automatización visual que permite crear flujos de trabajo complejos entre aplicaciones sin código.',
-    pricing: 'Gratis hasta 1,000 operaciones/mes, Core $9/mes',
-    complexity: 'intermediate',
-    difficulty_level: 5,
-    learning_curve: 'moderate',
-    community_size: 'large',
-    integration_options: ['1000+ aplicaciones', 'Webhooks', 'API REST', 'HTTP'],
-    tags: ['automatización', 'integración', 'workflows', 'visual'],
-    logoPlaceholder: 'photo-1551288049-bebda4e38f71',
-    website: 'https://make.com',
+    description: 'Zapier conecta aplicaciones y automatiza flujos de trabajo sin necesidad de programación.',
+    pricing: 'Gratis con límites, $19.99/mes Starter',
+    complexity: 'beginner',
+    difficulty_level: 3,
+    learning_curve: 'gentle',
+    community_size: 'massive',
+    integration_options: ['5000+ aplicaciones', 'Webhooks', 'API REST'],
+    tags: ['automatización', 'integración', 'flujos de trabajo', 'productividad'],
+    logoPlaceholder: 'photo-1518709268805-4e9042af2176',
+    website: 'https://zapier.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Automatización de ventas',
+      'Automatización de emails',
       'Sincronización de datos',
-      'Procesos de marketing',
-      'Gestión de inventario'
+      'Notificaciones automáticas',
+      'Generación de reportes'
     ],
     comparison_matrix: {
-      ease_of_use: 7,
+      ease_of_use: 9,
       feature_richness: 9,
-      pricing_value: 8,
+      pricing_value: 7,
       support_quality: 8,
       scalability: 9
     },
-    similar_tools: ['zapier-22', 'power-automate-47'],
-    founded_year: 2012,
-    user_rating: 4.5,
-    monthly_active_users: '500K+',
+    similar_tools: ['make-78', 'microsoft-power-automate-79'],
+    founded_year: 2011,
+    user_rating: 4.4,
+    monthly_active_users: '5M+',
     key_features: [
+      'Miles de integraciones',
       'Editor visual de flujos',
-      'Ejecución en tiempo real',
-      'Manejo de errores avanzado',
-      'Transformación de datos'
+      'Triggers automáticos',
+      'Filtros y condiciones'
     ],
     pros: [
-      'Muy potente y flexible',
-      'Interfaz visual clara',
-      'Excelente para flujos complejos'
+      'Muy fácil de usar',
+      'Muchas integraciones',
+      'Comunidad activa'
     ],
     cons: [
-      'Curva de aprendizaje pronunciada',
-      'Puede ser costoso para uso intensivo',
-      'Interfaz puede ser abrumadora'
+      'Puede ser caro para uso intensivo',
+      'Límites en plan gratuito',
+      'Dependiente de APIs externas'
     ],
     best_for: [
-      'Empresas medianas',
-      'Automatización compleja',
-      'Equipos técnicos'
+      'Pequeñas empresas',
+      'Freelancers',
+      'Equipos de marketing'
     ],
-    alternatives: ['Zapier', 'Microsoft Power Automate', 'n8n']
+    alternatives: ['Make', 'Microsoft Power Automate', 'IFTTT']
   },
   {
-    id: 'calendly-47',
+    id: 'monday-78',
+    name: 'Monday.com',
+    category: 'Business Automation',
+    subcategory: 'Project Management',
+    description: 'Monday.com es una plataforma de gestión de trabajo que automatiza procesos empresariales.',
+    pricing: 'Basic $8/usuario/mes, Standard $10/usuario/mes, Pro $16/usuario/mes',
+    complexity: 'intermediate',
+    difficulty_level: 4,
+    learning_curve: 'moderate',
+    community_size: 'large',
+    integration_options: ['Slack', 'Google Workspace', 'Microsoft Teams', 'Zapier'],
+    tags: ['project management', 'workflow', 'team collaboration', 'automation'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
+    website: 'https://monday.com',
+    apiAvailable: true,
+    freeVersion: false,
+    use_case_examples: [
+      'Gestión de proyectos',
+      'Tracking de tareas',
+      'Automatización de workflows',
+      'Reportes automáticos'
+    ],
+    comparison_matrix: {
+      ease_of_use: 8,
+      feature_richness: 9,
+      pricing_value: 7,
+      support_quality: 8,
+      scalability: 9
+    },
+    similar_tools: ['asana-79', 'trello-80'],
+    founded_year: 2012,
+    user_rating: 4.6,
+    monthly_active_users: '152K+ teams',
+    key_features: [
+      'Visual project boards',
+      'Automation recipes',
+      'Time tracking',
+      'Custom dashboards'
+    ],
+    pros: [
+      'Muy visual e intuitivo',
+      'Automatización potente',
+      'Excelente para equipos'
+    ],
+    cons: [
+      'Precio puede ser alto',
+      'Curva de aprendizaje',
+      'No hay plan gratuito'
+    ],
+    best_for: [
+      'Equipos medianos y grandes',
+      'Gestión de proyectos',
+      'Empresas que necesitan automatización'
+    ],
+    alternatives: ['Asana', 'Trello', 'ClickUp']
+  },
+  {
+    id: 'calendly-79',
     name: 'Calendly',
     category: 'Business Automation',
-    subcategory: 'Scheduling',
-    description: 'Calendly automatiza la programación de reuniones y citas, eliminando el intercambio de emails para coordinar horarios.',
-    pricing: 'Gratis básico, Essentials $8/mes, Professional $12/mes',
+    subcategory: 'Scheduling Automation',
+    description: 'Calendly automatiza la programación de reuniones eliminando emails de ida y vuelta.',
+    pricing: 'Gratis con límites, Essentials $8/mes, Professional $12/mes',
     complexity: 'beginner',
     difficulty_level: 2,
     learning_curve: 'immediate',
-    community_size: 'massive',
-    integration_options: ['Zoom', 'Google Calendar', 'Outlook', 'Salesforce'],
-    tags: ['programación', 'reuniones', 'calendario', 'productividad'],
-    logoPlaceholder: 'photo-1506905925346-21bda4d32df4',
+    community_size: 'large',
+    integration_options: ['Google Calendar', 'Outlook', 'Zoom', 'Salesforce'],
+    tags: ['scheduling', 'calendario', 'automatización', 'reuniones'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://calendly.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Reuniones de ventas',
-      'Consultas médicas',
-      'Entrevistas de trabajo',
+      'Programar reuniones',
+      'Consultas de ventas',
+      'Entrevistas',
       'Sesiones de coaching'
     ],
     comparison_matrix: {
       ease_of_use: 10,
-      feature_richness: 8,
-      pricing_value: 8,
+      feature_richness: 7,
+      pricing_value: 9,
       support_quality: 8,
       scalability: 8
     },
-    similar_tools: ['acuity-48', 'booksy-49'],
+    similar_tools: ['acuity-scheduling-80', 'doodle-81'],
     founded_year: 2013,
     user_rating: 4.7,
     monthly_active_users: '10M+',
     key_features: [
-      'Programación automática',
-      'Múltiples tipos de eventos',
-      'Integraciones de video',
+      'Link de programación',
+      'Disponibilidad personalizada',
+      'Integración con calendarios',
       'Recordatorios automáticos'
     ],
     pros: [
-      'Extremadamente fácil de usar',
-      'Elimina el back-and-forth',
-      'Excelentes integraciones'
+      'Extremadamente fácil',
+      'Ahorra mucho tiempo',
+      'Integración perfecta'
     ],
     cons: [
-      'Limitaciones en plan gratuito',
-      'Funciones avanzadas de pago',
-      'Personalización limitada'
+      'Funciones limitadas gratis',
+      'Personalización limitada',
+      'Dependiente de calendarios externos'
     ],
     best_for: [
-      'Profesionales que programan reuniones',
-      'Equipos de ventas',
-      'Consultores'
+      'Profesionales de ventas',
+      'Consultores',
+      'Cualquiera que programe reuniones'
     ],
-    alternatives: ['Acuity Scheduling', 'YouCanBookMe', 'Booksy']
-  },
-  {
-    id: 'typeform-48',
-    name: 'Typeform',
-    category: 'Business Automation',
-    subcategory: 'Data Collection',
-    description: 'Typeform crea formularios interactivos y encuestas que mejoran la experiencia del usuario y aumentan las tasas de respuesta.',
-    pricing: 'Gratis hasta 100 respuestas/mes, Basic $25/mes',
-    complexity: 'beginner',
-    difficulty_level: 3,
-    learning_curve: 'gentle',
-    community_size: 'large',
-    integration_options: ['Zapier', 'Google Sheets', 'Mailchimp', 'Slack'],
-    tags: ['formularios', 'encuestas', 'interactivo', 'conversacional'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
-    website: 'https://typeform.com',
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: [
-      'Encuestas de satisfacción',
-      'Formularios de contacto',
-      'Cuestionarios de leads',
-      'Evaluaciones de empleados'
-    ],
-    comparison_matrix: {
-      ease_of_use: 9,
-      feature_richness: 7,
-      pricing_value: 6,
-      support_quality: 7,
-      scalability: 7
-    },
-    similar_tools: ['google-forms-49', 'jotform-50'],
-    founded_year: 2012,
-    user_rating: 4.4,
-    monthly_active_users: '500K+',
-    key_features: [
-      'Formularios conversacionales',
-      'Lógica condicional',
-      'Diseños personalizables',
-      'Análisis en tiempo real'
-    ],
-    pros: [
-      'Interfaz muy atractiva',
-      'Alta tasa de conversión',
-      'Experiencia móvil excelente'
-    ],
-    cons: [
-      'Precio elevado para funciones básicas',
-      'Limitaciones en plan gratuito',
-      'Menos funciones que competidores'
-    ],
-    best_for: [
-      'Marketing y ventas',
-      'Investigación de mercado',
-      'Recolección de feedback'
-    ],
-    alternatives: ['Google Forms', 'JotForm', 'SurveyMonkey']
+    alternatives: ['Acuity Scheduling', 'Doodle', 'When2meet']
   }
 ];

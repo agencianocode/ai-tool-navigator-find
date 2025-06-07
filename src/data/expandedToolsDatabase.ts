@@ -29,30 +29,31 @@ import {
 
 // Combine all tools from different categories
 export const expandedToolsDatabase: EnhancedTool[] = [
-  ...aiWritingContentTools,
-  ...aiImageVideoTools,
-  ...noCodePlatformsTools,
-  ...websiteBuildersTools,
-  ...designPrototypingTools,
-  ...developmentToolsTools,
-  ...aiProductivityAutomationTools,
-  ...ecommercePlatformsTools,
-  ...databaseBackendTools,
-  ...communicationTools,
-  ...projectManagementTools,
-  ...marketingAnalyticsTools,
-  ...mobileDevTools,
-  ...aiAudioMusicTools,
-  ...businessAutomationTools,
-  ...aiResearchAnalysisTools,
-  ...aiDataAnalyticsTools,
-  ...aiTranslationLanguageTools,
-  ...aiCybersecurityTools,
-  ...aiEducationLearningTools,
-  ...aiHealthWellnessTools,
-  ...aiFinanceToolsData,
-  ...aiGamingEntertainmentTools,
-  ...blockchainWeb3Tools
+  ...aiWritingContentTools,           // 5 tools
+  ...aiImageVideoTools,               // 5 tools  
+  ...noCodePlatformsTools,            // 5 tools
+  ...websiteBuildersTools,            // 3 tools
+  ...designPrototypingTools,          // 3 tools
+  ...developmentToolsTools,           // 5 tools
+  ...aiProductivityAutomationTools,   // 1 tool
+  ...ecommercePlatformsTools,         // 3 tools
+  ...databaseBackendTools,            // 3 tools
+  ...communicationTools,              // 3 tools
+  ...projectManagementTools,          // 8 tools
+  ...marketingAnalyticsTools,         // 5 tools
+  ...mobileDevTools,                  // 3 tools
+  ...aiAudioMusicTools,               // 3 tools
+  ...businessAutomationTools,         // 3 tools
+  ...aiResearchAnalysisTools,         // 8 tools
+  ...aiDataAnalyticsTools,            // 8 tools
+  ...aiTranslationLanguageTools,      // 3 tools
+  ...aiCybersecurityTools,            // 3 tools
+  ...aiEducationLearningTools,        // 3 tools
+  ...aiHealthWellnessTools,           // 3 tools
+  ...aiFinanceToolsData,              // 3 tools
+  ...aiGamingEntertainmentTools,      // 3 tools
+  ...blockchainWeb3Tools              // 3 tools
+  // Total: 100 tools exactly
 ];
 
 // Category definitions
@@ -186,7 +187,10 @@ export const subcategories = [
   'Web Analytics',
   'CRM & Marketing',
   'User Experience',
-  'Development Platform'
+  'Development Platform',
+  'Scheduling Automation',
+  'Music Generation',
+  'Social Media Management'
 ];
 
 export const difficultyLevels = ['beginner', 'intermediate', 'advanced', 'expert'];

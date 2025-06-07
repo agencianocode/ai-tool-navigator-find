@@ -7,284 +7,284 @@ export const aiWritingContentTools: EnhancedTool[] = [
     name: 'ChatGPT',
     category: 'AI Writing & Content',
     subcategory: 'Text Generation',
-    description: 'ChatGPT es un modelo de lenguaje avanzado que puede generar texto, responder preguntas y asistir en diversas tareas de escritura.',
+    description: 'ChatGPT es un modelo de lenguaje desarrollado por OpenAI que puede generar texto coherente y útil para múltiples propósitos.',
     pricing: 'Gratis con límites, Plus $20/mes',
     complexity: 'beginner',
     difficulty_level: 2,
-    learning_curve: 'gentle',
+    learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['API', 'Plugins', 'Browser Extension'],
-    tags: ['conversación', 'escritura', 'asistente', 'contenido'],
+    integration_options: ['API', 'Plugin ecosystem', 'Browser extension'],
+    tags: ['conversacional', 'texto', 'creativo', 'productividad'],
     logoPlaceholder: 'photo-1677442136019-21780ecad995',
     website: 'https://chat.openai.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Generación de contenido',
-      'Respuestas a preguntas',
-      'Asistencia en escritura',
-      'Brainstorming'
+      'Escritura creativa',
+      'Asistencia con código',
+      'Resúmenes de texto',
+      'Brainstorming de ideas'
     ],
     comparison_matrix: {
       ease_of_use: 10,
       feature_richness: 9,
       pricing_value: 8,
-      support_quality: 8,
+      support_quality: 7,
       scalability: 9
     },
-    similar_tools: ['claude-2', 'bard-3'],
+    similar_tools: ['claude-2', 'google-bard-3'],
     founded_year: 2022,
-    user_rating: 4.6,
+    user_rating: 4.5,
     monthly_active_users: '100M+',
     key_features: [
-      'Conversación natural',
+      'Conversaciones naturales',
       'Múltiples idiomas',
-      'Generación de código',
-      'Análisis de datos'
+      'Razonamiento complejo',
+      'Plugins disponibles'
     ],
     pros: [
       'Muy fácil de usar',
-      'Respuestas precisas',
+      'Respuestas de alta calidad',
       'Amplio conocimiento'
     ],
     cons: [
-      'Límites en versión gratuita',
+      'Información hasta 2023',
       'Puede generar información incorrecta',
-      'Dependiente de conexión'
+      'Límites en plan gratuito'
     ],
     best_for: [
       'Escritores',
       'Estudiantes',
       'Profesionales'
     ],
-    alternatives: ['Claude', 'Bard', 'Bing Chat']
+    alternatives: ['Claude', 'Google Bard', 'Perplexity']
   },
   {
-    id: 'jasper-2',
+    id: 'claude-2',
+    name: 'Claude',
+    category: 'AI Writing & Content',
+    subcategory: 'Text Generation',
+    description: 'Claude es un asistente de IA de Anthropic enfocado en ser útil, inofensivo y honesto en sus respuestas.',
+    pricing: 'Gratis con límites, Pro $20/mes',
+    complexity: 'beginner',
+    difficulty_level: 2,
+    learning_curve: 'immediate',
+    community_size: 'large',
+    integration_options: ['API', 'Slack', 'Web interface'],
+    tags: ['seguro', 'ético', 'análisis', 'escritura'],
+    logoPlaceholder: 'photo-1677442136019-21780ecad995',
+    website: 'https://claude.ai',
+    apiAvailable: true,
+    freeVersion: true,
+    use_case_examples: [
+      'Análisis de documentos',
+      'Escritura técnica',
+      'Investigación',
+      'Edición de textos'
+    ],
+    comparison_matrix: {
+      ease_of_use: 9,
+      feature_richness: 8,
+      pricing_value: 8,
+      support_quality: 8,
+      scalability: 8
+    },
+    similar_tools: ['chatgpt-1', 'google-bard-3'],
+    founded_year: 2022,
+    user_rating: 4.4,
+    monthly_active_users: '10M+',
+    key_features: [
+      'Análisis de documentos largos',
+      'Respuestas seguras',
+      'Razonamiento ético',
+      'Comprensión contextual'
+    ],
+    pros: [
+      'Muy seguro y ético',
+      'Excelente para análisis',
+      'Maneja documentos largos'
+    ],
+    cons: [
+      'Menos conocido',
+      'Puede ser muy cauteloso',
+      'Menos plugins'
+    ],
+    best_for: [
+      'Investigadores',
+      'Análisis de datos',
+      'Escritura profesional'
+    ],
+    alternatives: ['ChatGPT', 'Google Bard', 'Perplexity']
+  },
+  {
+    id: 'jasper-3',
     name: 'Jasper',
     category: 'AI Writing & Content',
     subcategory: 'Marketing Copy',
-    description: 'Jasper es una plataforma de IA especializada en crear contenido de marketing y copy persuasivo.',
-    pricing: 'Creator $39/mes, Teams $99/mes',
+    description: 'Jasper es una plataforma de IA especializada en marketing y copywriting para empresas.',
+    pricing: 'Creator $49/mes, Teams $125/mes',
     complexity: 'intermediate',
     difficulty_level: 4,
     learning_curve: 'moderate',
-    community_size: 'large',
-    integration_options: ['Chrome Extension', 'API', 'Zapier'],
-    tags: ['marketing', 'copy', 'contenido', 'publicidad'],
-    logoPlaceholder: 'photo-1560472354-b33ff0c44a43',
+    community_size: 'medium',
+    integration_options: ['Surfer SEO', 'Grammarly', 'Plagiarism checker'],
+    tags: ['marketing', 'copywriting', 'empresarial', 'SEO'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://jasper.ai',
     apiAvailable: true,
     freeVersion: false,
     use_case_examples: [
       'Copy publicitario',
-      'Posts redes sociales',
-      'Emails marketing',
-      'Landing pages'
+      'Content marketing',
+      'Emails de ventas',
+      'Posts para redes sociales'
     ],
     comparison_matrix: {
       ease_of_use: 8,
       feature_richness: 9,
       pricing_value: 6,
-      support_quality: 9,
-      scalability: 8
+      support_quality: 8,
+      scalability: 9
     },
-    similar_tools: ['copy-ai-3', 'writesonic-4'],
+    similar_tools: ['copy-ai-4', 'writesonic-5'],
     founded_year: 2021,
-    user_rating: 4.4,
-    monthly_active_users: '1M+',
+    user_rating: 4.2,
+    monthly_active_users: '100K+',
     key_features: [
-      'Plantillas especializadas',
+      'Templates de marketing',
       'Brand voice',
-      'Plagiarism checker',
-      'SEO optimization'
+      'SEO optimization',
+      'Team collaboration'
     ],
     pros: [
-      'Excelente para marketing',
-      'Plantillas profesionales',
-      'Buen soporte'
+      'Especializado en marketing',
+      'Templates profesionales',
+      'Integración SEO'
     ],
     cons: [
       'Precio elevado',
-      'No hay plan gratuito',
+      'No tiene plan gratuito',
       'Curva de aprendizaje'
     ],
     best_for: [
-      'Marketers',
+      'Equipos de marketing',
       'Agencias',
-      'Empresas medianas'
+      'E-commerce'
     ],
-    alternatives: ['Copy.ai', 'Writesonic', 'Anyword']
+    alternatives: ['Copy.ai', 'Writesonic', 'ChatGPT']
   },
   {
-    id: 'grammarly-3',
+    id: 'grammarly-4',
     name: 'Grammarly',
     category: 'AI Writing & Content',
     subcategory: 'Grammar & Style',
-    description: 'Grammarly es un asistente de escritura con IA que corrige gramática, ortografía y mejora el estilo.',
-    pricing: 'Gratis básico, Premium $12/mes',
+    description: 'Grammarly es un asistente de escritura que mejora gramática, estilo y claridad en tiempo real.',
+    pricing: 'Gratis con límites, Premium $12/mes',
     complexity: 'beginner',
-    difficulty_level: 2,
+    difficulty_level: 1,
     learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['Browser Extension', 'Microsoft Office', 'Google Docs'],
-    tags: ['gramática', 'corrección', 'estilo', 'escritura'],
-    logoPlaceholder: 'photo-1455390582262-044cdead277a',
+    integration_options: ['Browser extension', 'Microsoft Office', 'Google Docs'],
+    tags: ['gramática', 'corrección', 'estilo', 'productividad'],
+    logoPlaceholder: 'photo-1456513080510-7bf3a84b82f8',
     website: 'https://grammarly.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
       'Corrección de emails',
-      'Revisión de documentos',
-      'Mejora de escritura',
-      'Detección de plagio'
+      'Escritura académica',
+      'Documentos profesionales',
+      'Posts en redes sociales'
     ],
     comparison_matrix: {
       ease_of_use: 10,
       feature_richness: 8,
-      pricing_value: 8,
+      pricing_value: 9,
       support_quality: 8,
-      scalability: 9
+      scalability: 8
     },
-    similar_tools: ['languagetool-4', 'prowritingaid-5'],
+    similar_tools: ['hemingway-editor-5', 'prowritingaid-6'],
     founded_year: 2009,
-    user_rating: 4.5,
+    user_rating: 4.6,
     monthly_active_users: '30M+',
     key_features: [
       'Corrección en tiempo real',
       'Sugerencias de estilo',
       'Detector de plagio',
-      'Análisis de tono'
+      'Tone detection'
     ],
     pros: [
       'Muy fácil de usar',
       'Integración universal',
-      'Correcciones precisas'
+      'Corrección instantánea'
     ],
     cons: [
-      'Limitaciones en versión gratuita',
-      'Enfocado en inglés',
-      'Sugerencias a veces incorrectas'
+      'A veces demasiado estricto',
+      'Funciones limitadas gratis',
+      'Dependiente de internet'
     ],
     best_for: [
       'Estudiantes',
       'Profesionales',
-      'Escritores'
+      'Escritores no nativos'
     ],
-    alternatives: ['LanguageTool', 'ProWritingAid', 'Ginger']
+    alternatives: ['Hemingway Editor', 'ProWritingAid', 'LanguageTool']
   },
   {
-    id: 'notion-ai-4',
+    id: 'notion-ai-5',
     name: 'Notion AI',
     category: 'AI Writing & Content',
     subcategory: 'Content Planning',
-    description: 'Notion AI integra inteligencia artificial directamente en Notion para ayudar con escritura y organización.',
-    pricing: '$10/mes adicional a plan Notion',
-    complexity: 'beginner',
+    description: 'Notion AI integra capacidades de inteligencia artificial directamente en el workspace de Notion.',
+    pricing: '$10/mes adicional a Notion',
+    complexity: 'intermediate',
     difficulty_level: 3,
     learning_curve: 'gentle',
     community_size: 'large',
-    integration_options: ['Notion workspace', 'Templates'],
-    tags: ['productividad', 'organización', 'escritura', 'notas'],
-    logoPlaceholder: 'photo-1504384308090-c894fdcc538d',
+    integration_options: ['Notion workspace', 'Templates', 'Databases'],
+    tags: ['workspace', 'organización', 'productividad', 'colaboración'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://notion.so/ai',
-    apiAvailable: false,
+    apiAvailable: true,
     freeVersion: false,
     use_case_examples: [
-      'Generación de contenido',
-      'Resúmenes automáticos',
-      'Lluvia de ideas',
-      'Mejora de texto'
+      'Resúmenes de reuniones',
+      'Planificación de contenido',
+      'Escritura colaborativa',
+      'Brainstorming de proyectos'
     ],
     comparison_matrix: {
-      ease_of_use: 9,
+      ease_of_use: 8,
       feature_richness: 7,
-      pricing_value: 8,
+      pricing_value: 7,
       support_quality: 8,
       scalability: 8
     },
-    similar_tools: ['chatgpt-1', 'jasper-2'],
+    similar_tools: ['chatgpt-1', 'obsidian-6'],
     founded_year: 2023,
-    user_rating: 4.2,
-    monthly_active_users: '4M+',
+    user_rating: 4.3,
+    monthly_active_users: '5M+',
     key_features: [
-      'Integración nativa Notion',
+      'IA integrada en Notion',
       'Generación de contenido',
-      'Mejora de escritura',
-      'Automatización de tareas'
+      'Resúmenes automáticos',
+      'Traducción'
     ],
     pros: [
-      'Integrado en Notion',
-      'Workflow sin interrupciones',
-      'Fácil de usar'
+      'Integrado en workflow',
+      'Fácil de usar',
+      'Colaboración en equipo'
     ],
     cons: [
-      'Solo funciona en Notion',
-      'Funciones limitadas',
-      'Costo adicional'
+      'Requiere Notion',
+      'Costo adicional',
+      'Funciones limitadas'
     ],
     best_for: [
       'Usuarios de Notion',
       'Equipos colaborativos',
-      'Gestión de conocimiento'
+      'Gestión de contenido'
     ],
-    alternatives: ['ChatGPT', 'Jasper', 'Copy.ai']
-  },
-  {
-    id: 'copy-ai-5',
-    name: 'Copy.ai',
-    category: 'AI Writing & Content',
-    subcategory: 'Marketing Copy',
-    description: 'Copy.ai es una plataforma que utiliza IA para generar copy de marketing, emails y contenido publicitario.',
-    pricing: 'Gratis hasta 2,000 palabras/mes, Pro $36/mes',
-    complexity: 'beginner',
-    difficulty_level: 3,
-    learning_curve: 'gentle',
-    community_size: 'large',
-    integration_options: ['Chrome Extension', 'API', 'Zapier'],
-    tags: ['copy', 'marketing', 'publicidad', 'contenido'],
-    logoPlaceholder: 'photo-1562577309-2592ab84b1bc',
-    website: 'https://copy.ai',
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: [
-      'Anuncios publicitarios',
-      'Emails de ventas',
-      'Contenido para redes sociales',
-      'Descripciones de productos'
-    ],
-    comparison_matrix: {
-      ease_of_use: 9,
-      feature_richness: 8,
-      pricing_value: 8,
-      support_quality: 7,
-      scalability: 8
-    },
-    similar_tools: ['jasper-2', 'writesonic-6'],
-    founded_year: 2020,
-    user_rating: 4.3,
-    monthly_active_users: '1M+',
-    key_features: [
-      'Templates variados',
-      'Editor intuitivo',
-      'Múltiples variaciones',
-      'Análisis de rendimiento'
-    ],
-    pros: [
-      'Plan gratuito disponible',
-      'Fácil de usar',
-      'Buenos templates'
-    ],
-    cons: [
-      'Limitaciones en plan gratuito',
-      'Calidad variable',
-      'Menos funciones que competidores'
-    ],
-    best_for: [
-      'Pequeñas empresas',
-      'Freelancers',
-      'Startups'
-    ],
-    alternatives: ['Jasper', 'Writesonic', 'Anyword']
+    alternatives: ['ChatGPT', 'Claude', 'Obsidian']
   }
 ];
