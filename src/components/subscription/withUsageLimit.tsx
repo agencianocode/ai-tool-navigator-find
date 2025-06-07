@@ -51,10 +51,21 @@ export const withUsageLimit = (WrappedComponent: React.ComponentType<any>) => {
         return true;
       }
 
+      // Enterprise users tienen acceso ilimitado
+      if (subscriptionStatus.subscription_tier === 'enterprise') {
+        console.log('Enterprise user - unlimited access granted');
+        return true;
+      }
+
       const limits = getLimitsForTier(subscriptionStatus.subscription_tier);
       const featureLimit = limits[feature];
       
-      console.log('Usage limit check:', { feature, limit: featureLimit, tier: subscriptionStatus.subscription_tier });
+      console.log('Usage limit check:', { 
+        feature, 
+        limit: featureLimit, 
+        tier: subscriptionStatus.subscription_tier,
+        subscribed: subscriptionStatus.subscribed 
+      });
       
       if (featureLimit === -1) return true; // unlimited
 
@@ -73,12 +84,12 @@ export const withUsageLimit = (WrappedComponent: React.ComponentType<any>) => {
     const getLimitsForTier = (tier: string | null) => {
       switch (tier) {
         case 'basic':
-          return { roadmaps: 5, tools_explored: 20, budget_plans: 3 };
+          return { roadmaps: 15, tools_explored: 100, budget_plans: 5 };
         case 'premium':
         case 'enterprise':
           return { roadmaps: -1, tools_explored: -1, budget_plans: -1 };
         default:
-          return { roadmaps: 2, tools_explored: 10, budget_plans: 1 };
+          return { roadmaps: 3, tools_explored: 20, budget_plans: 1 };
       }
     };
 
