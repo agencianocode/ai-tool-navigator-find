@@ -75,7 +75,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/roadmap/:id"
+                  path="/roadmap"
                   element={
                     <AuthGuard>
                       <Roadmap />
