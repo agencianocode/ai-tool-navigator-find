@@ -1,3 +1,4 @@
+
 import { EnhancedTool } from "./types";
 
 // Exported constants for filters
@@ -1393,4 +1394,22 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     website: "https://expo.dev",
     apiAvailable: true,
     freeVersion: true,
-    use_case_examples: ["Cross-platform apps", "R
+    use_case_examples: ["Cross-platform apps", "Rapid prototyping", "Mobile development", "Universal apps"],
+    comparison_matrix: {
+      ease_of_use: 8,
+      feature_richness: 8,
+      pricing_value: 9,
+      support_quality: 8,
+      scalability: 8,
+    },
+    similar_tools: ["React Native CLI", "Flutter", "Ionic"],
+    founded_year: 2015,
+    user_rating: 4.4,
+    monthly_active_users: "500K+",
+    key_features: ["Over-the-air updates", "Development tools", "Managed workflow", "Bare workflow"],
+    pros: ["Easy setup", "Great developer experience", "Universal apps"],
+    cons: ["Bundle size", "Ejecting complexity", "Platform limitations"],
+    best_for: ["React developers", "Cross-platform apps", "Rapid prototyping"],
+    alternatives: ["React Native CLI", "Flutter", "Ionic", "Cordova"],
+  }
+];
