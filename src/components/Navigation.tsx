@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -15,7 +16,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const Navigation = () => {
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
@@ -52,7 +53,7 @@ const Navigation = () => {
           {user ? (
             <>
               <Link to="/dashboard">Dashboard</Link>
-              <Button size="sm" onClick={logout}>
+              <Button size="sm" onClick={signOut}>
                 Logout
               </Button>
             </>
@@ -91,7 +92,7 @@ const Navigation = () => {
               {user ? (
                 <>
                   <Link to="/dashboard">Dashboard</Link>
-                  <Button size="sm" onClick={logout}>
+                  <Button size="sm" onClick={signOut}>
                     Logout
                   </Button>
                 </>
