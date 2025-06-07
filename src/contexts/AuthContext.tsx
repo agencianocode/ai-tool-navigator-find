@@ -38,9 +38,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     if (!session) return;
     
     try {
-      const { data, error } = await supabase.functions.invoke('check-subscription');
-      if (error) throw error;
+      console.log('Checking subscription status...');
       
+      // Primero intentar obtener desde la base de datos directamente
+      const { data: dbData, error: dbError } = await supabase
+        .from('subscribers')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .single();
+
+      if (!dbError && dbData) {
+        console.log('Subscription from DB:', dbData);
+        setSubscriptionStatus({
+          subscribed: dbData.subscribed || false,
+          subscription_tier: dbData.subscription_tier || null,
+          subscription_end: dbData.subscription_end || null,
+        });
+        return;
+      }
+
+      // Fallback a la función edge
+      const { data, error } = await supabase.functions.invoke('check-subscription');
+      if (error) {
+        console.error('Error checking subscription via function:', error);
+        return;
+      }
+      
+      console.log('Subscription from function:', data);
       setSubscriptionStatus({
         subscribed: data.subscribed || false,
         subscription_tier: data.subscription_tier || null,
@@ -214,7 +238,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         
         // Manejar eventos específicos
         if (event === 'SIGNED_IN' && session) {
-          // Defer la verificación de suscripción para evitar problemas
+          // Forzar verificación inmediata de suscripción
           setTimeout(() => {
             if (mounted) {
               checkSubscription();
@@ -242,6 +266,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      
+      // Si ya hay una sesión, verificar suscripción inmediatamente
+      if (session) {
+        checkSubscription();
+      }
     });
 
     return () => {
