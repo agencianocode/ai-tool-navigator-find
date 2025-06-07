@@ -88,26 +88,58 @@ async function fallbackToBasicMatching(
   answers: Record<string, any>, 
   tools: EnhancedTool[]
 ): Promise<IntelligentRecommendationResult> {
-  const { calculateToolMatches } = await import('./matchingAlgorithm');
-  const basicMatches = calculateToolMatches(answers, tools);
+  // Algoritmo básico de matching como fallback
+  const basicMatches = tools.map(tool => {
+    let score = 0;
+    const reasons = [];
 
-  const intelligentMatches: IntelligentToolMatch[] = basicMatches.map(match => ({
-    tool: match.tool,
-    matchPercentage: match.matchPercentage,
-    reasons: match.reasons,
-    scoreBreakdown: {
-      functionality: match.matchPercentage * 0.4,
-      easeOfUse: match.matchPercentage * 0.3,
-      pricing: match.matchPercentage * 0.15,
-      scalability: match.matchPercentage * 0.1,
-      community: match.matchPercentage * 0.05,
-      personalized: 0
-    },
-    confidence: 0.7 // Menor confianza para el algoritmo básico
-  }));
+    // Matching básico por intereses
+    if (answers.interests && tool.tags) {
+      const matchingTags = answers.interests.filter((interest: string) => 
+        tool.tags.some(tag => tag.toLowerCase().includes(interest.toLowerCase()))
+      );
+      if (matchingTags.length > 0) {
+        score += (matchingTags.length / answers.interests.length) * 40;
+        reasons.push(`Coincide con tus intereses: ${matchingTags.join(', ')}`);
+      }
+    }
+
+    // Matching por complejidad
+    if (answers.skillLevel) {
+      const complexityMap = { 'beginner': 1, 'intermediate': 2, 'advanced': 3, 'expert': 4 };
+      const userLevel = complexityMap[answers.skillLevel as keyof typeof complexityMap] || 1;
+      const toolLevel = complexityMap[tool.complexity] || 1;
+      
+      if (Math.abs(userLevel - toolLevel) <= 1) {
+        score += 30;
+        reasons.push(`Apropiado para tu nivel: ${answers.skillLevel}`);
+      }
+    }
+
+    // Matching por presupuesto
+    if (answers.budgetRange === 'low' && tool.freeVersion) {
+      score += 20;
+      reasons.push('Tiene versión gratuita');
+    }
+
+    return {
+      tool,
+      matchPercentage: Math.min(Math.round(score), 100),
+      reasons,
+      scoreBreakdown: {
+        functionality: Math.round(score * 0.4),
+        easeOfUse: Math.round(score * 0.3),
+        pricing: Math.round(score * 0.15),
+        scalability: Math.round(score * 0.1),
+        community: Math.round(score * 0.05),
+        personalized: 0
+      },
+      confidence: 0.7 // Menor confianza para el algoritmo básico
+    };
+  }).sort((a, b) => b.matchPercentage - a.matchPercentage);
 
   return {
-    recommendations: intelligentMatches,
+    recommendations: basicMatches,
     metadata: {
       algorithmVersion: '1.0-fallback',
       personalizedFactors: ['basic_matching'],
@@ -154,17 +186,18 @@ export async function updateUserFeedback(
   metadata?: Record<string, any>
 ): Promise<void> {
   try {
-    const { error } = await supabase
-      .from('user_feedback')
-      .insert({
-        user_id: userId,
-        tool_id: toolId,
-        feedback_type: feedbackType,
-        metadata: metadata || {},
-        created_at: new Date().toISOString()
-      });
+    // Como la tabla user_feedback no existe, usar user_favorite_tools para 'save'
+    if (feedbackType === 'save') {
+      const { error } = await supabase
+        .from('user_favorite_tools')
+        .upsert({
+          user_id: userId,
+          tool_name: toolId, // Usando tool_name en lugar de tool_id
+          created_at: new Date().toISOString()
+        });
 
-    if (error) throw error;
+      if (error) throw error;
+    }
     
     console.log('User feedback recorded:', { userId, toolId, feedbackType });
     
