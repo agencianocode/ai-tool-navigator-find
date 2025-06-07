@@ -6,14 +6,14 @@ export { websiteBuildersTools } from './websiteBuilders';
 export { designPrototypingTools } from './designPrototyping';
 export { developmentToolsTools } from './developmentTools';
 export { aiProductivityAutomationTools } from './aiProductivityAutomation';
+export { ecommercePlatformsTools } from './ecommercePlatforms';
+export { databaseBackendTools } from './databaseBackend';
+export { communicationTools } from './communicationTools';
+export { projectManagementTools } from './projectManagementTools';
+export { marketingAnalyticsTools } from './marketingAnalyticsTools';
+export { mobileDevTools } from './mobileDevTools';
 
 // Add empty arrays for other categories to maintain structure
-export const ecommercePlatformsTools = [];
-export const databaseBackendTools = [];
-export const communicationTools = [];
-export const projectManagementTools = [];
-export const marketingAnalyticsTools = [];
-export const mobileDevTools = [];
 export const aiAudioMusicTools = [];
 export const businessAutomationTools = [];
 export const aiResearchAnalysisTools = [];
