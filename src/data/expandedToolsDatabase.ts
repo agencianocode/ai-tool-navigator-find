@@ -1,5 +1,63 @@
 import { EnhancedTool } from "./types";
 
+// Exported constants for filters
+export const difficultyLevels = [
+  { value: 1, label: "Muy Fácil" },
+  { value: 2, label: "Fácil" },
+  { value: 3, label: "Principiante" },
+  { value: 4, label: "Intermedio Bajo" },
+  { value: 5, label: "Intermedio" },
+  { value: 6, label: "Intermedio Alto" },
+  { value: 7, label: "Avanzado" },
+  { value: 8, label: "Muy Avanzado" },
+  { value: 9, label: "Experto" },
+  { value: 10, label: "Muy Difícil" }
+];
+
+export const learningCurves = [
+  "immediate",
+  "gentle", 
+  "moderate",
+  "steep"
+];
+
+export const communitySizes = [
+  "small",
+  "medium",
+  "large", 
+  "massive"
+];
+
+export const subcategories = [
+  "AI Writing",
+  "Writing Assistant",
+  "Paraphrasing",
+  "App Development",
+  "Internal Tools",
+  "Enterprise Development",
+  "Website Creation",
+  "Online Store",
+  "UI Design",
+  "Prototyping",
+  "Animation",
+  "Advanced Prototyping",
+  "Code Editor",
+  "Cloud IDE",
+  "API Development",
+  "Database",
+  "Backend-as-a-Service",
+  "Customer Support",
+  "Live Chat",
+  "Issue Tracking",
+  "Team Collaboration",
+  "User Analytics",
+  "Email Marketing",
+  "Product Analytics",
+  "React Native",
+  "Hybrid Apps",
+  "Video Generation"
+];
+
 export const expandedToolsDatabase: EnhancedTool[] = [
   {
     id: "copyai",
@@ -1335,111 +1393,4 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     website: "https://expo.dev",
     apiAvailable: true,
     freeVersion: true,
-    use_case_examples: ["Cross-platform apps", "Rapid prototyping", "React Native development", "App distribution"],
-    comparison_matrix: {
-      ease_of_use: 8,
-      feature_richness: 8,
-      pricing_value: 9,
-      support_quality: 8,
-      scalability: 8,
-    },
-    similar_tools: ["React Native CLI", "Ionic", "Flutter"],
-    founded_year: 2015,
-    user_rating: 4.5,
-    monthly_active_users: "500K+",
-    key_features: ["Managed workflow", "Over-the-air updates", "Universal apps", "Development tools"],
-    pros: ["Easy to start", "Great developer experience", "Universal platform"],
-    cons: ["Some native limitations", "Vendor lock-in concerns", "File size overhead"],
-    best_for: ["React developers", "Cross-platform apps", "Rapid development"],
-    alternatives: ["React Native CLI", "Ionic", "Flutter", "Xamarin"],
-  },
-  {
-    id: "ionic",
-    name: "Ionic",
-    category: "Mobile Development",
-    subcategory: "Hybrid Apps",
-    description: "Open-source mobile app development framework for building cross-platform apps with web technologies.",
-    pricing: "Free (open source), $499-$2999/month for enterprise",
-    complexity: "intermediate",
-    difficulty_level: 6,
-    learning_curve: "moderate",
-    community_size: "large",
-    integration_options: ["Angular", "React", "Vue", "Capacitor"],
-    tags: ["hybrid apps", "cross-platform", "web technologies", "Cordova"],
-    logoPlaceholder: "photo-1460925895917-afdab827c52f",
-    website: "https://ionicframework.com",
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: ["Hybrid mobile apps", "PWAs", "Desktop apps", "Cross-platform development"],
-    comparison_matrix: {
-      ease_of_use: 7,
-      feature_richness: 8,
-      pricing_value: 9,
-      support_quality: 8,
-      scalability: 8,
-    },
-    similar_tools: ["React Native", "Flutter", "Xamarin"],
-    founded_year: 2013,
-    user_rating: 4.2,
-    monthly_active_users: "5M+",
-    key_features: ["Web-based development", "Native device access", "UI components", "Capacitor runtime"],
-    pros: ["Web skills reusable", "Open source", "Large community"],
-    cons: ["Performance limitations", "WebView dependency", "Platform inconsistencies"],
-    best_for: ["Web developers", "PWAs", "Budget-conscious projects"],
-    alternatives: ["React Native", "Flutter", "Xamarin", "PhoneGap"],
-  },
-
-  // AI Image & Video - Adding more tools
-  {
-    id: "runwayml",
-    name: "Runway ML",
-    category: "AI Image & Video",
-    subcategory: "Video Generation",
-    description: "AI-powered creative toolkit for video editing, generation, and visual effects using machine learning.",
-    pricing: "Free tier, $12-$76/month",
-    complexity: "intermediate",
-    difficulty_level: 5,
-    learning_curve: "moderate",
-    community_size: "large",
-    integration_options: ["Adobe Premiere", "After Effects", "API"],
-    tags: ["AI video", "machine learning", "creative tools", "video effects"],
-    logoPlaceholder: "photo-1551434678-e076c223a692",
-    website: "https://runwayml.com",
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: ["Video editing", "AI video generation", "Visual effects", "Content creation"],
-    comparison_matrix: {
-      ease_of_use: 7,
-      feature_richness: 9,
-      pricing_value: 7,
-      support_quality: 7,
-      scalability: 8,
-    },
-    similar_tools: ["Synthesia", "Pictory", "DALL-E"],
-    founded_year: 2018,
-    user_rating: 4.4,
-    monthly_active_users: "2M+",
-    key_features: ["AI video generation", "Green screen", "Motion tracking", "Style transfer"],
-    pros: ["Cutting-edge AI", "Professional features", "Creative possibilities"],
-    cons: ["Learning curve", "Resource intensive", "Pricing for heavy use"],
-    best_for: ["Video creators", "Digital artists", "Content producers"],
-    alternatives: ["Synthesia", "Pictory", "Luma AI", "Pika Labs"],
-  },
-];
-
-export const enhancedCategories = [
-  "AI Writing & Content",
-  "No-Code Platforms",
-  "Website Builders",
-  "E-commerce Platforms",
-  "Design & Prototyping",
-  "Development Tools",
-  "Database & Backend",
-  "Communication",
-  "Project Management",
-  "Marketing & Analytics",
-  "Mobile Development",
-  "AI Image & Video",
-];
-
-export type { EnhancedTool };
+    use_case_examples: ["Cross-platform apps", "R
