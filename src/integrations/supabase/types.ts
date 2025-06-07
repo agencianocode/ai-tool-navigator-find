@@ -608,6 +608,39 @@ export type Database = {
         }
         Relationships: []
       }
+      user_activities: {
+        Row: {
+          activity_description: string | null
+          activity_title: string
+          activity_type: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          related_id: string | null
+          user_id: string
+        }
+        Insert: {
+          activity_description?: string | null
+          activity_title: string
+          activity_type: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          related_id?: string | null
+          user_id: string
+        }
+        Update: {
+          activity_description?: string | null
+          activity_title?: string
+          activity_type?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          related_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_favorite_tools: {
         Row: {
           created_at: string

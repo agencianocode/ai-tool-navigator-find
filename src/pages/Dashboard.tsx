@@ -1,5 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
+import { useUserActivities } from "@/hooks/useUserActivities";
 import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Plus, BarChart3, TrendingUp, Users } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -21,6 +22,7 @@ import { PageLoader } from "@/components/ui/page-loader";
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const { logActivity } = useUserActivities();
 
   // Consultar estadísticas del usuario
   const { data: userStats } = useQuery({
@@ -110,7 +112,7 @@ const Dashboard = () => {
       // Obtener el roadmap actual
       const { data: roadmap } = await supabase
         .from('roadmaps')
-        .select('is_favorite')
+        .select('is_favorite, title')
         .eq('id', roadmapId)
         .eq('user_id', user?.id)
         .single();
@@ -125,6 +127,16 @@ const Dashboard = () => {
         .eq('user_id', user?.id);
 
       if (error) throw error;
+
+      // Registrar actividad si se marca como favorito
+      if (!roadmap.is_favorite) {
+        await logActivity({
+          activity_type: 'roadmap_favorited',
+          activity_title: `Marcó como favorito: ${roadmap.title}`,
+          activity_description: 'Agregó una hoja de ruta a favoritos',
+          related_id: roadmapId
+        });
+      }
       
       refetchRoadmaps();
     } catch (error) {

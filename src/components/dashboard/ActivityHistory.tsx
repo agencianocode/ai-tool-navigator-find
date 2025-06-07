@@ -2,7 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, FileText, Star, Plus } from "lucide-react";
+import { Clock, FileText, Star, Plus, CheckCircle, Search } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDistanceToNow } from "date-fns";
@@ -16,7 +16,15 @@ const ActivityHistory = () => {
     queryFn: async () => {
       if (!user) return [];
       
-      // Fetch roadmaps
+      // Fetch user activities from the new table
+      const { data: userActivities } = await supabase
+        .from('user_activities')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      // Fetch legacy roadmaps for backward compatibility
       const { data: roadmaps } = await supabase
         .from('roadmaps')
         .select('id, title, created_at, updated_at')
@@ -34,16 +42,53 @@ const ActivityHistory = () => {
 
       const activities = [];
       
-      // Add roadmap activities
-      roadmaps?.forEach(roadmap => {
+      // Add user activities
+      userActivities?.forEach(activity => {
+        let icon, color, subtitle;
+        
+        switch (activity.activity_type) {
+          case 'questionnaire_completed':
+            icon = CheckCircle;
+            color = 'bg-green-500';
+            subtitle = activity.metadata?.tools_count ? 
+              `${activity.metadata.tools_count} herramientas recomendadas` : '';
+            break;
+          case 'roadmap_created':
+            icon = FileText;
+            color = 'bg-blue-500';
+            break;
+          default:
+            icon = Search;
+            color = 'bg-gray-500';
+        }
+
         activities.push({
-          id: `roadmap-${roadmap.id}`,
-          type: 'roadmap',
-          title: `Hoja de ruta: ${roadmap.title}`,
-          timestamp: roadmap.updated_at,
-          icon: FileText,
-          color: 'bg-blue-500'
+          id: `activity-${activity.id}`,
+          type: activity.activity_type,
+          title: activity.activity_title,
+          subtitle: subtitle || activity.activity_description,
+          timestamp: activity.created_at,
+          icon,
+          color,
+          relatedId: activity.related_id
         });
+      });
+
+      // Add legacy roadmap activities (for backward compatibility)
+      roadmaps?.forEach(roadmap => {
+        // Only add if not already included from user_activities
+        const alreadyExists = activities.some(a => a.relatedId === roadmap.id);
+        if (!alreadyExists) {
+          activities.push({
+            id: `roadmap-${roadmap.id}`,
+            type: 'roadmap',
+            title: `Hoja de ruta: ${roadmap.title}`,
+            timestamp: roadmap.updated_at,
+            icon: FileText,
+            color: 'bg-blue-500',
+            relatedId: roadmap.id
+          });
+        }
       });
 
       // Add review activities
@@ -66,6 +111,20 @@ const ActivityHistory = () => {
     },
     enabled: !!user,
   });
+
+  const getActivityBadgeText = (type: string) => {
+    switch (type) {
+      case 'questionnaire_completed':
+        return 'Cuestionario';
+      case 'roadmap_created':
+      case 'roadmap':
+        return 'Roadmap';
+      case 'review':
+        return 'Reseña';
+      default:
+        return 'Actividad';
+    }
+  };
 
   return (
     <Card>
@@ -98,7 +157,7 @@ const ActivityHistory = () => {
                     </p>
                   </div>
                   <Badge variant="secondary" className="text-xs">
-                    {activity.type === 'roadmap' ? 'Roadmap' : 'Reseña'}
+                    {getActivityBadgeText(activity.type)}
                   </Badge>
                 </div>
               );
