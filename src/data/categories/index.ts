@@ -1,4 +1,3 @@
-
 export { aiWritingContentTools } from './aiWritingContent';
 export { aiImageVideoTools } from './aiImageVideo';
 export { noCodePlatformsTools } from './noCodePlatforms';
@@ -13,11 +12,13 @@ export { projectManagementTools } from './projectManagementTools';
 export { marketingAnalyticsTools } from './marketingAnalyticsTools';
 export { mobileDevTools } from './mobileDevTools';
 
-// Add empty arrays for other categories to maintain structure
-export const aiAudioMusicTools = [];
-export const businessAutomationTools = [];
-export const aiResearchAnalysisTools = [];
-export const aiDataAnalyticsTools = [];
+// Add the new category exports
+export { aiAudioMusicTools } from './aiAudioMusicTools';
+export { businessAutomationTools } from './businessAutomationTools';
+export { aiResearchAnalysisTools } from './aiResearchAnalysisTools';
+export { aiDataAnalyticsTools } from './aiDataAnalyticsTools';
+
+// Update empty arrays for categories that now have content
 export const aiTranslationLanguageTools = [];
 export const aiCybersecurityTools = [];
 export const aiEducationLearningTools = [];
