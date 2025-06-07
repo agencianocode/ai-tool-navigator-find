@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
@@ -12,7 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useQuestionnaire } from "../QuestionnaireContext";
 import { generateRoadmap } from "@/utils/roadmapGenerator";
 import { supabase } from "@/integrations/supabase/client";
-import { aiTools } from "@/data/aiTools";
+import { aiWritingContentTools, aiImageVideoTools, noCodePlatformsTools, websiteBuildersTools, designPrototypingTools, developmentToolsTools, aiProductivityAutomationTools, ecommercePlatformsTools, databaseBackendTools } from "@/data/categories";
 
 const ResultsStep = () => {
   const { state } = useQuestionnaire();
@@ -29,7 +30,18 @@ const ResultsStep = () => {
   const getRecommendedTools = () => {
     const { interests, skillLevel, projectType, budgetRange } = answers;
 
-    let filteredTools = aiTools;
+    // Combine all tools from different categories
+    let filteredTools = [
+      ...aiWritingContentTools,
+      ...aiImageVideoTools,
+      ...noCodePlatformsTools,
+      ...websiteBuildersTools,
+      ...designPrototypingTools,
+      ...developmentToolsTools,
+      ...aiProductivityAutomationTools,
+      ...ecommercePlatformsTools,
+      ...databaseBackendTools
+    ];
 
     if (interests && interests.length > 0) {
       filteredTools = filteredTools.filter(tool =>
@@ -81,6 +93,9 @@ const ResultsStep = () => {
         throw new Error('No se pudo generar la hoja de ruta');
       }
 
+      // Convertir roadmapData a JSON compatible
+      const roadmapDataJson = JSON.parse(JSON.stringify(roadmapData));
+
       // Guardar la hoja de ruta en la base de datos
       const { data: savedRoadmap, error } = await supabase
         .from('roadmaps')
@@ -93,7 +108,7 @@ const ResultsStep = () => {
           budget_range: answers.budgetRange,
           timeline: answers.timeline,
           questionnaire_answers: answers,
-          roadmap_data: roadmapData,
+          roadmap_data: roadmapDataJson,
           selected_tools: selectedTools,
           custom_name: customName
         })

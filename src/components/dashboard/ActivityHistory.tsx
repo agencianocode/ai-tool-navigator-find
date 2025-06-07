@@ -50,8 +50,10 @@ const ActivityHistory = () => {
           case 'questionnaire_completed':
             icon = CheckCircle;
             color = 'bg-green-500';
-            subtitle = activity.metadata?.tools_count ? 
-              `${activity.metadata.tools_count} herramientas recomendadas` : '';
+            // Type-safe access to metadata
+            const metadata = activity.metadata as any;
+            subtitle = metadata?.tools_count ? 
+              `${metadata.tools_count} herramientas recomendadas` : '';
             break;
           case 'roadmap_created':
             icon = FileText;
