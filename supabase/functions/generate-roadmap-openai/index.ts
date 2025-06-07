@@ -36,7 +36,7 @@ serve(async (req) => {
     }
 
     // Build detailed prompt for OpenAI
-    const systemPrompt = `You are an AI consultant specializing in creating detailed, personalized implementation roadmaps for AI tool adoption. You must respond with a valid JSON array of exactly 4 phases, each containing the specified structure.
+    const systemPrompt = `You are an AI consultant specializing in creating detailed, personalized implementation roadmaps for AI tool adoption. You must respond with ONLY a valid JSON array of exactly 4 phases.
 
 User Profile:
 - Project Type: ${answers.projectType || 'General'}
@@ -69,7 +69,7 @@ Requirements:
 - Include realistic challenges and helpful resources
 - Make it practical and achievable
 
-Respond with ONLY the JSON array, no additional text.`
+IMPORTANT: Respond with ONLY the JSON array, no markdown formatting, no code blocks, no additional text.`
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -101,13 +101,23 @@ Respond with ONLY the JSON array, no additional text.`
     }
 
     const data = await response.json()
-    console.log('OpenAI response received:', data.choices?.[0]?.message?.content)
+    let responseContent = data.choices[0].message.content
+    console.log('OpenAI response received:', responseContent)
+
+    // Clean up the response - remove markdown code blocks if present
+    responseContent = responseContent.trim()
+    if (responseContent.startsWith('```json')) {
+      responseContent = responseContent.replace(/^```json\s*/, '').replace(/\s*```$/, '')
+    } else if (responseContent.startsWith('```')) {
+      responseContent = responseContent.replace(/^```\s*/, '').replace(/\s*```$/, '')
+    }
 
     let roadmapPhases: RoadmapPhase[]
     try {
-      roadmapPhases = JSON.parse(data.choices[0].message.content)
+      roadmapPhases = JSON.parse(responseContent)
     } catch (parseError) {
       console.error('Error parsing OpenAI response:', parseError)
+      console.error('Raw response content:', responseContent)
       throw new Error('Invalid JSON response from OpenAI')
     }
 
