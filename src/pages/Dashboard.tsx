@@ -1,3 +1,4 @@
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { useUserActivities } from "@/hooks/useUserActivities";
@@ -7,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Navigation from "@/components/Navigation";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import RecentRoadmaps from "@/components/dashboard/RecentRoadmaps";
 import FavoriteTools from "@/components/dashboard/FavoriteTools";
@@ -155,6 +157,7 @@ const Dashboard = () => {
         description="Tu panel de control personalizado para gestionar hojas de ruta, herramientas favoritas y estadísticas de uso."
         url="https://ai-tool-navigator.com/dashboard"
       />
+      <Navigation />
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="bg-white shadow-sm border-b">

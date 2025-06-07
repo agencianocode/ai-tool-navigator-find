@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Crown, AlertTriangle, TrendingUp, FileText, Download, Star } from "lucide-react";
+import { Crown, AlertTriangle, TrendingUp, FileText, Download, Star, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
@@ -21,12 +21,29 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
     budget_plans: 0,
     template_purchases: 0
   });
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     if (user) {
       fetchUsage();
+      checkAdminStatus();
     }
   }, [user]);
+
+  const checkAdminStatus = async () => {
+    if (!user) return;
+    
+    console.log('Checking admin status for usage limits...');
+    const { data } = await supabase
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .eq('role', 'admin')
+      .single();
+    
+    console.log('Admin status result:', !!data);
+    setIsAdmin(!!data);
+  };
 
   const fetchUsage = async () => {
     if (!user) return;
@@ -60,6 +77,36 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
   };
 
   const getLimits = () => {
+    // Los admins tienen acceso ilimitado
+    if (isAdmin) {
+      return { 
+        roadmaps: -1, 
+        tools_explored: -1, 
+        budget_plans: -1,
+        premium_templates: true,
+        pdf_export: true,
+        advanced_comparisons: true,
+        api_access: true,
+        white_label: true,
+        consultations: true
+      };
+    }
+
+    // Enterprise users tienen acceso ilimitado
+    if (subscriptionStatus.subscription_tier === 'enterprise') {
+      return { 
+        roadmaps: -1, 
+        tools_explored: -1, 
+        budget_plans: -1,
+        premium_templates: true,
+        pdf_export: true,
+        advanced_comparisons: true,
+        api_access: true,
+        white_label: true,
+        consultations: true
+      };
+    }
+
     if (subscriptionStatus.subscribed) {
       switch (subscriptionStatus.subscription_tier) {
         case 'basic':
@@ -72,7 +119,6 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
             advanced_comparisons: true
           };
         case 'premium':
-        case 'enterprise':
           return { 
             roadmaps: -1, 
             tools_explored: -1, 
@@ -80,9 +126,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
             premium_templates: true,
             pdf_export: true,
             advanced_comparisons: true,
-            api_access: subscriptionStatus.subscription_tier === 'enterprise',
-            white_label: subscriptionStatus.subscription_tier === 'enterprise',
-            consultations: subscriptionStatus.subscription_tier === 'enterprise'
+            api_access: true
           };
         default:
           return { 
@@ -124,10 +168,18 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
   };
 
   const getPlanName = () => {
+    if (isAdmin) return "Admin";
     if (!subscriptionStatus.subscribed) return "Free";
     return subscriptionStatus.subscription_tier === 'basic' ? 'Pro' : 
            subscriptionStatus.subscription_tier === 'premium' ? 'Premium' :
-           'Enterprise';
+           subscriptionStatus.subscription_tier === 'enterprise' ? 'Enterprise' :
+           'Free';
+  };
+
+  const getPlanVariant = () => {
+    if (isAdmin || subscriptionStatus.subscription_tier === 'enterprise') return "default";
+    if (subscriptionStatus.subscribed) return "secondary";
+    return "outline";
   };
 
   return (
@@ -136,7 +188,8 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
         <CardTitle className="flex items-center gap-2">
           <TrendingUp className="h-5 w-5" />
           Plan {getPlanName()}
-          <Badge variant="outline" className="ml-auto">
+          <Badge variant={getPlanVariant()} className="ml-auto">
+            {isAdmin && <Shield className="h-3 w-3 mr-1" />}
             {getPlanName()}
           </Badge>
         </CardTitle>
@@ -245,10 +298,30 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
                 <Badge variant="outline" className="text-gray-500">Bloqueado</Badge>
               )}
             </div>
+
+            {(isAdmin || subscriptionStatus.subscription_tier === 'enterprise') && (
+              <>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="flex items-center gap-2">
+                    <Shield className="h-4 w-4" />
+                    API Access
+                  </span>
+                  <Badge variant="outline" className="text-green-600">Activo</Badge>
+                </div>
+
+                <div className="flex items-center justify-between text-sm">
+                  <span className="flex items-center gap-2">
+                    <Crown className="h-4 w-4" />
+                    White Label
+                  </span>
+                  <Badge variant="outline" className="text-green-600">Activo</Badge>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
-        {showUpgrade && !subscriptionStatus.subscribed && (
+        {showUpgrade && !subscriptionStatus.subscribed && !isAdmin && (
           <div className="pt-4 border-t">
             <Button asChild className="w-full">
               <Link to="/subscriptions">
@@ -259,11 +332,16 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
           </div>
         )}
 
-        {subscriptionStatus.subscribed && (
+        {(subscriptionStatus.subscribed || isAdmin) && (
           <div className="pt-4 border-t">
             <p className="text-xs text-center text-gray-500">
               Templates comprados: {usage.template_purchases}
             </p>
+            {(isAdmin || subscriptionStatus.subscription_tier === 'enterprise') && (
+              <p className="text-xs text-center text-green-600 font-medium">
+                🚀 Acceso ilimitado activado
+              </p>
+            )}
           </div>
         )}
       </CardContent>
