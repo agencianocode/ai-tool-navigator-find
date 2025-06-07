@@ -23,6 +23,7 @@ import Subscriptions from './pages/Subscriptions';
 import NotFound from './pages/NotFound';
 import AuthGuard from './components/AuthGuard';
 import Templates from './pages/Templates';
+import Analytics from './pages/Analytics';
 
 // Create a client instance
 const queryClient = new QueryClient({
@@ -91,6 +92,14 @@ function App() {
                 element={
                   <AuthGuard>
                     <BudgetPlanner />
+                  </AuthGuard>
+                }
+              />
+              <Route
+                path="/analytics"
+                element={
+                  <AuthGuard>
+                    <Analytics />
                   </AuthGuard>
                 }
               />
