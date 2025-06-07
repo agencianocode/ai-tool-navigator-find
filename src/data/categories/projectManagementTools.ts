@@ -7,55 +7,55 @@ export const projectManagementTools: EnhancedTool[] = [
     name: 'Asana',
     category: 'Project Management',
     subcategory: 'Task Management',
-    description: 'Asana es una herramienta para gestionar tareas y proyectos, facilitando la colaboración y seguimiento del trabajo.',
-    pricing: 'Gratis con límites, $10.99/mes Premium',
-    complexity: 'beginner',
-    difficulty_level: 3,
-    learning_curve: 'gentle',
+    description: 'Asana es una herramienta de gestión de proyectos que ayuda a equipos a organizar, seguir y gestionar su trabajo.',
+    pricing: 'Basic gratis, Premium $10.99/mes, Business $24.99/mes',
+    complexity: 'intermediate',
+    difficulty_level: 4,
+    learning_curve: 'moderate',
     community_size: 'large',
-    integration_options: ['Slack', 'Google Drive', 'Zapier'],
-    tags: ['gestión de proyectos', 'tareas', 'colaboración', 'productividad'],
-    logoPlaceholder: 'photo-1504384308090-c894fdcc538d',
+    integration_options: ['Slack', 'Adobe Creative Cloud', 'Salesforce', 'Microsoft Teams'],
+    tags: ['gestión proyectos', 'tareas', 'colaboración', 'timeline'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://asana.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Gestión de tareas',
-      'Planificación de proyectos',
-      'Seguimiento de progreso',
-      'Colaboración en equipo'
+      'Gestión de proyectos',
+      'Seguimiento de tareas',
+      'Colaboración en equipo',
+      'Planificación de sprints'
     ],
     comparison_matrix: {
       ease_of_use: 8,
       feature_richness: 8,
-      pricing_value: 7,
-      support_quality: 7,
+      pricing_value: 8,
+      support_quality: 8,
       scalability: 8
     },
     similar_tools: ['trello-35', 'monday-36'],
     founded_year: 2008,
-    user_rating: 4.2,
-    monthly_active_users: '1.5M+',
+    user_rating: 4.4,
+    monthly_active_users: '130M+',
     key_features: [
-      'Listas y tableros',
-      'Cronogramas',
-      'Automatizaciones',
-      'Reportes'
+      'Múltiples vistas de proyecto',
+      'Custom fields',
+      'Timeline (Gantt)',
+      'Portfolios'
     ],
     pros: [
-      'Interfaz intuitiva',
-      'Flexibilidad',
-      'Integraciones útiles'
+      'Muy versátil',
+      'Excelente para equipos',
+      'Buenas integraciones'
     ],
     cons: [
-      'Limitaciones en plan gratuito',
-      'Curva de aprendizaje para funciones avanzadas',
-      'Puede ser costoso'
+      'Puede ser complejo',
+      'Curva de aprendizaje',
+      'Precio para funciones avanzadas'
     ],
     best_for: [
-      'Equipos pequeños y medianos',
-      'Gestión de proyectos',
-      'Freelancers'
+      'Equipos medianos',
+      'Gestión de proyectos complejos',
+      'Marketing teams'
     ],
     alternatives: ['Trello', 'Monday.com', 'ClickUp']
   },
@@ -64,23 +64,23 @@ export const projectManagementTools: EnhancedTool[] = [
     name: 'Trello',
     category: 'Project Management',
     subcategory: 'Kanban Boards',
-    description: 'Trello utiliza tableros Kanban para organizar proyectos y tareas de manera visual e intuitiva.',
+    description: 'Trello es una herramienta de gestión visual basada en tableros Kanban para organizar proyectos y tareas.',
     pricing: 'Gratis, Standard $5/mes, Premium $10/mes',
     complexity: 'beginner',
     difficulty_level: 2,
     learning_curve: 'immediate',
-    community_size: 'large',
-    integration_options: ['Power-Ups', 'Zapier', 'Google Drive', 'Slack'],
+    community_size: 'massive',
+    integration_options: ['Slack', 'Google Drive', 'Dropbox', 'Calendar apps'],
     tags: ['kanban', 'visual', 'simple', 'colaboración'],
     logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://trello.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Gestión de tareas personales',
-      'Proyectos pequeños',
+      'Gestión personal',
+      'Proyectos simples',
       'Planificación de contenido',
-      'Seguimiento de bugs'
+      'Workflow visual'
     ],
     comparison_matrix: {
       ease_of_use: 10,
@@ -89,87 +89,87 @@ export const projectManagementTools: EnhancedTool[] = [
       support_quality: 7,
       scalability: 6
     },
-    similar_tools: ['asana-34', 'notion-36'],
+    similar_tools: ['asana-34', 'notion-76'],
     founded_year: 2011,
-    user_rating: 4.4,
+    user_rating: 4.3,
     monthly_active_users: '50M+',
     key_features: [
       'Tableros Kanban',
-      'Tarjetas personalizables',
       'Power-Ups',
-      'Colaboración simple'
+      'Templates',
+      'Team collaboration'
     ],
     pros: [
-      'Extremadamente fácil de usar',
+      'Extremadamente fácil',
       'Interfaz visual clara',
-      'Gratuito para equipos pequeños'
+      'Excelente para principiantes'
     ],
     cons: [
       'Limitado para proyectos complejos',
-      'Pocas funciones avanzadas',
-      'Power-Ups pueden ser costosos'
+      'Faltan funciones avanzadas',
+      'No tiene timeline nativo'
     ],
     best_for: [
-      'Equipos pequeños',
+      'Pequeños equipos',
       'Gestión personal',
       'Proyectos simples'
     ],
-    alternatives: ['Asana', 'Notion', 'Monday.com']
+    alternatives: ['Asana', 'Notion', 'ClickUp']
   },
   {
     id: 'monday-36',
     name: 'Monday.com',
     category: 'Project Management',
     subcategory: 'Work OS',
-    description: 'Monday.com es una plataforma de gestión de trabajo que combina proyectos, CRM y automatizaciones.',
+    description: 'Monday.com es un sistema operativo de trabajo que permite a equipos crear workflows personalizados.',
     pricing: 'Basic $8/mes, Standard $10/mes, Pro $16/mes',
     complexity: 'intermediate',
-    difficulty_level: 4,
+    difficulty_level: 5,
     learning_curve: 'moderate',
     community_size: 'large',
-    integration_options: ['Zapier', 'Slack', 'Google Workspace', 'Microsoft'],
-    tags: ['work OS', 'automatización', 'CRM', 'dashboards'],
-    logoPlaceholder: 'photo-1563013544-824ae1b704d3',
+    integration_options: ['Slack', 'Microsoft', 'Google Workspace', 'Salesforce'],
+    tags: ['workflows', 'personalizable', 'visual', 'automatización'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://monday.com',
     apiAvailable: true,
     freeVersion: false,
     use_case_examples: [
+      'CRM personalizado',
       'Gestión de proyectos',
-      'CRM y ventas',
-      'Operaciones',
+      'HR workflows',
       'Marketing campaigns'
     ],
     comparison_matrix: {
       ease_of_use: 7,
       feature_richness: 9,
-      pricing_value: 6,
+      pricing_value: 7,
       support_quality: 8,
       scalability: 9
     },
-    similar_tools: ['asana-34', 'clickup-37'],
+    similar_tools: ['asana-34', 'clickup-80'],
     founded_year: 2012,
-    user_rating: 4.6,
+    user_rating: 4.2,
     monthly_active_users: '180K+',
     key_features: [
-      'Tableros personalizables',
+      'Workflows personalizables',
       'Automatizaciones',
-      'Dashboards',
-      'Integraciones múltiples'
+      'Dashboards visuales',
+      'Time tracking'
     ],
     pros: [
-      'Muy visual y personalizable',
-      'Potentes automatizaciones',
-      'Excelente para equipos grandes'
+      'Muy personalizable',
+      'Interfaz colorida y atractiva',
+      'Potentes automatizaciones'
     ],
     cons: [
-      'Precio elevado',
-      'Puede ser complejo inicialmente',
-      'No hay plan gratuito'
+      'Puede ser abrumador',
+      'Precio relativamente alto',
+      'Curva de aprendizaje'
     ],
     best_for: [
-      'Empresas medianas y grandes',
-      'Equipos multifuncionales',
-      'Procesos complejos'
+      'Equipos que necesitan personalización',
+      'Empresas medianas',
+      'Workflows complejos'
     ],
     alternatives: ['Asana', 'ClickUp', 'Smartsheet']
   }

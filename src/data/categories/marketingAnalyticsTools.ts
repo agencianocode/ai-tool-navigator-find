@@ -6,24 +6,24 @@ export const marketingAnalyticsTools: EnhancedTool[] = [
     id: 'google-analytics-37',
     name: 'Google Analytics',
     category: 'Marketing & Analytics',
-    subcategory: 'Analytics',
-    description: 'Google Analytics proporciona análisis detallados del tráfico y comportamiento de usuarios en sitios web.',
-    pricing: 'Gratis',
+    subcategory: 'Web Analytics',
+    description: 'Google Analytics es la plataforma líder de análisis web que proporciona insights detallados sobre el tráfico del sitio.',
+    pricing: 'Gratis, Analytics 360 bajo consulta',
     complexity: 'intermediate',
     difficulty_level: 5,
     learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['Google Ads', 'Google Tag Manager', 'BigQuery'],
-    tags: ['analítica', 'marketing', 'datos', 'web'],
-    logoPlaceholder: 'photo-1504384308090-c894fdcc538d',
+    integration_options: ['Google Ads', 'Search Console', 'Tag Manager', 'Data Studio'],
+    tags: ['analytics', 'web', 'gratis', 'informes'],
+    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
     website: 'https://analytics.google.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
       'Análisis de tráfico web',
-      'Medición de conversiones',
-      'Segmentación de audiencia',
-      'Optimización de campañas'
+      'Conversiones e-commerce',
+      'Behavior analysis',
+      'Attribution modeling'
     ],
     comparison_matrix: {
       ease_of_use: 6,
@@ -32,145 +32,145 @@ export const marketingAnalyticsTools: EnhancedTool[] = [
       support_quality: 7,
       scalability: 10
     },
-    similar_tools: ['mixpanel-38', 'amplitude-39'],
+    similar_tools: ['adobe-analytics-38', 'hotjar-39'],
     founded_year: 2005,
-    user_rating: 4.4,
-    monthly_active_users: '30M+',
+    user_rating: 4.3,
+    monthly_active_users: '50M+',
     key_features: [
-      'Informes en tiempo real',
-      'Segmentación avanzada',
-      'Integración con Google Ads',
-      'Análisis de embudos'
+      'Real-time reporting',
+      'Custom dimensions',
+      'Goal tracking',
+      'Audience insights'
     ],
     pros: [
-      'Gratis y potente',
-      'Amplia documentación',
-      'Integración con ecosistema Google'
+      'Completamente gratuito',
+      'Muy completo',
+      'Integración con Google'
     ],
     cons: [
-      'Curva de aprendizaje',
-      'Cambios frecuentes en interfaz',
-      'Limitaciones en datos sin muestreo'
+      'Curva de aprendizaje empinada',
+      'Interfaz compleja',
+      'Privacy concerns'
     ],
     best_for: [
-      'Marketers',
-      'Analistas de datos',
-      'Empresas de todos tamaños'
+      'Todos los sitios web',
+      'E-commerce',
+      'Digital marketers'
     ],
-    alternatives: ['Mixpanel', 'Amplitude', 'Adobe Analytics']
+    alternatives: ['Adobe Analytics', 'Hotjar', 'Mixpanel']
   },
   {
     id: 'hubspot-38',
     name: 'HubSpot',
     category: 'Marketing & Analytics',
     subcategory: 'CRM & Marketing',
-    description: 'HubSpot es una plataforma de CRM que integra marketing, ventas y servicio al cliente.',
-    pricing: 'Gratis básico, planes desde $45/mes',
+    description: 'HubSpot es una plataforma integral de CRM, marketing, ventas y servicio al cliente con herramientas gratuitas.',
+    pricing: 'Gratis con límites, Starter $45/mes, Professional $800/mes',
     complexity: 'intermediate',
-    difficulty_level: 5,
+    difficulty_level: 4,
     learning_curve: 'moderate',
     community_size: 'large',
-    integration_options: ['Zapier', 'Salesforce', 'Mailchimp'],
-    tags: ['crm', 'marketing', 'ventas', 'automatización'],
-    logoPlaceholder: 'photo-1504384308090-c894fdcc538d',
+    integration_options: ['Salesforce', 'WordPress', 'Shopify', 'Slack'],
+    tags: ['CRM', 'marketing automation', 'inbound', 'lead generation'],
+    logoPlaceholder: 'photo-1560472354-b33ff0c44a43',
     website: 'https://hubspot.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Gestión de clientes',
-      'Automatización de marketing',
-      'Seguimiento de ventas',
-      'Atención al cliente'
+      'Lead nurturing',
+      'Email marketing',
+      'Sales pipeline',
+      'Customer service'
     ],
     comparison_matrix: {
-      ease_of_use: 7,
+      ease_of_use: 8,
       feature_richness: 9,
       pricing_value: 7,
-      support_quality: 8,
+      support_quality: 9,
       scalability: 8
     },
     similar_tools: ['salesforce-39', 'pipedrive-40'],
     founded_year: 2006,
-    user_rating: 4.3,
-    monthly_active_users: '100K+',
+    user_rating: 4.4,
+    monthly_active_users: '135K+',
     key_features: [
-      'Automatización de workflows',
-      'Análisis de ventas',
-      'Integración con email',
-      'Gestión de tickets'
+      'CRM gratuito',
+      'Marketing automation',
+      'Landing pages',
+      'Analytics dashboard'
     ],
     pros: [
-      'Plataforma todo en uno',
-      'Fácil de usar',
-      'Amplias integraciones'
+      'Plan gratuito robusto',
+      'All-in-one platform',
+      'Excelente onboarding'
     ],
     cons: [
-      'Costos elevados en planes avanzados',
-      'Curva de aprendizaje',
-      'Limitaciones en plan gratuito'
+      'Precio escala rápidamente',
+      'Puede ser complejo',
+      'Limitaciones en integraciones'
     ],
     best_for: [
-      'Equipos de ventas',
-      'Marketing digital',
-      'Empresas medianas'
+      'Pequeñas y medianas empresas',
+      'Inbound marketing',
+      'Sales teams'
     ],
-    alternatives: ['Salesforce', 'Pipedrive', 'Zoho CRM']
+    alternatives: ['Salesforce', 'Pipedrive', 'ActiveCampaign']
   },
   {
-    id: 'mailchimp-39',
-    name: 'Mailchimp',
+    id: 'hotjar-39',
+    name: 'Hotjar',
     category: 'Marketing & Analytics',
-    subcategory: 'Email Marketing',
-    description: 'Mailchimp es una plataforma de email marketing con automatización y análisis avanzados.',
-    pricing: 'Gratis hasta 2,000 contactos, Essentials $10/mes',
+    subcategory: 'User Experience',
+    description: 'Hotjar es una herramienta de análisis de comportamiento que muestra cómo los usuarios interactúan con tu sitio web.',
+    pricing: 'Gratis hasta 35 sesiones/día, Plus $32/mes',
     complexity: 'beginner',
     difficulty_level: 3,
     learning_curve: 'gentle',
-    community_size: 'massive',
-    integration_options: ['Shopify', 'WordPress', 'Zapier', 'Facebook'],
-    tags: ['email marketing', 'automatización', 'newsletters', 'campanhas'],
-    logoPlaceholder: 'photo-1596526131083-e8c633c948d2',
-    website: 'https://mailchimp.com',
+    community_size: 'large',
+    integration_options: ['Google Analytics', 'Slack', 'Zapier', 'Segment'],
+    tags: ['heatmaps', 'user behavior', 'recordings', 'feedback'],
+    logoPlaceholder: 'photo-1551288049-bebda4e38f71',
+    website: 'https://hotjar.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Newsletters',
-      'Campañas de email',
-      'Automatización de marketing',
-      'Segmentación de audiencias'
+      'Heatmaps de páginas',
+      'Session recordings',
+      'User feedback',
+      'Conversion optimization'
     ],
     comparison_matrix: {
       ease_of_use: 9,
-      feature_richness: 8,
+      feature_richness: 7,
       pricing_value: 8,
-      support_quality: 7,
-      scalability: 8
+      support_quality: 8,
+      scalability: 7
     },
-    similar_tools: ['convertkit-40', 'sendinblue-41'],
-    founded_year: 2001,
-    user_rating: 4.2,
-    monthly_active_users: '12M+',
+    similar_tools: ['fullstory-40', 'logrocket-41'],
+    founded_year: 2014,
+    user_rating: 4.3,
+    monthly_active_users: '600K+',
     key_features: [
-      'Editor de emails drag & drop',
-      'Automatizaciones',
-      'Análisis detallados',
-      'Segmentación avanzada'
+      'Heatmaps visuales',
+      'Session recordings',
+      'Feedback polls',
+      'Form analytics'
     ],
     pros: [
-      'Muy fácil de usar',
-      'Plantillas hermosas',
-      'Plan gratuito generoso'
+      'Muy fácil de implementar',
+      'Insights visuales claros',
+      'Plan gratuito útil'
     ],
     cons: [
-      'Precios escalables',
-      'Limitaciones en automatización',
-      'Soporte limitado en plan gratuito'
+      'Limitado en plan gratuito',
+      'No es real-time',
+      'Privacy concerns'
     ],
     best_for: [
-      'Pequeñas empresas',
-      'E-commerce',
-      'Content creators'
+      'UX designers',
+      'Conversion optimization',
+      'E-commerce sites'
     ],
-    alternatives: ['ConvertKit', 'Sendinblue', 'Campaign Monitor']
+    alternatives: ['FullStory', 'LogRocket', 'Crazy Egg']
   }
 ];

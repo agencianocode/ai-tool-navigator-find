@@ -7,170 +7,170 @@ export const communicationTools: EnhancedTool[] = [
     name: 'Slack',
     category: 'Communication',
     subcategory: 'Team Chat',
-    description: 'Slack es una plataforma de comunicación para equipos que facilita la colaboración y el intercambio de información.',
-    pricing: 'Gratis con límites, $6.67/mes Pro',
+    description: 'Slack es una plataforma de comunicación empresarial que organiza conversaciones en canales y espacios de trabajo.',
+    pricing: 'Gratis con límites, Pro $7.25/mes, Business+ $12.50/mes',
     complexity: 'beginner',
     difficulty_level: 2,
-    learning_curve: 'immediate',
+    learning_curve: 'gentle',
     community_size: 'massive',
-    integration_options: ['Zapier', 'Google Drive', 'Trello', 'GitHub'],
-    tags: ['comunicación', 'chat', 'colaboración', 'equipos'],
-    logoPlaceholder: 'photo-1504384308090-c894fdcc538d',
+    integration_options: ['Google Workspace', 'Microsoft 365', 'Zoom', 'Jira'],
+    tags: ['chat', 'equipos', 'productividad', 'integraciones'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://slack.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Comunicación interna',
-      'Gestión de proyectos',
-      'Integración con herramientas',
-      'Notificaciones'
+      'Comunicación de equipos',
+      'Coordinación de proyectos',
+      'Notificaciones automatizadas',
+      'Colaboración remota'
     ],
     comparison_matrix: {
       ease_of_use: 9,
       feature_richness: 8,
-      pricing_value: 8,
+      pricing_value: 7,
       support_quality: 8,
       scalability: 9
     },
-    similar_tools: ['microsoft-teams-32', 'discord-33'],
-    founded_year: 2009,
+    similar_tools: ['microsoft-teams-32', 'discord-76'],
+    founded_year: 2013,
     user_rating: 4.3,
-    monthly_active_users: '12M+',
+    monthly_active_users: '18M+',
     key_features: [
-      'Canales temáticos',
-      'Mensajes directos',
-      'Integraciones múltiples',
+      'Canales organizados',
+      'Threads de conversación',
+      'Apps y bots',
       'Búsqueda avanzada'
     ],
     pros: [
-      'Fácil de usar',
-      'Amplias integraciones',
-      'Gran comunidad'
+      'Muy fácil de usar',
+      'Excelentes integraciones',
+      'Búsqueda potente'
     ],
     cons: [
-      'Puede ser ruidoso',
-      'Limitaciones en plan gratuito',
-      'Consumo de recursos'
+      'Puede ser distractivo',
+      'Precio para equipos grandes',
+      'Limitaciones en plan gratuito'
     ],
     best_for: [
-      'Equipos de trabajo',
+      'Equipos remotos',
       'Startups',
-      'Empresas medianas y grandes'
+      'Comunicación empresarial'
     ],
-    alternatives: ['Microsoft Teams', 'Discord', 'Google Chat']
+    alternatives: ['Microsoft Teams', 'Discord', 'Mattermost']
   },
   {
     id: 'zoom-32',
     name: 'Zoom',
     category: 'Communication',
     subcategory: 'Video Conferencing',
-    description: 'Zoom es una plataforma de videoconferencias que permite reuniones virtuales, webinars y colaboración remota.',
-    pricing: 'Gratis hasta 40 min, $14.99/mes Pro',
+    description: 'Zoom es una plataforma de videoconferencias que permite reuniones, webinars y comunicación por video.',
+    pricing: 'Basic gratis, Pro $14.99/mes, Business $19.99/mes',
     complexity: 'beginner',
     difficulty_level: 2,
     learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['Calendario', 'Slack', 'Salesforce', 'HubSpot'],
-    tags: ['videoconferencias', 'reuniones', 'webinars', 'remoto'],
+    integration_options: ['Calendar apps', 'Slack', 'Microsoft Teams', 'Salesforce'],
+    tags: ['video', 'reuniones', 'webinars', 'colaboración'],
     logoPlaceholder: 'photo-1587620962725-abab7fe55159',
     website: 'https://zoom.us',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
       'Reuniones de equipo',
-      'Webinars',
-      'Educación online',
-      'Consultas virtuales'
+      'Conferencias virtuales',
+      'Clases online',
+      'Webinars'
     ],
     comparison_matrix: {
       ease_of_use: 10,
       feature_richness: 8,
       pricing_value: 9,
       support_quality: 8,
-      scalability: 9
+      scalability: 10
     },
-    similar_tools: ['teams-33', 'meet-34'],
+    similar_tools: ['google-meet-33', 'microsoft-teams-32'],
     founded_year: 2011,
     user_rating: 4.4,
     monthly_active_users: '300M+',
     key_features: [
-      'HD video y audio',
-      'Grabación de reuniones',
-      'Compartir pantalla',
-      'Salas de espera'
+      'HD video/audio',
+      'Screen sharing',
+      'Recording',
+      'Breakout rooms'
     ],
     pros: [
-      'Muy fácil de usar',
+      'Muy confiable',
       'Excelente calidad',
-      'Funciones avanzadas'
+      'Fácil de usar'
     ],
     cons: [
-      'Limitaciones en plan gratuito',
-      'Preocupaciones de seguridad pasadas',
-      'Puede consumir mucho ancho de banda'
+      'Límites en plan gratuito',
+      'Preocupaciones de seguridad',
+      'Funciones básicas'
     ],
     best_for: [
-      'Empresas de todos tamaños',
-      'Educación',
-      'Trabajo remoto'
+      'Reuniones profesionales',
+      'Educación online',
+      'Eventos virtuales'
     ],
-    alternatives: ['Microsoft Teams', 'Google Meet', 'WebEx']
+    alternatives: ['Google Meet', 'Microsoft Teams', 'Webex']
   },
   {
-    id: 'discord-33',
-    name: 'Discord',
+    id: 'mailchimp-33',
+    name: 'Mailchimp',
     category: 'Communication',
-    subcategory: 'Community Chat',
-    description: 'Discord es una plataforma de comunicación diseñada para comunidades, gaming y equipos.',
-    pricing: 'Gratis, Nitro $9.99/mes',
+    subcategory: 'Email Marketing',
+    description: 'Mailchimp es una plataforma de marketing por email que permite crear, enviar y analizar campañas de email.',
+    pricing: 'Gratis hasta 500 contactos, Essentials $13/mes',
     complexity: 'beginner',
     difficulty_level: 3,
     learning_curve: 'gentle',
     community_size: 'massive',
-    integration_options: ['Bots', 'Webhooks', 'Spotify', 'YouTube'],
-    tags: ['gaming', 'comunidades', 'voz', 'texto'],
-    logoPlaceholder: 'photo-1461749280684-dccba630e2f6',
-    website: 'https://discord.com',
+    integration_options: ['E-commerce platforms', 'CRM', 'Social media', 'Analytics'],
+    tags: ['email marketing', 'automatización', 'analytics', 'templates'],
+    logoPlaceholder: 'photo-1563013544-824ae1b704d3',
+    website: 'https://mailchimp.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Comunidades gaming',
-      'Equipos de desarrollo',
-      'Comunidades creativas',
-      'Servidores temáticos'
+      'Newsletters',
+      'Campañas promocionales',
+      'Email automation',
+      'Landing pages'
     ],
     comparison_matrix: {
-      ease_of_use: 8,
-      feature_richness: 9,
-      pricing_value: 10,
-      support_quality: 7,
-      scalability: 9
+      ease_of_use: 9,
+      feature_richness: 8,
+      pricing_value: 8,
+      support_quality: 8,
+      scalability: 8
     },
-    similar_tools: ['slack-31', 'teamspeak-34'],
-    founded_year: 2015,
+    similar_tools: ['convertkit-34', 'constant-contact-35'],
+    founded_year: 2001,
     user_rating: 4.2,
-    monthly_active_users: '150M+',
+    monthly_active_users: '14M+',
     key_features: [
-      'Servidores con canales',
-      'Chat de voz y texto',
-      'Bots personalizables',
-      'Streaming integrado'
+      'Drag-and-drop editor',
+      'Automation workflows',
+      'A/B testing',
+      'Analytics detallado'
     ],
     pros: [
-      'Gratuito y potente',
-      'Excelente para comunidades',
-      'Muchas integraciones'
+      'Plan gratuito generoso',
+      'Interfaz intuitiva',
+      'Buenas integraciones'
     ],
     cons: [
-      'Interfaz puede ser abrumadora',
-      'Orientado a gaming',
-      'Moderación comunitaria'
+      'Precio escala rápidamente',
+      'Limitaciones en automatización',
+      'Soporte variable'
     ],
     best_for: [
-      'Comunidades online',
-      'Gamers',
-      'Creadores de contenido'
+      'Pequeñas empresas',
+      'E-commerce',
+      'Content creators'
     ],
-    alternatives: ['Slack', 'TeamSpeak', 'Guilded']
+    alternatives: ['ConvertKit', 'Constant Contact', 'AWeber']
   }
 ];

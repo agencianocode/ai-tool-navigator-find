@@ -6,130 +6,130 @@ export const ecommercePlatformsTools: EnhancedTool[] = [
     id: 'shopify-25',
     name: 'Shopify',
     category: 'E-commerce Platforms',
-    subcategory: 'Online Stores',
-    description: 'Shopify es una plataforma completa para crear tiendas en línea y gestionar ventas.',
-    pricing: '$29/mes Basic, $79/mes Shopify',
+    subcategory: 'All-in-One E-commerce',
+    description: 'Shopify es una plataforma completa de comercio electrónico que permite crear y gestionar tiendas online.',
+    pricing: 'Basic $29/mes, Shopify $79/mes, Advanced $299/mes',
     complexity: 'beginner',
     difficulty_level: 3,
     learning_curve: 'gentle',
     community_size: 'massive',
-    integration_options: ['Payment gateways', 'Shipping APIs', 'Marketing tools'],
-    tags: ['e-commerce', 'tienda online', 'ventas', 'marketing'],
-    logoPlaceholder: 'photo-1506744038136-46273834b3fb',
+    integration_options: ['Payment gateways', 'Shipping', 'Marketing tools', 'Apps'],
+    tags: ['e-commerce', 'tienda online', 'pagos', 'inventario'],
+    logoPlaceholder: 'photo-1556742049-0cfed4f6a45d',
     website: 'https://shopify.com',
     apiAvailable: true,
     freeVersion: false,
     use_case_examples: [
-      'Tiendas en línea',
+      'Tiendas online',
+      'Dropshipping',
       'Ventas multicanal',
-      'Gestión de inventario',
-      'Marketing digital'
+      'Subscripciones'
     ],
     comparison_matrix: {
-      ease_of_use: 8,
+      ease_of_use: 9,
       feature_richness: 9,
       pricing_value: 7,
-      support_quality: 8,
+      support_quality: 9,
       scalability: 9
     },
-    similar_tools: ['bigcommerce-26', 'woocommerce-27'],
+    similar_tools: ['woocommerce-26', 'bigcommerce-27'],
     founded_year: 2006,
-    user_rating: 4.5,
-    monthly_active_users: '1.7M+',
+    user_rating: 4.4,
+    monthly_active_users: '2M+',
     key_features: [
-      'Plantillas personalizables',
-      'Integración con pagos',
-      'Herramientas SEO',
-      'Soporte 24/7'
+      'Templates profesionales',
+      'Gestión de inventario',
+      'Múltiples métodos de pago',
+      'Analytics integrado'
     ],
     pros: [
-      'Fácil de usar',
-      'Gran ecosistema de apps',
-      'Escalable para negocios grandes'
+      'Muy fácil de usar',
+      'Hosting incluido',
+      'Excelente soporte'
     ],
     cons: [
-      'Costos adicionales por apps',
-      'Comisiones en algunos planes',
-      'Limitaciones en personalización avanzada'
+      'Fees de transacción',
+      'Personalización limitada',
+      'Dependiente de apps'
     ],
     best_for: [
       'Pequeñas y medianas empresas',
-      'Emprendedores',
-      'Tiendas físicas que quieren vender online'
+      'Dropshippers',
+      'Ventas multicanal'
     ],
-    alternatives: ['BigCommerce', 'WooCommerce', 'Magento']
+    alternatives: ['WooCommerce', 'BigCommerce', 'Magento']
   },
   {
     id: 'woocommerce-26',
     name: 'WooCommerce',
     category: 'E-commerce Platforms',
-    subcategory: 'Online Stores',
-    description: 'WooCommerce es un plugin de WordPress que convierte sitios web en tiendas online completas.',
-    pricing: 'Gratis con WordPress, extensiones desde $29',
+    subcategory: 'WordPress E-commerce',
+    description: 'WooCommerce es un plugin gratuito de WordPress que convierte sitios en tiendas online completas.',
+    pricing: 'Plugin gratuito, extensiones desde $29-299',
     complexity: 'intermediate',
     difficulty_level: 5,
     learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['WordPress plugins', 'Payment gateways', 'Shipping providers'],
-    tags: ['WordPress', 'plugin', 'flexible', 'open source'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
+    integration_options: ['WordPress', 'Payment gateways', 'Shipping', 'Marketing'],
+    tags: ['WordPress', 'open source', 'flexible', 'personalizable'],
+    logoPlaceholder: 'photo-1556742049-0cfed4f6a45d',
     website: 'https://woocommerce.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Tiendas WordPress',
+      'Tiendas personalizadas',
+      'B2B commerce',
       'Productos digitales',
-      'Servicios online',
-      'Marketplaces'
+      'Membresías'
     ],
     comparison_matrix: {
       ease_of_use: 6,
-      feature_richness: 9,
+      feature_richness: 10,
       pricing_value: 9,
       support_quality: 7,
       scalability: 8
     },
-    similar_tools: ['shopify-25', 'magento-27'],
+    similar_tools: ['shopify-25', 'prestashop-27'],
     founded_year: 2011,
     user_rating: 4.2,
     monthly_active_users: '5M+',
     key_features: [
-      'Integración WordPress',
-      'Plugins extensos',
-      'Personalización completa',
-      'SEO optimizado'
+      'Totalmente personalizable',
+      'Miles de extensiones',
+      'SEO optimizado',
+      'Multi-currency'
     ],
     pros: [
-      'Gratuito y flexible',
-      'Gran comunidad',
-      'Control total del sitio'
+      'Gratuito y open source',
+      'Extremadamente flexible',
+      'Gran comunidad'
     ],
     cons: [
-      'Requiere conocimientos técnicos',
-      'Mantenimiento requerido',
-      'Costos de hosting'
+      'Requiere mantenimiento',
+      'Curva de aprendizaje',
+      'Necesita hosting'
     ],
     best_for: [
-      'Desarrolladores web',
-      'Usuarios de WordPress',
-      'Tiendas personalizadas'
+      'Desarrolladores',
+      'Tiendas personalizadas',
+      'Presupuestos ajustados'
     ],
-    alternatives: ['Shopify', 'Magento', 'PrestaShop']
+    alternatives: ['Shopify', 'PrestaShop', 'Magento']
   },
   {
     id: 'stripe-27',
     name: 'Stripe',
     category: 'E-commerce Platforms',
     subcategory: 'Payment Processing',
-    description: 'Stripe es una plataforma de pagos que permite a empresas aceptar pagos online de forma segura.',
-    pricing: '2.9% + $0.30 por transacción exitosa',
+    description: 'Stripe es una plataforma de pagos online que permite a empresas aceptar pagos de manera segura.',
+    pricing: '2.9% + 30¢ por transacción exitosa',
     complexity: 'intermediate',
-    difficulty_level: 6,
+    difficulty_level: 4,
     learning_curve: 'moderate',
     community_size: 'large',
-    integration_options: ['APIs REST', 'SDKs múltiples', 'Webhooks'],
-    tags: ['pagos', 'API', 'desarrolladores', 'seguridad'],
-    logoPlaceholder: 'photo-1563013544-824ae1b704d3',
+    integration_options: ['APIs', 'E-commerce platforms', 'Mobile SDKs'],
+    tags: ['pagos', 'API', 'seguridad', 'global'],
+    logoPlaceholder: 'photo-1556742049-0cfed4f6a45d',
     website: 'https://stripe.com',
     apiAvailable: true,
     freeVersion: false,
@@ -137,38 +137,38 @@ export const ecommercePlatformsTools: EnhancedTool[] = [
       'Pagos online',
       'Suscripciones',
       'Marketplaces',
-      'Aplicaciones móviles'
+      'Pagos móviles'
     ],
     comparison_matrix: {
-      ease_of_use: 7,
-      feature_richness: 10,
+      ease_of_use: 8,
+      feature_richness: 9,
       pricing_value: 8,
       support_quality: 9,
       scalability: 10
     },
     similar_tools: ['paypal-28', 'square-29'],
     founded_year: 2010,
-    user_rating: 4.6,
-    monthly_active_users: '1M+',
+    user_rating: 4.5,
+    monthly_active_users: '100K+ businesses',
     key_features: [
       'API robusta',
-      'Seguridad avanzada',
       'Pagos globales',
-      'Dashboard completo'
+      'Fraud protection',
+      'Analytics detallado'
     ],
     pros: [
-      'Excelente para desarrolladores',
-      'Muy seguro',
-      'Funcionalidades avanzadas'
+      'Muy confiable',
+      'Excelente documentación',
+      'Soporte global'
     ],
     cons: [
-      'Curva de aprendizaje técnica',
-      'Solo para pagos',
-      'Tarifas por transacción'
+      'Fees por transacción',
+      'Setup técnico requerido',
+      'KYC estricto'
     ],
     best_for: [
-      'Desarrolladores',
-      'SaaS',
+      'Startups tech',
+      'SaaS companies',
       'E-commerce avanzado'
     ],
     alternatives: ['PayPal', 'Square', 'Adyen']
