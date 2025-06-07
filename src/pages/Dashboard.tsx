@@ -13,6 +13,10 @@ import QuickActions from "@/components/dashboard/QuickActions";
 import ActivityHistory from "@/components/dashboard/ActivityHistory";
 import UsageMetrics from "@/components/dashboard/UsageMetrics";
 import PersonalizedRecommendations from "@/components/dashboard/PersonalizedRecommendations";
+import { UsageLimits } from "@/components/subscription/UsageLimits";
+import { InstallPrompt } from "@/components/PWA/InstallPrompt";
+import { SEO } from "@/components/SEO";
+import { PageLoader } from "@/components/ui/page-loader";
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -128,142 +132,148 @@ const Dashboard = () => {
   };
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
-      </div>
-    );
+    return <PageLoader message="Cargando tu dashboard..." />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                ¡Hola, {user.user_metadata?.full_name || 'Usuario'}! 👋
-              </h1>
-              <p className="text-gray-600">
-                Bienvenido a tu panel de control personalizado
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button asChild>
-                <Link to="/questionnaire">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Nueva Hoja de Ruta
-                </Link>
-              </Button>
+    <>
+      <SEO
+        title="Dashboard - AI Tool Navigator"
+        description="Tu panel de control personalizado para gestionar hojas de ruta, herramientas favoritas y estadísticas de uso."
+        url="https://ai-tool-navigator.com/dashboard"
+      />
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <header className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-6">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  ¡Hola, {user.user_metadata?.full_name || 'Usuario'}! 👋
+                </h1>
+                <p className="text-gray-600">
+                  Bienvenido a tu panel de control personalizado
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <Button asChild>
+                  <Link to="/questionnaire">
+                    <Plus className="mr-2 h-4 w-4" />
+                    Nueva Hoja de Ruta
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Estadísticas */}
-        <DashboardStats stats={userStats} />
+        {/* Main Content */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Estadísticas */}
+          <DashboardStats stats={userStats} />
 
-        {/* Tabs for different views */}
-        <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4" />
-              Resumen
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
-              Analytics
-            </TabsTrigger>
-            <TabsTrigger value="recommendations" className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Recomendaciones
-            </TabsTrigger>
-            <TabsTrigger value="activity" className="flex items-center gap-2">
-              Actividad
-            </TabsTrigger>
-          </TabsList>
+          {/* Tabs for different views */}
+          <Tabs defaultValue="overview" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="overview" className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4" />
+                Resumen
+              </TabsTrigger>
+              <TabsTrigger value="analytics" className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" />
+                Analytics
+              </TabsTrigger>
+              <TabsTrigger value="recommendations" className="flex items-center gap-2">
+                <Users className="h-4 w-4" />
+                Recomendaciones
+              </TabsTrigger>
+              <TabsTrigger value="activity" className="flex items-center gap-2">
+                Actividad
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
-            {/* Grid de contenido */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Columna principal */}
-              <div className="lg:col-span-2 space-y-8">
-                <RecentRoadmaps
-                  roadmaps={recentRoadmaps}
-                  onDelete={handleDeleteRoadmap}
-                  onToggleFavorite={handleToggleFavorite}
-                />
-              </div>
+            <TabsContent value="overview" className="space-y-6">
+              {/* Grid de contenido */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Columna principal */}
+                <div className="lg:col-span-2 space-y-8">
+                  <RecentRoadmaps
+                    roadmaps={recentRoadmaps}
+                    onDelete={handleDeleteRoadmap}
+                    onToggleFavorite={handleToggleFavorite}
+                  />
+                </div>
 
-              {/* Sidebar */}
-              <div className="space-y-6">
-                <QuickActions />
-                <FavoriteTools favoriteTools={favoriteTools} />
-                
-                {/* Card de bienvenida */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>¿Nuevo aquí?</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-sm text-gray-600">
-                      Comienza creando tu primera hoja de ruta personalizada para encontrar las mejores herramientas para tu proyecto.
-                    </p>
-                    <Button asChild className="w-full">
-                      <Link to="/questionnaire">
-                        Crear Mi Primera Hoja de Ruta
+                {/* Sidebar */}
+                <div className="space-y-6">
+                  <UsageLimits />
+                  <QuickActions />
+                  <FavoriteTools favoriteTools={favoriteTools} />
+                  
+                  {/* Card de bienvenida */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>¿Nuevo aquí?</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <p className="text-sm text-gray-600">
+                        Comienza creando tu primera hoja de ruta personalizada para encontrar las mejores herramientas para tu proyecto.
+                      </p>
+                      <Button asChild className="w-full">
+                        <Link to="/questionnaire">
+                          Crear Mi Primera Hoja de Ruta
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  {/* Recursos útiles */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Recursos Útiles</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <Link
+                        to="/guides"
+                        className="block text-sm text-purple-600 hover:text-purple-800"
+                      >
+                        → Guías y Tutoriales
                       </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                {/* Recursos útiles */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recursos Útiles</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <Link
-                      to="/guides"
-                      className="block text-sm text-purple-600 hover:text-purple-800"
-                    >
-                      → Guías y Tutoriales
-                    </Link>
-                    <Link
-                      to="/tools"
-                      className="block text-sm text-purple-600 hover:text-purple-800"
-                    >
-                      → Explorar Herramientas
-                    </Link>
-                    <Link
-                      to="/budget-planner"
-                      className="block text-sm text-purple-600 hover:text-purple-800"
-                    >
-                      → Planificador de Presupuesto
-                    </Link>
-                  </CardContent>
-                </Card>
+                      <Link
+                        to="/tools"
+                        className="block text-sm text-purple-600 hover:text-purple-800"
+                      >
+                        → Explorar Herramientas
+                      </Link>
+                      <Link
+                        to="/budget-planner"
+                        className="block text-sm text-purple-600 hover:text-purple-800"
+                      >
+                        → Planificador de Presupuesto
+                      </Link>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
-            </div>
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="analytics" className="space-y-6">
-            <UsageMetrics />
-          </TabsContent>
+            <TabsContent value="analytics" className="space-y-6">
+              <UsageMetrics />
+            </TabsContent>
 
-          <TabsContent value="recommendations" className="space-y-6">
-            <PersonalizedRecommendations />
-          </TabsContent>
+            <TabsContent value="recommendations" className="space-y-6">
+              <PersonalizedRecommendations />
+            </TabsContent>
 
-          <TabsContent value="activity" className="space-y-6">
-            <ActivityHistory />
-          </TabsContent>
-        </Tabs>
-      </main>
-    </div>
+            <TabsContent value="activity" className="space-y-6">
+              <ActivityHistory />
+            </TabsContent>
+          </Tabs>
+        </main>
+        
+        <InstallPrompt />
+      </div>
+    </>
   );
 };
 
