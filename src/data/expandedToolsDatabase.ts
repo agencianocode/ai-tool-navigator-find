@@ -1,5 +1,3 @@
-
-
 export interface EnhancedTool {
   id: string;
   name: string;
@@ -280,6 +278,66 @@ export const expandedToolsDatabase: EnhancedTool[] = [
   },
 
   {
+    id: 'writesonic',
+    name: 'Writesonic',
+    category: 'AI Writing & Content',
+    subcategory: 'Marketing Content',
+    description: 'Plataforma de escritura con IA que combina copywriting, artículos de blog y herramientas SEO.',
+    pricing: 'Gratis hasta 10000 palabras, Pro $20/mes',
+    complexity: 'intermediate',
+    difficulty_level: 4,
+    learning_curve: 'moderate',
+    community_size: 'medium',
+    integration_options: ['WordPress', 'Zapier', 'Chrome Extension', 'API'],
+    tags: ['escritura', 'SEO', 'blog', 'marketing', 'Chatsonic'],
+    logoPlaceholder: 'photo-1461749280684-dccba630e2f6',
+    website: 'https://writesonic.com',
+    apiAvailable: true,
+    freeVersion: true,
+    use_case_examples: [
+      'Artículos de blog largos y detallados',
+      'Landing pages de alta conversión',
+      'Anuncios para Google y Facebook',
+      'Contenido SEO optimizado'
+    ],
+    comparison_matrix: {
+      ease_of_use: 8,
+      feature_richness: 8,
+      pricing_value: 9,
+      support_quality: 7,
+      scalability: 7
+    },
+    similar_tools: ['jasper', 'copy-ai', 'rytr'],
+    founded_year: 2020,
+    user_rating: 4.1,
+    monthly_active_users: '300K+',
+    key_features: [
+      'Chatsonic (ChatGPT alternativo)',
+      'Escritura de artículos largos',
+      'Herramientas SEO integradas',
+      '70+ templates de contenido'
+    ],
+    pros: [
+      'Precio muy competitivo',
+      'Incluye chatbot avanzado',
+      'Bueno para contenido largo',
+      'Plan gratuito útil'
+    ],
+    cons: [
+      'Interfaz puede ser confusa',
+      'Calidad inconsistente',
+      'Menos integraciones que competidores'
+    ],
+    best_for: [
+      'Bloggers que publican frecuentemente',
+      'Agencias con presupuesto ajustado',
+      'Startups que necesitan variedad',
+      'Creadores de contenido independientes'
+    ],
+    alternatives: ['Jasper', 'Copy.ai', 'Rytr']
+  },
+
+  {
     id: 'grammarly',
     name: 'Grammarly',
     category: 'AI Writing & Content',
@@ -340,123 +398,123 @@ export const expandedToolsDatabase: EnhancedTool[] = [
   },
 
   {
-    id: 'perplexity',
-    name: 'Perplexity AI',
+    id: 'notion-ai',
+    name: 'Notion AI',
     category: 'AI Writing & Content',
-    subcategory: 'Research Assistant',
-    description: 'Motor de búsqueda conversacional con IA que proporciona respuestas citadas y actualizadas.',
-    pricing: 'Gratis con límites, Pro $20/mes',
+    subcategory: 'Productivity Assistant',
+    description: 'Asistente de IA integrado en Notion para crear, editar y organizar contenido en tu workspace.',
+    pricing: '$10/mes por miembro (además de Notion)',
     complexity: 'beginner',
-    difficulty_level: 2,
-    learning_curve: 'immediate',
+    difficulty_level: 3,
+    learning_curve: 'gentle',
     community_size: 'large',
-    integration_options: ['API', 'Chrome Extension', 'Mobile Apps'],
-    tags: ['búsqueda', 'investigación', 'citations', 'tiempo-real'],
-    logoPlaceholder: 'photo-1516996087931-5ae405802f9f',
-    website: 'https://perplexity.ai',
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: [
-      'Investigación académica con fuentes',
-      'Búsqueda de información actualizada',
-      'Análisis de noticias y tendencias',
-      'Research para contenido de marketing'
-    ],
-    comparison_matrix: {
-      ease_of_use: 9,
-      feature_richness: 8,
-      pricing_value: 9,
-      support_quality: 7,
-      scalability: 8
-    },
-    similar_tools: ['chatgpt', 'claude', 'you-com'],
-    founded_year: 2022,
-    user_rating: 4.3,
-    monthly_active_users: '5M+',
-    key_features: [
-      'Búsqueda en tiempo real',
-      'Citas y fuentes verificables',
-      'Múltiples modelos de IA',
-      'Interfaz conversacional'
-    ],
-    pros: [
-      'Información siempre actualizada',
-      'Citas confiables',
-      'Interfaz limpia',
-      'Buena versión gratuita'
-    ],
-    cons: [
-      'Menos creativo que ChatGPT',
-      'Limitado para tareas no de investigación',
-      'Dependiente de calidad de fuentes'
-    ],
-    best_for: [
-      'Investigadores y estudiantes',
-      'Periodistas y bloggers',
-      'Profesionales que necesitan datos actualizados',
-      'Equipos de marketing que buscan tendencias'
-    ],
-    alternatives: ['ChatGPT', 'Claude', 'You.com']
-  },
-
-  {
-    id: 'midjourney',
-    name: 'Midjourney',
-    category: 'AI Writing & Content',
-    subcategory: 'AI Image Generation',
-    description: 'Generador de imágenes con IA que crea arte digital de alta calidad a partir de prompts de texto.',
-    pricing: 'Basic $10/mes, Standard $30/mes, Pro $60/mes',
-    complexity: 'intermediate',
-    difficulty_level: 4,
-    learning_curve: 'moderate',
-    community_size: 'massive',
-    integration_options: ['Discord', 'API', 'Third-party tools'],
-    tags: ['AI-art', 'imagen', 'creatividad', 'diseño', 'Discord'],
-    logoPlaceholder: 'photo-1618401471353-b98afee0b2eb',
-    website: 'https://midjourney.com',
-    apiAvailable: true,
+    integration_options: ['Notion workspace', 'Templates', 'Databases'],
+    tags: ['productividad', 'organización', 'escritura', 'notas', 'colaboración'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
+    website: 'https://notion.so/ai',
+    apiAvailable: false,
     freeVersion: false,
     use_case_examples: [
-      'Arte conceptual para videojuegos',
-      'Ilustraciones para libros y blogs',
-      'Mockups y prototipos visuales',
-      'Arte para redes sociales'
+      'Crear documentos y wikis de empresa',
+      'Generar resúmenes de reuniones',
+      'Escribir propuestas y especificaciones',
+      'Crear contenido para bases de conocimiento'
     ],
     comparison_matrix: {
-      ease_of_use: 6,
-      feature_richness: 9,
+      ease_of_use: 8,
+      feature_richness: 7,
       pricing_value: 7,
       support_quality: 8,
       scalability: 8
     },
-    similar_tools: ['dall-e', 'stable-diffusion', 'leonardo'],
-    founded_year: 2021,
-    user_rating: 4.4,
-    monthly_active_users: '15M+',
+    similar_tools: ['clickup-ai', 'monday-ai', 'airtable-ai'],
+    founded_year: 2023,
+    user_rating: 4.2,
+    monthly_active_users: '35M+',
     key_features: [
-      'Calidad artística excepcional',
-      'Estilos diversos y únicos',
-      'Comunidad activa en Discord',
-      'Iteraciones y variaciones'
+      'Integración nativa con Notion',
+      'Escritura contextual basada en workspace',
+      'Templates automáticos',
+      'Colaboración en tiempo real'
     ],
     pros: [
-      'Calidad artística superior',
-      'Gran variedad de estilos',
-      'Comunidad muy activa',
-      'Resultados consistentes'
+      'Perfecta integración con Notion',
+      'Contexto del workspace completo',
+      'Ideal para equipos',
+      'Múltiples tipos de contenido'
     ],
     cons: [
-      'Requiere Discord para usar',
-      'Sin versión gratuita',
-      'Curva de aprendizaje para prompts'
+      'Requiere suscripción a Notion',
+      'Limitado fuera del ecosistema Notion',
+      'Funciones IA más básicas que competidores'
     ],
     best_for: [
-      'Artistas digitales',
-      'Diseñadores creativos',
-      'Agencias de publicidad',
-      'Creadores de contenido visual'
+      'Equipos que ya usan Notion',
+      'Empresas con documentación extensa',
+      'Startups organizando conocimiento',
+      'Consultores que crean propuestas'
     ],
-    alternatives: ['DALL-E 3', 'Stable Diffusion', 'Leonardo AI']
+    alternatives: ['ClickUp AI', 'Monday.com AI', 'Coda AI']
+  },
+
+  {
+    id: 'rytr',
+    name: 'Rytr',
+    category: 'AI Writing & Content',
+    subcategory: 'Content Generation',
+    description: 'Herramienta de escritura con IA económica y versátil para crear contenido de calidad rápidamente.',
+    pricing: 'Gratis hasta 10000 caracteres/mes, Unlimited $9/mes',
+    complexity: 'beginner',
+    difficulty_level: 2,
+    learning_curve: 'immediate',
+    community_size: 'medium',
+    integration_options: ['Chrome Extension', 'WordPress', 'API'],
+    tags: ['escritura', 'contenido', 'marketing', 'económico', 'rápido'],
+    logoPlaceholder: 'photo-1516321318423-f06f85e504b3',
+    website: 'https://rytr.me',
+    apiAvailable: true,
+    freeVersion: true,
+    use_case_examples: [
+      'Contenido para redes sociales',
+      'Descripciones de productos',
+      'Emails de marketing',
+      'Artículos de blog cortos'
+    ],
+    comparison_matrix: {
+      ease_of_use: 9,
+      feature_richness: 6,
+      pricing_value: 10,
+      support_quality: 6,
+      scalability: 6
+    },
+    similar_tools: ['copy-ai', 'writesonic', 'anyword'],
+    founded_year: 2021,
+    user_rating: 4.0,
+    monthly_active_users: '200K+',
+    key_features: [
+      '40+ templates de contenido',
+      '30+ idiomas soportados',
+      'Editor built-in',
+      'Detector de plagio básico'
+    ],
+    pros: [
+      'Precio muy accesible',
+      'Fácil de usar',
+      'Buena calidad/precio',
+      'Plan gratuito útil'
+    ],
+    cons: [
+      'Menos funciones avanzadas',
+      'Comunidad más pequeña',
+      'Limitado para contenido largo'
+    ],
+    best_for: [
+      'Freelancers con presupuesto limitado',
+      'Pequeñas empresas',
+      'Usuarios ocasionales',
+      'Principiantes en AI writing'
+    ],
+    alternatives: ['Copy.ai', 'Writesonic', 'Simplified']
   },
 
   // ====== NO-CODE PLATFORMS ======
@@ -610,214 +668,214 @@ export const expandedToolsDatabase: EnhancedTool[] = [
       support_quality: 8,
       scalability: 9
     },
-    similar_tools: ['make', 'n8n', 'integromat'],
+    similar_tools: ['make', 'integromat', 'automate-io'],
     founded_year: 2011,
-    user_rating: 4.5,
-    monthly_active_users: '4M+',
+    user_rating: 4.3,
+    monthly_active_users: '5M+',
     key_features: [
-      'Conecta 5000+ aplicaciones',
-      'Triggers y acciones automatizadas',
-      'Multi-step workflows complejos',
-      'Filtros y formateo de datos'
+      '5000+ integraciones nativas',
+      'Multi-step workflows',
+      'Conditional logic',
+      'Webhooks y API custom'
     ],
     pros: [
-      'Facilidad de uso extrema',
-      'Integraciones más extensas del mercado',
-      'Confiabilidad muy alta',
-      'Excelente documentación'
+      'Ecosistema de apps gigantesco',
+      'Interfaz muy intuitiva',
+      'Documentación excelente',
+      'Confiabilidad alta'
     ],
     cons: [
-      'Precios pueden escalar rápidamente',
-      'Limitaciones en lógica compleja',
-      'Dependiente de APIs de terceros'
+      'Precios pueden ser altos',
+      'Limitaciones en plan gratuito',
+      'Algunos workflows complejos difíciles'
     ],
     best_for: [
-      'Pequeñas y medianas empresas',
-      'Automatización de procesos de marketing',
-      'Equipos remotos que necesitan sincronización',
-      'Usuarios no técnicos'
+      'Empresas que usan múltiples SaaS',
+      'Marketing automation',
+      'Equipos de ventas y CRM',
+      'Automatización de procesos simples'
     ],
-    alternatives: ['Make (Integromat)', 'n8n', 'Microsoft Power Automate']
+    alternatives: ['Make (Integromat)', 'Microsoft Power Automate', 'IFTTT']
   },
 
   {
     id: 'make',
-    name: 'Make (Integromat)',
+    name: 'Make (ex Integromat)',
     category: 'No-Code Platforms',
     subcategory: 'Automation',
-    description: 'Plataforma de automatización visual con workflows complejos y lógica avanzada sin código.',
+    description: 'Plataforma de automatización visual con capacidades avanzadas de workflow y lógica compleja.',
     pricing: 'Gratis hasta 1000 operaciones, Core $9/mes',
-    complexity: 'intermediate',
-    difficulty_level: 5,
-    learning_curve: 'moderate',
+    complexity: 'advanced',
+    difficulty_level: 6,
+    learning_curve: 'steep',
     community_size: 'large',
-    integration_options: ['1400+ apps', 'Webhooks', 'HTTP/API', 'FTP', 'Email'],
-    tags: ['automatización', 'visual-workflows', 'integraciones', 'lógica-compleja'],
-    logoPlaceholder: 'photo-1551288049-bebda4e38f71',
+    integration_options: ['1400+ apps', 'HTTP/API', 'Webhooks', 'FTP', 'Email'],
+    tags: ['automatización', 'workflows', 'visual', 'avanzado', 'APIs'],
+    logoPlaceholder: 'photo-1551434678-e076c223a692',
     website: 'https://make.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Automatizaciones complejas de e-commerce',
-      'Sincronización de datos entre múltiples sistemas',
-      'Workflows de aprobación de contenido',
-      'Automatización de reportes y analytics'
+      'Automatización compleja de e-commerce',
+      'Integración de sistemas empresariales',
+      'Procesamiento de datos en lotes',
+      'Workflows de marketing multicanal'
     ],
     comparison_matrix: {
-      ease_of_use: 7,
+      ease_of_use: 6,
       feature_richness: 10,
-      pricing_value: 9,
-      support_quality: 8,
+      pricing_value: 8,
+      support_quality: 7,
       scalability: 9
     },
-    similar_tools: ['zapier', 'n8n', 'power-automate'],
+    similar_tools: ['zapier', 'microsoft-power-automate', 'n8n'],
     founded_year: 2012,
-    user_rating: 4.3,
+    user_rating: 4.4,
     monthly_active_users: '500K+',
     key_features: [
       'Editor visual de workflows',
       'Lógica condicional avanzada',
       'Manejo de errores robusto',
-      'Debugging visual en tiempo real'
+      'Transformación de datos potente'
     ],
     pros: [
-      'Más potente que Zapier para lógica compleja',
-      'Interfaz visual muy intuitiva',
-      'Precios más competitivos',
-      'Mejor manejo de arrays y datos'
+      'Capacidades muy avanzadas',
+      'Precio competitivo',
+      'Flexibilidad extrema',
+      'Manejo de APIs excelente'
     ],
     cons: [
-      'Curva de aprendizaje más alta',
-      'Menos integraciones que Zapier',
-      'Documentación puede ser confusa'
+      'Curva de aprendizaje pronunciada',
+      'Interfaz puede ser abrumadora',
+      'Menos integraciones que Zapier'
     ],
     best_for: [
-      'Equipos técnicos que necesitan automatización avanzada',
-      'E-commerce con procesos complejos',
-      'Agencias que manejan múltiples clientes',
-      'Empresas que valoran precio vs funcionalidad'
+      'Desarrolladores y técnicos',
+      'Empresas con necesidades complejas',
+      'Integraciones de sistemas legacy',
+      'Automatización de procesos de negocio'
     ],
-    alternatives: ['Zapier', 'n8n', 'Microsoft Power Automate']
+    alternatives: ['Zapier', 'Microsoft Power Automate', 'n8n']
   },
 
   {
     id: 'airtable',
     name: 'Airtable',
     category: 'No-Code Platforms',
-    subcategory: 'Database & Collaboration',
-    description: 'Base de datos colaborativa que combina la simplicidad de una spreadsheet con el poder de una base de datos.',
-    pricing: 'Gratis hasta 1,000 registros, Plus $10/mes, Pro $20/mes',
+    subcategory: 'Database & Apps',
+    description: 'Base de datos relacional no-code con interfaz de hoja de cálculo y capacidades de automatización.',
+    pricing: 'Gratis hasta 1000 registros, Plus $10/mes',
     complexity: 'intermediate',
     difficulty_level: 4,
     learning_curve: 'moderate',
     community_size: 'large',
-    integration_options: ['Zapier', 'API REST', 'Slack', 'Google Workspace', 'Salesforce'],
-    tags: ['base-datos', 'colaborativo', 'spreadsheet', 'workflows', 'CRM'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
+    integration_options: ['Zapier', 'API REST', 'Slack', 'Google Workspace', '1000+ apps'],
+    tags: ['base-datos', 'spreadsheet', 'colaboración', 'automatización', 'CRM'],
+    logoPlaceholder: 'photo-1609081219090-a6d81d3085bf',
     website: 'https://airtable.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'CRM para pequeñas empresas',
-      'Gestión de proyectos creativos',
-      'Inventario y asset management',
-      'Planificación de eventos'
+      'CRM personalizado para startups',
+      'Gestión de inventario y productos',
+      'Base de conocimiento de empresa',
+      'Planificación de proyectos y contenido'
     ],
     comparison_matrix: {
       ease_of_use: 8,
       feature_richness: 8,
-      pricing_value: 8,
+      pricing_value: 7,
       support_quality: 8,
       scalability: 7
     },
-    similar_tools: ['notion', 'monday', 'smartsheet'],
+    similar_tools: ['notion', 'monday', 'clickup'],
     founded_year: 2012,
-    user_rating: 4.6,
-    monthly_active_users: '300K+ orgs',
+    user_rating: 4.4,
+    monthly_active_users: '300K+',
     key_features: [
-      'Vistas múltiples (Grid, Calendar, Kanban)',
-      'Campos personalizados ricos',
-      'Automatizaciones integradas',
-      'Formularios y interfaces públicas'
+      'Vistas múltiples (Grid, Kanban, Calendar)',
+      'Campos relacionales y lookup',
+      'Automatizaciones built-in',
+      'Apps y extensiones personalizadas'
     ],
     pros: [
-      'Interfaz muy intuitiva',
-      'Flexibilidad de uso',
-      'Excelentes integraciones',
-      'Plan gratuito generoso'
+      'Muy fácil de empezar',
+      'Potente pero accesible',
+      'Excelente para equipos',
+      'API muy bien documentada'
     ],
     cons: [
       'Limitaciones en registros',
-      'Performance lenta con muchos datos',
-      'Precios altos para uso intensivo'
+      'Precios pueden crecer rápido',
+      'No es ideal para datos muy grandes'
     ],
     best_for: [
-      'Equipos creativos y de marketing',
-      'Pequeñas empresas que necesitan CRM',
-      'Gestión de contenido y assets',
-      'Proyectos colaborativos'
+      'Startups organizando datos',
+      'Equipos de marketing y ventas',
+      'Gestión de proyectos pequeños/medianos',
+      'Catálogos de productos'
     ],
-    alternatives: ['Notion', 'Monday.com', 'Smartsheet']
+    alternatives: ['Notion', 'Monday.com', 'ClickUp']
   },
 
   {
-    id: 'n8n',
-    name: 'n8n',
+    id: 'retool',
+    name: 'Retool',
     category: 'No-Code Platforms',
-    subcategory: 'Open Source Automation',
-    description: 'Plataforma de automatización open source con nodos visuales y auto-hosting.',
-    pricing: 'Open source gratis, Cloud $20/mes',
+    subcategory: 'Internal Tools',
+    description: 'Plataforma para construir herramientas internas y dashboards conectando a cualquier base de datos o API.',
+    pricing: 'Gratis hasta 5 usuarios, Team $10/usuario/mes',
     complexity: 'advanced',
-    difficulty_level: 6,
+    difficulty_level: 7,
     learning_curve: 'steep',
     community_size: 'medium',
-    integration_options: ['400+ nodes', 'Custom nodes', 'Webhooks', 'API REST', 'Self-hosted'],
-    tags: ['open-source', 'automatización', 'self-hosted', 'workflows', 'privacidad'],
-    logoPlaceholder: 'photo-1516996087931-5ae405802f9f',
-    website: 'https://n8n.io',
+    integration_options: ['PostgreSQL', 'MySQL', 'MongoDB', 'APIs REST', 'GraphQL', 'AWS'],
+    tags: ['herramientas-internas', 'dashboards', 'admin-panels', 'databases', 'APIs'],
+    logoPlaceholder: 'photo-1551434678-e076c223a692',
+    website: 'https://retool.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Automatizaciones internas de empresa',
-      'Data pipelines complejos',
-      'Integraciones custom entre sistemas',
-      'Workflows de compliance y auditoría'
+      'Dashboards administrativos para startups',
+      'Herramientas de soporte al cliente',
+      'Paneles de control de inventario',
+      'Interfaces para bases de datos legacy'
     ],
     comparison_matrix: {
       ease_of_use: 6,
       feature_richness: 9,
-      pricing_value: 10,
-      support_quality: 7,
+      pricing_value: 8,
+      support_quality: 8,
       scalability: 9
     },
-    similar_tools: ['zapier', 'make', 'node-red'],
-    founded_year: 2019,
-    user_rating: 4.2,
+    similar_tools: ['internal-io', 'tooljet', 'appsmith'],
+    founded_year: 2017,
+    user_rating: 4.5,
     monthly_active_users: '100K+',
     key_features: [
-      'Completamente open source',
-      'Self-hosting y control total',
-      'Editor visual de nodos',
-      'Extensible con código custom'
+      'Componentes pre-construidos para UI',
+      'Conectores nativos a 50+ bases de datos',
+      'JavaScript custom para lógica compleja',
+      'Control de acceso granular'
     ],
     pros: [
-      'Control total de datos',
-      'No vendor lock-in',
-      'Muy extensible',
-      'Sin límites en execuciones'
+      'Muy potente para herramientas internas',
+      'Conectividad excelente',
+      'Interfaz profesional',
+      'Escalabilidad empresarial'
     ],
     cons: [
       'Requiere conocimientos técnicos',
-      'Mantenimiento de infraestructura',
-      'Menos integraciones pre-hechas'
+      'Puede ser caro para equipos grandes',
+      'Principalmente para uso interno'
     ],
     best_for: [
-      'Empresas que priorizan privacidad',
-      'Equipos técnicos avanzados',
-      'Organizaciones con compliance estricto',
-      'Desarrolladores que quieren control total'
+      'Startups que necesitan admin tools',
+      'Equipos de producto y operaciones',
+      'Empresas con sistemas legacy',
+      'Developers que quieren acelerar desarrollo'
     ],
-    alternatives: ['Zapier', 'Make', 'NodeRED']
+    alternatives: ['Internal.io', 'Tooljet', 'Appsmith']
   },
 
   // ====== WEBSITE BUILDERS ======
@@ -825,16 +883,16 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     id: 'webflow',
     name: 'Webflow',
     category: 'Website Builders',
-    subcategory: 'Professional Web Design',
-    description: 'Plataforma visual para diseñar, construir y lanzar sitios web responsivos sin código.',
+    subcategory: 'Visual Web Design',
+    description: 'Constructor visual de sitios web que genera código limpio HTML, CSS y JavaScript.',
     pricing: 'Gratis básico, Site plan $14/mes, CMS $23/mes',
-    complexity: 'advanced',
-    difficulty_level: 6,
-    learning_curve: 'steep',
+    complexity: 'intermediate',
+    difficulty_level: 5,
+    learning_curve: 'moderate',
     community_size: 'large',
-    integration_options: ['Zapier', 'Google Analytics', 'Mailchimp', 'CRM integrations', 'Custom code'],
-    tags: ['diseño-web', 'responsive', 'CMS', 'visual-design', 'hosting'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
+    integration_options: ['Zapier', 'Google Analytics', 'Mailchimp', 'Stripe', 'Custom code'],
+    tags: ['diseño-web', 'responsive', 'CMS', 'e-commerce', 'SEO'],
+    logoPlaceholder: 'photo-1467232004584-a241de8bcf5d',
     website: 'https://webflow.com',
     apiAvailable: true,
     freeVersion: true,
@@ -851,94 +909,34 @@ export const expandedToolsDatabase: EnhancedTool[] = [
       support_quality: 8,
       scalability: 8
     },
-    similar_tools: ['framer', 'wix', 'squarespace'],
+    similar_tools: ['framer', 'squarespace', 'wix'],
     founded_year: 2013,
     user_rating: 4.4,
     monthly_active_users: '3.5M+',
     key_features: [
-      'Editor visual tipo Photoshop para web',
-      'CMS integrado y personalizable',
-      'Hosting rápido y CDN global',
-      'SEO avanzado y clean code'
+      'Editor visual avanzado',
+      'CMS flexible y potente',
+      'Animaciones y micro-interacciones',
+      'SEO optimizado automáticamente'
     ],
     pros: [
       'Control total sobre el diseño',
-      'Código limpio y optimizado',
-      'Ideal para diseñadores',
-      'Hosting incluido de alta calidad'
+      'Código limpio generado',
+      'Excelente para diseñadores',
+      'Hosting rápido incluido'
     ],
     cons: [
-      'Curva de aprendizaje muy pronunciada',
-      'Precios altos para sitios complejos',
-      'Requiere conocimientos de diseño'
+      'Curva de aprendizaje pronunciada',
+      'Precios pueden ser altos',
+      'Requiere pensamiento en CSS'
     ],
     best_for: [
-      'Diseñadores web profesionales',
-      'Agencias de marketing digital',
-      'Empresas que valoran diseño único',
-      'Freelancers creativos'
+      'Diseñadores y agencias creativas',
+      'Startups que valoran diseño',
+      'Empresas que necesitan sitios custom',
+      'Portfolios profesionales'
     ],
-    alternatives: ['Framer', 'Figma to Webflow', 'Editor X']
-  },
-
-  {
-    id: 'framer',
-    name: 'Framer',
-    category: 'Website Builders',
-    subcategory: 'Interactive Design',
-    description: 'Herramienta de diseño y prototipado que permite crear sitios web interactivos y animados.',
-    pricing: 'Gratis básico, Mini $5/mes, Basic $15/mes',
-    complexity: 'intermediate',
-    difficulty_level: 5,
-    learning_curve: 'moderate',
-    community_size: 'medium',
-    integration_options: ['Figma', 'Slack', 'GitHub', 'Custom components', 'API integrations'],
-    tags: ['prototyping', 'animaciones', 'interactivo', 'diseño', 'React'],
-    logoPlaceholder: 'photo-1581291518633-83b4ebd1d83e',
-    website: 'https://framer.com',
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: [
-      'Prototipos interactivos de apps',
-      'Sitios web con micro-interacciones',
-      'Presentaciones de productos dinámicas',
-      'Landing pages animadas'
-    ],
-    comparison_matrix: {
-      ease_of_use: 7,
-      feature_richness: 8,
-      pricing_value: 8,
-      support_quality: 7,
-      scalability: 7
-    },
-    similar_tools: ['webflow', 'figma', 'principle'],
-    founded_year: 2014,
-    user_rating: 4.3,
-    monthly_active_users: '1M+',
-    key_features: [
-      'Animaciones avanzadas y transitions',
-      'Componentes reutilizables',
-      'Colaboración en tiempo real',
-      'Publish directo a web'
-    ],
-    pros: [
-      'Excelente para prototipos interactivos',
-      'Animaciones muy fluidas',
-      'Integración perfecta con Figma',
-      'Curva de aprendizaje razonable'
-    ],
-    cons: [
-      'Limitado para sitios complejos',
-      'No es ideal para e-commerce',
-      'Performance en sitios grandes'
-    ],
-    best_for: [
-      'Diseñadores UX/UI',
-      'Startups que presentan productos',
-      'Agencias creativas',
-      'Equipos de producto'
-    ],
-    alternatives: ['Webflow', 'Principle', 'ProtoPie']
+    alternatives: ['Framer', 'Squarespace', 'Editor X']
   },
 
   {
@@ -946,15 +944,15 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'WordPress.com',
     category: 'Website Builders',
     subcategory: 'CMS Platform',
-    description: 'Plataforma de gestión de contenido líder mundial para crear sitios web, blogs y tiendas online.',
-    pricing: 'Gratis básico, Personal $4/mes, Business $25/mes',
+    description: 'Plataforma de creación de sitios web basada en el CMS más popular del mundo.',
+    pricing: 'Gratis con ads, Personal $4/mes, Premium $8/mes',
     complexity: 'intermediate',
     difficulty_level: 4,
     learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['50,000+ plugins', 'WooCommerce', 'Elementor', 'Yoast SEO', 'Jetpack'],
-    tags: ['CMS', 'blog', 'plugins', 'customizable', 'SEO'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
+    integration_options: ['50,000+ plugins', 'WooCommerce', 'Jetpack', 'Google', 'Social media'],
+    tags: ['CMS', 'blogs', 'e-commerce', 'plugins', 'open-source'],
+    logoPlaceholder: 'photo-1611077457269-11f01b5ad2f5',
     website: 'https://wordpress.com',
     apiAvailable: true,
     freeVersion: true,
@@ -968,35 +966,35 @@ export const expandedToolsDatabase: EnhancedTool[] = [
       ease_of_use: 7,
       feature_richness: 10,
       pricing_value: 9,
-      support_quality: 8,
+      support_quality: 7,
       scalability: 10
     },
     similar_tools: ['squarespace', 'wix', 'ghost'],
-    founded_year: 2003,
+    founded_year: 2005,
     user_rating: 4.2,
-    monthly_active_users: '40%+ of web',
+    monthly_active_users: '400M+',
     key_features: [
-      'Ecosistema masivo de plugins',
-      'Temas responsive profesionales',
-      'SEO optimizado nativamente',
-      'Comunidad global enorme'
+      'Ecosistema de plugins masivo',
+      'Themes personalizables',
+      'SEO avanzado',
+      'Gestión de usuarios y permisos'
     ],
     pros: [
-      'Flexibilidad y personalización infinita',
-      'Comunidad masiva y soporte',
-      'SEO excelente',
-      'Escalabilidad probada'
+      'Flexibilidad infinita',
+      'Comunidad gigantesca',
+      'Excelente para SEO',
+      'Escalabilidad ilimitada'
     ],
     cons: [
       'Puede ser abrumador para principiantes',
-      'Requiere mantenimiento y actualizaciones',
-      'Performance variable según configuración'
+      'Mantenimiento y seguridad requeridos',
+      'Performance depende de hosting'
     ],
     best_for: [
-      'Cualquier tipo de sitio web',
-      'Bloggers y creadores de contenido',
-      'Empresas que necesitan escalabilidad',
-      'Desarrolladores que quieren control'
+      'Bloggers serios',
+      'Empresas que necesitan flexibilidad',
+      'E-commerce complejos',
+      'Sitios con mucho contenido'
     ],
     alternatives: ['Squarespace', 'Wix', 'Ghost']
   },
@@ -1005,23 +1003,23 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     id: 'squarespace',
     name: 'Squarespace',
     category: 'Website Builders',
-    subcategory: 'All-in-One Website Builder',
-    description: 'Constructor de sitios web todo-en-uno con templates profesionales y hosting incluido.',
-    pricing: 'Personal $16/mes, Business $23/mes, Commerce $27/mes',
+    subcategory: 'All-in-One Builder',
+    description: 'Constructor de sitios web todo-en-uno con templates profesionales y herramientas integradas.',
+    pricing: 'Personal $12/mes, Business $18/mes, Commerce $26/mes',
     complexity: 'beginner',
     difficulty_level: 3,
     learning_curve: 'gentle',
     community_size: 'large',
     integration_options: ['Google Workspace', 'Mailchimp', 'Stripe', 'PayPal', 'Social media'],
-    tags: ['templates', 'todo-en-uno', 'e-commerce', 'profesional', 'hosting'],
+    tags: ['templates', 'e-commerce', 'portfolio', 'drag-drop', 'hosting'],
     logoPlaceholder: 'photo-1460925895917-afdab827c52f',
     website: 'https://squarespace.com',
     apiAvailable: true,
     freeVersion: false,
     use_case_examples: [
-      'Portfolios creativos profesionales',
-      'Tiendas online de productos artesanales',
-      'Sitios web de restaurantes y servicios',
+      'Portfolios de artistas y fotógrafos',
+      'Sitios web de pequeños negocios',
+      'Tiendas online boutique',
       'Blogs de estilo de vida'
     ],
     comparison_matrix: {
@@ -1033,32 +1031,32 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     },
     similar_tools: ['wix', 'webflow', 'wordpress'],
     founded_year: 2003,
-    user_rating: 4.3,
-    monthly_active_users: '4M+ websites',
+    user_rating: 4.1,
+    monthly_active_users: '3M+',
     key_features: [
-      'Templates diseñados profesionalmente',
+      'Templates award-winning',
       'E-commerce integrado',
-      'Analytics y SEO incluidos',
-      'Hosting y dominio incluidos'
+      'Analytics built-in',
+      'SEO tools avanzadas'
     ],
     pros: [
-      'Diseños muy estéticos',
-      'Muy fácil de usar',
-      'Soporte al cliente excelente',
-      'Todo incluido en el precio'
+      'Diseños muy profesionales',
+      'Fácil de usar',
+      'Soporte excelente',
+      'Todo incluido'
     ],
     cons: [
-      'Menos flexibilidad que WordPress',
-      'Sin versión gratuita',
-      'Limitaciones en customización'
+      'Menos flexibilidad que competidores',
+      'No hay plan gratuito',
+      'Limitado para sitios complejos'
     ],
     best_for: [
       'Creativos y artistas',
-      'Pequeñas empresas locales',
-      'Usuarios que valoran diseño',
-      'Quienes quieren simplicidad'
+      'Pequeños negocios',
+      'Usuarios no técnicos',
+      'Proyectos que valoran diseño'
     ],
-    alternatives: ['Wix', 'Webflow', 'WordPress']
+    alternatives: ['Wix', 'Webflow', 'Showit']
   },
 
   {
@@ -1066,23 +1064,23 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Wix',
     category: 'Website Builders',
     subcategory: 'Drag & Drop Builder',
-    description: 'Constructor de sitios web drag-and-drop con IA integrada y amplio ecosistema de apps.',
-    pricing: 'Gratis con ads, Combo $16/mes, Unlimited $22/mes',
+    description: 'Constructor de sitios web drag-and-drop con IA, apps y funcionalidades completas.',
+    pricing: 'Gratis con ads, Combo $14/mes, Unlimited $18/mes',
     complexity: 'beginner',
     difficulty_level: 2,
     learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['Wix App Market', 'Google', 'Facebook', 'Mailchimp', 'Bookings'],
-    tags: ['drag-drop', 'AI-builder', 'apps', 'beginner-friendly', 'templates'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
+    integration_options: ['Google', 'Facebook', 'Instagram', 'Mailchimp', '250+ apps'],
+    tags: ['drag-drop', 'AI', 'templates', 'e-commerce', 'mobile'],
+    logoPlaceholder: 'photo-1586281380614-a1d62c273cd5',
     website: 'https://wix.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Sitios web de pequeñas empresas',
-      'Portfolios personales',
-      'Tiendas online básicas',
-      'Sitios de eventos y reservas'
+      'Sitios web de pequeños negocios',
+      'Portfolios creativos',
+      'Tiendas online simples',
+      'Sitios de eventos y restaurantes'
     ],
     comparison_matrix: {
       ease_of_use: 10,
@@ -1093,92 +1091,92 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     },
     similar_tools: ['squarespace', 'weebly', 'godaddy'],
     founded_year: 2006,
-    user_rating: 4.1,
-    monthly_active_users: '200M+ users',
+    user_rating: 4.0,
+    monthly_active_users: '200M+',
     key_features: [
       'ADI (Artificial Design Intelligence)',
-      'Editor drag-and-drop completo',
-      'App Market con 300+ apps',
-      'Templates responsive'
+      '800+ templates',
+      'App Market con 250+ apps',
+      'Editor móvil'
     ],
     pros: [
       'Extremadamente fácil de usar',
-      'IA para diseño automático',
-      'Plan gratuito disponible',
+      'Muchas opciones de personalización',
+      'Plan gratuito generoso',
       'Gran variedad de templates'
     ],
     cons: [
-      'Templates no son intercambiables',
-      'Código generado no es limpio',
-      'Limitaciones en SEO avanzado'
+      'Puede verse menos profesional',
+      'Limitaciones en personalización avanzada',
+      'Ads en plan gratuito'
     ],
     best_for: [
       'Principiantes absolutos',
-      'Pequeñas empresas locales',
-      'Sitios web personales',
-      'Prototipado rápido'
+      'Pequeños negocios locales',
+      'Proyectos personales',
+      'Sitios que necesitan configuración rápida'
     ],
-    alternatives: ['Squarespace', 'Weebly', 'GoDaddy Website Builder']
+    alternatives: ['Squarespace', 'Weebly', 'GoDaddy Builder']
   },
 
   {
-    id: 'ghost',
-    name: 'Ghost',
+    id: 'framer',
+    name: 'Framer',
     category: 'Website Builders',
-    subcategory: 'Publishing Platform',
-    description: 'Plataforma de publicación moderna enfocada en blogs profesionales y newsletters.',
-    pricing: 'Starter $9/mes, Creator $25/mes, Team $50/mes',
+    subcategory: 'Design-to-Code',
+    description: 'Herramienta de diseño y prototipado que permite crear sitios web interactivos y publicarlos.',
+    pricing: 'Gratis básico, Mini $5/mes, Basic $15/mes',
     complexity: 'intermediate',
-    difficulty_level: 4,
+    difficulty_level: 5,
     learning_curve: 'moderate',
     community_size: 'medium',
-    integration_options: ['Zapier', 'Stripe', 'Mailgun', 'Google Analytics', 'Custom integrations'],
-    tags: ['blogging', 'newsletter', 'publishing', 'membership', 'SEO'],
-    logoPlaceholder: 'photo-1516996087931-5ae405802f9f',
-    website: 'https://ghost.org',
+    integration_options: ['Figma', 'Sketch', 'Google Analytics', 'Custom code', 'APIs'],
+    tags: ['prototipado', 'interactivo', 'animaciones', 'responsive', 'componentes'],
+    logoPlaceholder: 'photo-1581291518633-83b4ebd1d83e',
+    website: 'https://framer.com',
     apiAvailable: true,
-    freeVersion: false,
+    freeVersion: true,
     use_case_examples: [
-      'Blogs profesionales y revistas',
-      'Newsletters y content subscriptions',
-      'Sitios de membership',
-      'Publicaciones independientes'
+      'Prototipos interactivos para startups',
+      'Landing pages con animaciones',
+      'Portfolios de diseñadores',
+      'Sitios web de productos de tech'
     ],
     comparison_matrix: {
-      ease_of_use: 8,
-      feature_richness: 7,
+      ease_of_use: 7,
+      feature_richness: 9,
       pricing_value: 8,
-      support_quality: 8,
-      scalability: 8
+      support_quality: 7,
+      scalability: 7
     },
-    similar_tools: ['wordpress', 'medium', 'substack'],
-    founded_year: 2013,
-    user_rating: 4.4,
-    monthly_active_users: '1M+ sites',
+    similar_tools: ['webflow', 'figma', 'principle'],
+    founded_year: 2014,
+    user_rating: 4.3,
+    monthly_active_users: '500K+',
     key_features: [
-      'Editor moderno y minimalista',
-      'Built-in newsletter functionality',
-      'Membership y subscriptions',
-      'SEO optimizado para contenido'
+      'Animaciones y micro-interacciones',
+      'Componentes reutilizables',
+      'Responsive design automático',
+      'Integración con herramientas de diseño'
     ],
     pros: [
-      'Enfocado en writing experience',
-      'Performance muy rápida',
-      'SEO excelente',
-      'Monetización integrada'
+      'Animaciones muy avanzadas',
+      'Perfecto para diseñadores',
+      'Prototipado y producción en uno',
+      'Performance excelente'
     ],
     cons: [
-      'Menos flexibilidad que WordPress',
-      'Ecosistema de plugins limitado',
-      'No tiene versión gratuita'
+      'Curva de aprendizaje para no-diseñadores',
+      'Limitado para sitios complejos',
+      'Comunidad más pequeña'
     ],
     best_for: [
-      'Bloggers profesionales',
-      'Publishers y periodistas',
-      'Creators que monetizan contenido',
-      'Empresas content-focused'
+      'Diseñadores de UX/UI',
+      'Startups tech',
+      'Agencias creativas',
+      'Productos que necesitan demos interactivos'
     ],
-    alternatives: ['WordPress', 'Medium', 'Substack']
+    alternatives: ['Webflow', 'Figma', 'Principle']
   },
 
   // ====== E-COMMERCE PLATFORMS ======
@@ -1186,15 +1184,15 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     id: 'shopify',
     name: 'Shopify',
     category: 'E-commerce Platforms',
-    subcategory: 'Complete E-commerce',
-    description: 'Plataforma completa de comercio electrónico para crear tiendas online profesionales.',
+    subcategory: 'Full E-commerce',
+    description: 'Plataforma completa de e-commerce para crear y gestionar tiendas online de cualquier tamaño.',
     pricing: 'Basic $29/mes, Shopify $79/mes, Advanced $299/mes',
     complexity: 'intermediate',
     difficulty_level: 4,
     learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['Shopify App Store', 'Zapier', 'Facebook', 'Google', 'Mailchimp', 'Klaviyo'],
-    tags: ['e-commerce', 'tienda-online', 'pagos', 'inventario', 'dropshipping'],
+    integration_options: ['6000+ apps', 'Payment gateways', 'Shipping', 'Marketing tools', 'POS'],
+    tags: ['e-commerce', 'tienda-online', 'dropshipping', 'POS', 'pagos'],
     logoPlaceholder: 'photo-1556742049-0cfed4f6a45d',
     website: 'https://shopify.com',
     apiAvailable: true,
@@ -1202,8 +1200,8 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     use_case_examples: [
       'Tiendas online de productos físicos',
       'Dropshipping y fulfillment',
-      'Suscripciones y productos digitales',
-      'Marketplace multi-vendor'
+      'Marketplaces multi-vendor',
+      'Suscripciones y productos digitales'
     ],
     comparison_matrix: {
       ease_of_use: 8,
@@ -1212,34 +1210,34 @@ export const expandedToolsDatabase: EnhancedTool[] = [
       support_quality: 9,
       scalability: 10
     },
-    similar_tools: ['woocommerce', 'bigcommerce', 'squarespace-commerce'],
+    similar_tools: ['woocommerce', 'bigcommerce', 'magento'],
     founded_year: 2006,
     user_rating: 4.4,
-    monthly_active_users: '2M+ stores',
+    monthly_active_users: '1.7M+',
     key_features: [
-      'Hosting y seguridad incluidos',
+      'Gestión completa de inventario',
       'Procesamiento de pagos integrado',
-      'App store con 6000+ aplicaciones',
-      'Temas profesionales responsivos'
+      'Themes responsivos',
+      'Analytics y reportes avanzados'
     ],
     pros: [
-      'Muy fácil de usar',
-      'Soporte técnico excelente',
-      'Escalabilidad probada',
-      'Ecosistema robusto de apps'
+      'Muy fácil de configurar',
+      'Ecosistema de apps gigantesco',
+      'Escalabilidad excelente',
+      'Soporte 24/7'
     ],
     cons: [
-      'Fees de transacción adicionales',
-      'Personalización limitada sin código',
-      'Costos pueden acumularse rápidamente'
+      'Fees de transacción',
+      'Puede ser costoso con apps',
+      'Limitaciones en customización'
     ],
     best_for: [
-      'Pequeñas y medianas empresas',
-      'Emprendedores sin conocimientos técnicos',
-      'Negocios que planean escalar',
-      'Tiendas que necesitan soporte 24/7'
+      'Empresas que venden productos físicos',
+      'Startups de e-commerce',
+      'Marcas que necesitan escalar',
+      'Negocios que valoran simplicidad'
     ],
-    alternatives: ['WooCommerce', 'BigCommerce', 'Squarespace Commerce']
+    alternatives: ['WooCommerce', 'BigCommerce', 'Square Online']
   },
 
   {
@@ -1247,23 +1245,23 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'WooCommerce',
     category: 'E-commerce Platforms',
     subcategory: 'WordPress E-commerce',
-    description: 'Plugin de e-commerce para WordPress que transforma cualquier sitio en tienda online.',
-    pricing: 'Plugin gratis, hosting y extensiones variables',
+    description: 'Plugin de e-commerce para WordPress que convierte cualquier sitio en una tienda online.',
+    pricing: 'Gratis (plugin), hosting desde $5/mes',
     complexity: 'intermediate',
     difficulty_level: 5,
     learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['WordPress ecosystem', 'Payment gateways', 'Shipping providers', 'Marketing tools'],
-    tags: ['WordPress', 'plugin', 'open-source', 'customizable', 'flexible'],
-    logoPlaceholder: 'photo-1556742049-0cfed4f6a45d',
+    integration_options: ['WordPress plugins', 'Payment gateways', 'Shipping', 'Marketing', 'Custom'],
+    tags: ['wordpress', 'open-source', 'flexible', 'plugins', 'customizable'],
+    logoPlaceholder: 'photo-1556740758-90de374c12ad',
     website: 'https://woocommerce.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Tiendas integradas en sitios WordPress',
-      'E-commerce con contenido rico',
-      'Tiendas con necesidades muy específicas',
-      'Marketplaces y multi-vendor'
+      'Tiendas online complejas y customizadas',
+      'E-commerce con blog integrado',
+      'Marketplaces multi-vendor',
+      'Tiendas B2B con precios personalizados'
     ],
     comparison_matrix: {
       ease_of_use: 6,
@@ -1274,152 +1272,92 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     },
     similar_tools: ['shopify', 'magento', 'prestashop'],
     founded_year: 2011,
-    user_rating: 4.3,
-    monthly_active_users: '5M+ stores',
+    user_rating: 4.1,
+    monthly_active_users: '5M+',
     key_features: [
-      'Integración total con WordPress',
-      'Personalización ilimitada',
-      'Gestión completa de inventario',
-      'Extensiones para todo'
+      'Flexibilidad total de WordPress',
+      'Miles de plugins disponibles',
+      'Gestión avanzada de productos',
+      'Multi-currency y multi-language'
     ],
     pros: [
-      'Completamente gratis para empezar',
-      'Flexibilidad total',
-      'SEO excelente con WordPress',
-      'Control completo de datos'
+      'Completamente gratis y open-source',
+      'Flexibilidad extrema',
+      'SEO excelente',
+      'Comunidad gigantesca'
     ],
     cons: [
-      'Requiere conocimientos técnicos',
-      'Necesita hosting y mantenimiento',
-      'Performance dependiente de hosting'
+      'Requiere mantenimiento técnico',
+      'Curva de aprendizaje pronunciada',
+      'Necesita hosting y seguridad'
     ],
     best_for: [
-      'Negocios que ya usan WordPress',
-      'Tiendas que necesitan customización',
-      'Empresas con equipo técnico',
-      'Presupuestos ajustados'
+      'Empresas que quieren control total',
+      'E-commerce con necesidades custom',
+      'Negocios con presupuesto limitado',
+      'Tiendas que requieren SEO avanzado'
     ],
     alternatives: ['Shopify', 'Magento', 'PrestaShop']
   },
 
   {
-    id: 'bigcommerce',
-    name: 'BigCommerce',
+    id: 'stripe',
+    name: 'Stripe',
     category: 'E-commerce Platforms',
-    subcategory: 'Enterprise E-commerce',
-    description: 'Plataforma de e-commerce escalable con funciones avanzadas y sin fees de transacción.',
-    pricing: 'Standard $29/mes, Plus $79/mes, Pro $299/mes',
-    complexity: 'intermediate',
-    difficulty_level: 5,
-    learning_curve: 'moderate',
+    subcategory: 'Payment Processing',
+    description: 'Plataforma de pagos online para desarrolladores y empresas con APIs potentes y flexibles.',
+    pricing: '2.9% + $0.30 por transacción',
+    complexity: 'advanced',
+    difficulty_level: 6,
+    learning_curve: 'steep',
     community_size: 'large',
-    integration_options: ['450+ integrations', 'API-first', 'Headless commerce', 'Multi-channel'],
-    tags: ['enterprise', 'API-first', 'multi-channel', 'scalable', 'sin-fees'],
-    logoPlaceholder: 'photo-1556742049-0cfed4f6a45d',
-    website: 'https://bigcommerce.com',
+    integration_options: ['APIs REST', 'SDKs', 'Webhooks', 'E-commerce platforms', 'Mobile apps'],
+    tags: ['pagos', 'APIs', 'suscripciones', 'marketplace', 'fintech'],
+    logoPlaceholder: 'photo-1556740758-90de374c12ad',
+    website: 'https://stripe.com',
     apiAvailable: true,
     freeVersion: false,
     use_case_examples: [
-      'Empresas en crecimiento rápido',
-      'Tiendas multi-canal (online + offline)',
-      'B2B y wholesale',
-      'Headless commerce implementations'
+      'Procesamiento de pagos para SaaS',
+      'Marketplaces con split payments',
+      'Suscripciones recurrentes',
+      'Pagos internacionales complejos'
     ],
     comparison_matrix: {
-      ease_of_use: 7,
-      feature_richness: 9,
+      ease_of_use: 6,
+      feature_richness: 10,
       pricing_value: 8,
       support_quality: 8,
       scalability: 10
     },
-    similar_tools: ['shopify', 'commercetools', 'magento'],
-    founded_year: 2009,
-    user_rating: 4.2,
-    monthly_active_users: '60K+ stores',
+    similar_tools: ['paypal', 'square', 'braintree'],
+    founded_year: 2010,
+    user_rating: 4.5,
+    monthly_active_users: '100K+ businesses',
     key_features: [
-      'Sin fees de transacción',
-      'API-first architecture',
-      'Multi-channel selling',
-      'Advanced SEO tools'
+      'APIs muy bien documentadas',
+      'Soporte para 135+ monedas',
+      'Billing y suscripciones avanzadas',
+      'Fraud protection y ML'
     ],
     pros: [
-      'Sin límites en ventas o bandwidth',
-      'Excelente para empresas en crecimiento',
-      'APIs muy robustas',
-      'SEO superior'
+      'APIs extremadamente potentes',
+      'Documentación excelente',
+      'Escalabilidad empresarial',
+      'Innovación constante'
     ],
     cons: [
-      'Temas menos atractivos que Shopify',
-      'Curva de aprendizaje más alta',
-      'Menor ecosistema de apps'
+      'Requiere conocimientos técnicos',
+      'Setup inicial complejo',
+      'Fees competitivos pero no los más bajos'
     ],
     best_for: [
-      'Empresas medianas y grandes',
-      'Negocios con alto volumen',
-      'Tiendas que venden en múltiples canales',
-      'Desarrolladores que necesitan APIs'
+      'Startups tech y SaaS',
+      'Marketplaces complejos',
+      'Empresas que necesitan customización',
+      'Negocios con pagos internacionales'
     ],
-    alternatives: ['Shopify Plus', 'Magento Commerce', 'CommerceTools']
-  },
-
-  {
-    id: 'gumroad',
-    name: 'Gumroad',
-    category: 'E-commerce Platforms',
-    subcategory: 'Digital Products',
-    description: 'Plataforma especializada en venta de productos digitales con setup mínimo.',
-    pricing: 'Gratis + 10% fee, Premium $10/mes + 3.5% fee',
-    complexity: 'beginner',
-    difficulty_level: 2,
-    learning_curve: 'immediate',
-    community_size: 'medium',
-    integration_options: ['PayPal', 'Stripe', 'Email marketing', 'Analytics', 'Affiliate program'],
-    tags: ['productos-digitales', 'creators', 'simple', 'affiliate', 'instant-setup'],
-    logoPlaceholder: 'photo-1556742049-0cfed4f6a45d',
-    website: 'https://gumroad.com',
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: [
-      'Venta de cursos online y ebooks',
-      'Software y templates',
-      'Arte digital y NFTs',
-      'Música y contenido multimedia'
-    ],
-    comparison_matrix: {
-      ease_of_use: 10,
-      feature_richness: 6,
-      pricing_value: 8,
-      support_quality: 7,
-      scalability: 6
-    },
-    similar_tools: ['lemonsqueezy', 'sellfy', 'payhip'],
-    founded_year: 2011,
-    user_rating: 4.1,
-    monthly_active_users: '1M+ creators',
-    key_features: [
-      'Setup en minutos',
-      'Affiliate program automático',
-      'Checkout optimizado',
-      'Analytics detallados'
-    ],
-    pros: [
-      'Extremadamente fácil de usar',
-      'Perfecto para digital products',
-      'Programa de afiliados incluido',
-      'Fees competitivos'
-    ],
-    cons: [
-      'Limitado para productos físicos',
-      'Personalización limitada',
-      'Dependiente de su plataforma'
-    ],
-    best_for: [
-      'Creators y artistas digitales',
-      'Educadores online',
-      'Desarrolladores indie',
-      'Cualquiera vendiendo productos digitales'
-    ],
-    alternatives: ['Lemon Squeezy', 'Sellfy', 'Payhip']
+    alternatives: ['PayPal', 'Square', 'Adyen']
   },
 
   // ====== DESIGN & PROTOTYPING ======
@@ -1428,23 +1366,23 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Figma',
     category: 'Design & Prototyping',
     subcategory: 'UI/UX Design',
-    description: 'Herramienta de diseño colaborativo en la nube para crear interfaces, prototipos y sistemas de diseño.',
-    pricing: 'Gratis hasta 3 proyectos, Professional $12/mes, Organization $45/mes',
+    description: 'Herramienta de diseño colaborativo basada en web para UI/UX, prototipado y design systems.',
+    pricing: 'Gratis hasta 3 proyectos, Professional $12/mes',
     complexity: 'intermediate',
     difficulty_level: 4,
     learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['Slack', 'Jira', 'Miro', 'Principle', 'Webflow', 'Developer handoff'],
-    tags: ['diseño-UI', 'prototipado', 'colaborativo', 'vectorial', 'componentes'],
-    logoPlaceholder: 'photo-1541462608143-67571c6738dd',
+    integration_options: ['Slack', 'Jira', 'Notion', 'Zeplin', 'Dev handoff tools'],
+    tags: ['diseño', 'UI/UX', 'prototipado', 'colaboración', 'design-system'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://figma.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Diseño de interfaces móviles y web',
-      'Sistemas de diseño empresariales',
-      'Prototipos interactivos de alta fidelidad',
-      'Colaboración entre diseño y desarrollo'
+      'Diseño de interfaces de apps móviles',
+      'Prototipado de sitios web',
+      'Design systems para empresas',
+      'Wireframing y user flows'
     ],
     comparison_matrix: {
       ease_of_use: 8,
@@ -1453,154 +1391,34 @@ export const expandedToolsDatabase: EnhancedTool[] = [
       support_quality: 8,
       scalability: 9
     },
-    similar_tools: ['sketch', 'adobe-xd', 'invision'],
-    founded_year: 2016,
+    similar_tools: ['sketch', 'adobe-xd', 'framer'],
+    founded_year: 2012,
     user_rating: 4.7,
     monthly_active_users: '4M+',
     key_features: [
       'Colaboración en tiempo real',
-      'Componentes y design systems',
+      'Componentes y auto-layout',
       'Prototipado interactivo',
       'Handoff automático a desarrollo'
     ],
     pros: [
-      'Colaboración excepcional',
-      'Funciona en cualquier dispositivo',
-      'Plan gratuito muy generoso',
-      'Actualizaciones constantes'
+      'Gratis para uso personal',
+      'Colaboración excelente',
+      'Basado en web',
+      'Comunidad muy activa'
     ],
     cons: [
       'Requiere conexión a internet',
-      'Performance en archivos muy grandes',
-      'Curva de aprendizaje para principiantes'
+      'Puede ser lento con archivos grandes',
+      'Limitado para ilustración'
     ],
     best_for: [
-      'Equipos de diseño colaborativos',
-      'Startups y empresas ágiles',
-      'Diseñadores freelance',
-      'Equipos remotos'
+      'Equipos de diseño y producto',
+      'Startups diseñando MVPs',
+      'Freelancers de UI/UX',
+      'Empresas building design systems'
     ],
-    alternatives: ['Sketch', 'Adobe XD', 'InVision Studio']
-  },
-
-  {
-    id: 'sketch',
-    name: 'Sketch',
-    category: 'Design & Prototyping',
-    subcategory: 'UI/UX Design',
-    description: 'Herramienta de diseño vectorial para Mac especializada en diseño de interfaces digitales.',
-    pricing: 'Individual $10/mes, Team $20/mes por editor',
-    complexity: 'intermediate',
-    difficulty_level: 4,
-    learning_curve: 'moderate',
-    community_size: 'large',
-    integration_options: ['Sketch Cloud', 'InVision', 'Zeplin', 'Principle', 'Plugins ecosystem'],
-    tags: ['Mac-only', 'vectorial', 'UI-design', 'symbols', 'plugins'],
-    logoPlaceholder: 'photo-1541462608143-67571c6738dd',
-    website: 'https://sketch.com',
-    apiAvailable: true,
-    freeVersion: false,
-    use_case_examples: [
-      'Diseño de apps iOS y macOS',
-      'Interfaces web responsive',
-      'Iconografía y sistemas visuales',
-      'Wireframes y mockups'
-    ],
-    comparison_matrix: {
-      ease_of_use: 8,
-      feature_richness: 8,
-      pricing_value: 7,
-      support_quality: 8,
-      scalability: 7
-    },
-    similar_tools: ['figma', 'adobe-xd', 'affinity-designer'],
-    founded_year: 2010,
-    user_rating: 4.5,
-    monthly_active_users: '1M+',
-    key_features: [
-      'Diseño vectorial preciso',
-      'Symbols y nested symbols',
-      'Ecosistema rico de plugins',
-      'Colaboración con Sketch Cloud'
-    ],
-    pros: [
-      'Herramientas de diseño muy precisas',
-      'Excelente para diseño de iconos',
-      'Plugins community muy activa',
-      'Performance optimizada para Mac'
-    ],
-    cons: [
-      'Solo disponible para Mac',
-      'Colaboración limitada vs Figma',
-      'Sin versión gratuita'
-    ],
-    best_for: [
-      'Diseñadores que usan Mac',
-      'Equipos que priorizan herramientas nativas',
-      'Diseño de apps Apple',
-      'Trabajos de ilustración precisa'
-    ],
-    alternatives: ['Figma', 'Adobe XD', 'Affinity Designer']
-  },
-
-  {
-    id: 'adobe-xd',
-    name: 'Adobe XD',
-    category: 'Design & Prototyping',
-    subcategory: 'UI/UX Design',
-    description: 'Herramienta de Adobe para diseño y prototipado de experiencias de usuario.',
-    pricing: 'Gratis básico, Individual $9.99/mes, Team $22.99/mes',
-    complexity: 'intermediate',
-    difficulty_level: 4,
-    learning_curve: 'moderate',
-    community_size: 'large',
-    integration_options: ['Creative Cloud', 'Photoshop', 'Illustrator', 'After Effects', 'Third-party plugins'],
-    tags: ['Adobe', 'prototyping', 'Creative-Cloud', 'voice-UI', 'animations'],
-    logoPlaceholder: 'photo-1541462608143-67571c6738dd',
-    website: 'https://adobe.com/products/xd',
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: [
-      'Prototipos de apps móviles',
-      'Wireframes y user flows',
-      'Voice UI y conversational design',
-      'Handoff a desarrolladores'
-    ],
-    comparison_matrix: {
-      ease_of_use: 7,
-      feature_richness: 8,
-      pricing_value: 8,
-      support_quality: 8,
-      scalability: 8
-    },
-    similar_tools: ['figma', 'sketch', 'invision'],
-    founded_year: 2016,
-    user_rating: 4.2,
-    monthly_active_users: '1M+',
-    key_features: [
-      'Prototipado avanzado con transiciones',
-      'Voice prototyping',
-      'Integración con Creative Cloud',
-      'Auto-animate y micro-interactions'
-    ],
-    pros: [
-      'Integración perfecta con Adobe',
-      'Voice UI capabilities únicas',
-      'Auto-animate muy potente',
-      'Plan gratuito útil'
-    ],
-    cons: [
-      'Menos adoption que Figma',
-      'Performance variable',
-      'Colaboración limitada'
-    ],
-    best_for: [
-      'Equipos que ya usan Adobe',
-      'Diseñadores que necesitan voice UI',
-      'Proyectos con mucha animación',
-      'Workflows Creative Cloud'
-    ],
-    alternatives: ['Figma', 'Sketch', 'InVision Studio']
+    alternatives: ['Sketch', 'Adobe XD', 'Framer']
   },
 
   {
@@ -1608,23 +1426,23 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Canva',
     category: 'Design & Prototyping',
     subcategory: 'Graphic Design',
-    description: 'Plataforma de diseño gráfico simplificada con templates y herramientas drag-and-drop.',
-    pricing: 'Gratis básico, Pro $12.99/mes, Team $14.99/mes por usuario',
+    description: 'Plataforma de diseño gráfico fácil de usar con templates para redes sociales, marketing y más.',
+    pricing: 'Gratis básico, Pro $12.99/mes, Teams $14.99/mes por usuario',
     complexity: 'beginner',
     difficulty_level: 2,
     learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['Social media', 'Google Drive', 'Dropbox', 'Content planner', 'Print services'],
-    tags: ['graphic-design', 'templates', 'social-media', 'marketing', 'beginner-friendly'],
-    logoPlaceholder: 'photo-1541462608143-67571c6738dd',
+    integration_options: ['Social media', 'Google Drive', 'Dropbox', 'Slack', 'Hubspot'],
+    tags: ['diseño-gráfico', 'templates', 'redes-sociales', 'marketing', 'presentaciones'],
+    logoPlaceholder: 'photo-1609081219090-a6d81d3085bf',
     website: 'https://canva.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
       'Posts para redes sociales',
-      'Presentaciones empresariales',
-      'Marketing materials y flyers',
-      'Logos y branding básico'
+      'Presentaciones profesionales',
+      'Logos y branding básico',
+      'Material de marketing y flyers'
     ],
     comparison_matrix: {
       ease_of_use: 10,
@@ -1633,34 +1451,94 @@ export const expandedToolsDatabase: EnhancedTool[] = [
       support_quality: 8,
       scalability: 6
     },
-    similar_tools: ['adobe-illustrator', 'piktochart', 'crello'],
+    similar_tools: ['adobe-photoshop', 'sketch', 'piktochart'],
     founded_year: 2012,
     user_rating: 4.6,
-    monthly_active_users: '100M+',
+    monthly_active_users: '135M+',
     key_features: [
-      '250,000+ templates profesionales',
-      'Drag-and-drop editor',
-      'Brand kit y assets',
+      '420,000+ templates',
+      'Drag and drop editor',
+      'Stock photos y elementos',
       'Colaboración en equipo'
     ],
     pros: [
       'Extremadamente fácil de usar',
-      'Templates de alta calidad',
-      'Plan gratuito muy útil',
-      'Perfecto para no-diseñadores'
+      'Gran variedad de templates',
+      'Plan gratuito muy generoso',
+      'Perfect para no-diseñadores'
     ],
     cons: [
       'Limitado para diseño avanzado',
-      'Dependiente de templates',
+      'Templates pueden verse genéricos',
       'Menos control creativo'
     ],
     best_for: [
       'Small business owners',
+      'Marketing teams sin diseñador',
       'Social media managers',
-      'Usuarios sin experiencia en diseño',
-      'Marketing teams pequeños'
+      'Emprendedores y freelancers'
     ],
-    alternatives: ['Adobe Creative Suite', 'PiktoChart', 'Crello']
+    alternatives: ['Adobe Creative Suite', 'Sketch', 'PiktoChart']
+  },
+
+  {
+    id: 'adobe-creative-cloud',
+    name: 'Adobe Creative Cloud',
+    category: 'Design & Prototyping',
+    subcategory: 'Professional Design Suite',
+    description: 'Suite completa de herramientas profesionales de diseño, video, fotografía y web.',
+    pricing: 'Individual $52.99/mes, Business $79.99/mes por usuario',
+    complexity: 'expert',
+    difficulty_level: 8,
+    learning_curve: 'steep',
+    community_size: 'massive',
+    integration_options: ['Cloud sync', 'Stock libraries', 'Behance', 'Third-party plugins'],
+    tags: ['diseño-profesional', 'fotografía', 'video', 'ilustración', 'web-design'],
+    logoPlaceholder: 'photo-1572044162444-ad60f128bdea',
+    website: 'https://adobe.com/creativecloud',
+    apiAvailable: true,
+    freeVersion: false,
+    use_case_examples: [
+      'Diseño gráfico profesional',
+      'Edición de video y motion graphics',
+      'Fotografía y retoque',
+      'Ilustración y arte digital'
+    ],
+    comparison_matrix: {
+      ease_of_use: 4,
+      feature_richness: 10,
+      pricing_value: 6,
+      support_quality: 8,
+      scalability: 10
+    },
+    similar_tools: ['figma', 'sketch', 'canva'],
+    founded_year: 1982,
+    user_rating: 4.3,
+    monthly_active_users: '26M+',
+    key_features: [
+      'Photoshop, Illustrator, After Effects, etc.',
+      'Sincronización en la nube',
+      'Stock libraries integradas',
+      'Colaboración y compartición'
+    ],
+    pros: [
+      'Herramientas más potentes del mercado',
+      'Estándar de la industria',
+      'Integración perfecta entre apps',
+      'Actualizaciones constantes'
+    ],
+    cons: [
+      'Muy caro para individuos',
+      'Curva de aprendizaje muy pronunciada',
+      'Puede ser excesivo para necesidades simples'
+    ],
+    best_for: [
+      'Diseñadores profesionales',
+      'Agencias creativas',
+      'Empresas con necesidades complejas',
+      'Creators de contenido avanzado'
+    ],
+    alternatives: ['Figma', 'Canva', 'Affinity Suite']
   },
 
   // ====== DEVELOPMENT TOOLS ======
@@ -1669,57 +1547,57 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'GitHub',
     category: 'Development Tools',
     subcategory: 'Version Control',
-    description: 'Plataforma de desarrollo colaborativo para alojar y revisar código usando Git.',
-    pricing: 'Gratis para proyectos públicos, Pro $4/mes, Team $4/usuario/mes',
+    description: 'Plataforma de desarrollo colaborativo para control de versiones y gestión de código.',
+    pricing: 'Gratis para proyectos públicos, Pro $4/mes',
     complexity: 'intermediate',
     difficulty_level: 5,
     learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['CI/CD', 'Slack', 'Jira', 'VS Code', 'Zapier', 'Third-party apps'],
-    tags: ['git', 'version-control', 'colaborativo', 'open-source', 'hosting'],
+    integration_options: ['CI/CD', 'IDEs', 'Project management', 'Cloud providers', '1000+ apps'],
+    tags: ['git', 'código', 'colaboración', 'open-source', 'CI/CD'],
     logoPlaceholder: 'photo-1618401471353-b98afee0b2eb',
     website: 'https://github.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Hosting de repositorios de código',
-      'Colaboración en proyectos open source',
-      'CI/CD y automatización de deployments',
-      'Documentación y wikis de proyectos'
+      'Desarrollo colaborativo de software',
+      'Open source projects',
+      'CI/CD pipelines',
+      'Documentación de proyectos'
     ],
     comparison_matrix: {
       ease_of_use: 7,
-      feature_richness: 10,
+      feature_richness: 9,
       pricing_value: 9,
       support_quality: 8,
       scalability: 10
     },
     similar_tools: ['gitlab', 'bitbucket', 'azure-devops'],
     founded_year: 2008,
-    user_rating: 4.6,
+    user_rating: 4.8,
     monthly_active_users: '100M+',
     key_features: [
-      'Repositorios ilimitados públicos/privados',
-      'Pull requests y code review',
-      'GitHub Actions para CI/CD',
-      'Issues y project management'
+      'Git repositories hosting',
+      'Issues y project management',
+      'GitHub Actions (CI/CD)',
+      'Code review y pull requests'
     ],
     pros: [
       'Estándar de la industria',
-      'Comunidad masiva',
-      'Integración perfecta con herramientas dev',
-      'GitHub Pages gratuito'
+      'Comunidad gigantesca',
+      'Excelente para open source',
+      'Herramientas integradas potentes'
     ],
     cons: [
-      'Curva de aprendizaje para Git',
-      'Interfaz puede ser abrumadora',
-      'Limitaciones en plan gratuito'
+      'Puede ser abrumador para principiantes',
+      'Requires Git knowledge',
+      'Algunas funciones avanzadas son pagadas'
     ],
     best_for: [
-      'Cualquier proyecto de desarrollo',
-      'Equipos de desarrollo de cualquier tamaño',
+      'Developers de cualquier nivel',
+      'Equipos de desarrollo',
       'Proyectos open source',
-      'Desarrolladores individuales'
+      'Startups tech'
     ],
     alternatives: ['GitLab', 'Bitbucket', 'Azure DevOps']
   },
@@ -1729,360 +1607,300 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Vercel',
     category: 'Development Tools',
     subcategory: 'Hosting & Deployment',
-    description: 'Plataforma de deployment y hosting optimizada para aplicaciones frontend y serverless.',
-    pricing: 'Gratis generoso, Pro $20/mes, Team $30/usuario/mes',
+    description: 'Plataforma de deployment y hosting optimizada para frontend frameworks y static sites.',
+    pricing: 'Gratis para personal, Pro $20/mes, Enterprise custom',
     complexity: 'intermediate',
-    difficulty_level: 3,
+    difficulty_level: 4,
     learning_curve: 'gentle',
     community_size: 'large',
-    integration_options: ['GitHub', 'GitLab', 'Bitbucket', 'Next.js', 'React', 'Svelte'],
-    tags: ['hosting', 'deployment', 'serverless', 'CDN', 'frontend'],
-    logoPlaceholder: 'photo-1565106430482-8f6e74349ca1',
+    integration_options: ['GitHub', 'GitLab', 'Bitbucket', 'Next.js', 'React', 'Vue'],
+    tags: ['hosting', 'deployment', 'jamstack', 'serverless', 'CDN'],
+    logoPlaceholder: 'photo-1461749280684-dccba630e2f6',
     website: 'https://vercel.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Deploy automático de apps React/Next.js',
-      'Landing pages de alta performance',
-      'JAMstack sites con APIs serverless',
-      'Preview deployments para testing'
+      'Deploy de aplicaciones React/Next.js',
+      'Static sites y JAMstack',
+      'Landing pages de startups',
+      'Portfolios de desarrolladores'
     ],
     comparison_matrix: {
       ease_of_use: 9,
       feature_richness: 8,
-      pricing_value: 9,
+      pricing_value: 8,
       support_quality: 8,
       scalability: 9
     },
-    similar_tools: ['netlify', 'aws-amplify', 'railway'],
+    similar_tools: ['netlify', 'aws-amplify', 'firebase-hosting'],
     founded_year: 2015,
-    user_rating: 4.5,
-    monthly_active_users: '1M+ developers',
+    user_rating: 4.6,
+    monthly_active_users: '500K+',
     key_features: [
       'Deploy automático desde Git',
-      'Edge network global',
-      'Serverless functions integradas',
-      'Preview deployments instantáneos'
+      'Edge Network global',
+      'Preview deployments',
+      'Serverless functions'
     ],
     pros: [
-      'Deploy increíblemente fácil',
-      'Performance excepcional',
-      'Plan gratuito muy generoso',
-      'Integración perfecta con Next.js'
-    ],
-    cons: [
-      'Optimizado principalmente para frontend',
-      'Limitaciones en backend tradicional',
-      'Costos pueden crecer con tráfico alto'
-    ],
-    best_for: [
-      'Desarrolladores frontend/fullstack',
-      'Proyectos Next.js y React',
-      'JAMstack developers',
-      'Startups que necesitan hosting rápido'
-    ],
-    alternatives: ['Netlify', 'AWS Amplify', 'Railway']
-  },
-
-  {
-    id: 'netlify',
-    name: 'Netlify',
-    category: 'Development Tools',
-    subcategory: 'Hosting & Deployment',
-    description: 'Plataforma de hosting y deployment para sitios estáticos y aplicaciones JAMstack.',
-    pricing: 'Gratis generoso, Pro $19/mes, Business $99/mes',
-    complexity: 'intermediate',
-    difficulty_level: 3,
-    learning_curve: 'gentle',
-    community_size: 'large',
-    integration_options: ['Git providers', 'Build tools', 'Forms', 'Identity', 'Functions'],
-    tags: ['jamstack', 'static-sites', 'forms', 'functions', 'git-based'],
-    logoPlaceholder: 'photo-1565106430482-8f6e74349ca1',
-    website: 'https://netlify.com',
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: [
-      'Sitios estáticos y blogs',
-      'Landing pages con formularios',
-      'Aplicaciones React/Vue/Angular',
-      'Sitios de documentación'
-    ],
-    comparison_matrix: {
-      ease_of_use: 9,
-      feature_richness: 8,
-      pricing_value: 9,
-      support_quality: 8,
-      scalability: 8
-    },
-    similar_tools: ['vercel', 'github-pages', 'surge'],
-    founded_year: 2014,
-    user_rating: 4.4,
-    monthly_active_users: '1M+ sites',
-    key_features: [
-      'Deploy automático desde Git',
-      'Forms handling sin backend',
-      'Serverless functions',
-      'Split testing integrado'
-    ],
-    pros: [
-      'Muy fácil deploy desde Git',
-      'Excelente para sitios estáticos',
-      'Forms sin configuración',
+      'Deploy extremadamente fácil',
+      'Performance excelente',
+      'Integración perfecta con frameworks',
       'Plan gratuito generoso'
     ],
     cons: [
-      'Limitado para aplicaciones complejas',
-      'Build times pueden ser lentos',
-      'Menos optimizado para React que Vercel'
+      'Principalmente para frontend',
+      'Puede ser caro para high traffic',
+      'Limitado para backends complejos'
     ],
     best_for: [
-      'Sitios estáticos y JAMstack',
       'Desarrolladores frontend',
-      'Blogs y sitios de contenido',
-      'Prototipos y demos'
+      'Startups con apps React/Next.js',
+      'JAMstack projects',
+      'Portfolios y landing pages'
     ],
-    alternatives: ['Vercel', 'GitHub Pages', 'Surge.sh']
+    alternatives: ['Netlify', 'AWS Amplify', 'Firebase Hosting']
   },
 
-  {
-    id: 'railway',
-    name: 'Railway',
-    category: 'Development Tools',
-    subcategory: 'Full-Stack Hosting',
-    description: 'Plataforma de deployment simplificada para aplicaciones full-stack con bases de datos.',
-    pricing: 'Developer $5/mes, Team $20/mes por usuario',
-    complexity: 'intermediate',
-    difficulty_level: 4,
-    learning_curve: 'gentle',
-    community_size: 'medium',
-    integration_options: ['GitHub', 'Docker', 'PostgreSQL', 'MySQL', 'Redis'],
-    tags: ['full-stack', 'databases', 'containers', 'simple-deploy', 'backend'],
-    logoPlaceholder: 'photo-1565106430482-8f6e74349ca1',
-    website: 'https://railway.app',
-    apiAvailable: true,
-    freeVersion: false,
-    use_case_examples: [
-      'APIs backend con bases de datos',
-      'Aplicaciones Django/Rails',
-      'Microservicios y containers',
-      'Bots y scheduled jobs'
-    ],
-    comparison_matrix: {
-      ease_of_use: 9,
-      feature_richness: 7,
-      pricing_value: 8,
-      support_quality: 7,
-      scalability: 8
-    },
-    similar_tools: ['heroku', 'render', 'digital-ocean'],
-    founded_year: 2020,
-    user_rating: 4.3,
-    monthly_active_users: '100K+ developers',
-    key_features: [
-      'Deploy sin configuración',
-      'Bases de datos con un click',
-      'Environment variables management',
-      'Automatic SSL y custom domains'
-    ],
-    pros: [
-      'Extremadamente simple de usar',
-      'Excelente para full-stack apps',
-      'Pricing predecible',
-      'Setup de DB instantáneo'
-    ],
-    cons: [
-      'Menos features que AWS',
-      'Comunidad más pequeña',
-      'Sin plan gratuito permanente'
-    ],
-    best_for: [
-      'Developers que quieren simplicidad',
-      'Startups con full-stack apps',
-      'Proyectos que necesitan DB rápida',
-      'Migración desde Heroku'
-    ],
-    alternatives: ['Heroku', 'Render', 'DigitalOcean App Platform']
-  },
-
-  // ====== DATABASE & BACKEND ======
   {
     id: 'supabase',
     name: 'Supabase',
-    category: 'Database & Backend',
-    subcategory: 'Backend as a Service',
-    description: 'Alternativa open source a Firebase con PostgreSQL, autenticación y APIs en tiempo real.',
-    pricing: 'Gratis hasta 2 proyectos, Pro $25/proyecto/mes',
+    category: 'Development Tools',
+    subcategory: 'Backend-as-a-Service',
+    description: 'Alternativa open-source a Firebase que proporciona database, auth, APIs y storage.',
+    pricing: 'Gratis hasta 500MB, Pro $25/mes',
     complexity: 'intermediate',
-    difficulty_level: 4,
+    difficulty_level: 5,
     learning_curve: 'moderate',
     community_size: 'large',
-    integration_options: ['PostgreSQL', 'Auth providers', 'Webhooks', 'Edge functions', 'Realtime'],
-    tags: ['database', 'backend', 'PostgreSQL', 'auth', 'realtime', 'open-source'],
-    logoPlaceholder: 'photo-1516996087931-5ae405802f9f',
+    integration_options: ['React', 'Vue', 'Angular', 'Flutter', 'API REST', 'GraphQL'],
+    tags: ['database', 'authentication', 'APIs', 'real-time', 'open-source'],
+    logoPlaceholder: 'photo-1551434678-e076c223a692',
     website: 'https://supabase.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Apps con autenticación de usuarios',
-      'Dashboards con datos en tiempo real',
-      'APIs REST automáticas',
-      'Chat apps y colaboración'
+      'Backend para apps web y móviles',
+      'Sistemas de autenticación complejos',
+      'APIs en tiempo real',
+      'Dashboards y admin panels'
     ],
     comparison_matrix: {
       ease_of_use: 8,
-      feature_richness: 9,
+      feature_richness: 8,
       pricing_value: 9,
-      support_quality: 8,
+      support_quality: 7,
       scalability: 8
     },
     similar_tools: ['firebase', 'aws-amplify', 'planetscale'],
     founded_year: 2020,
-    user_rating: 4.6,
-    monthly_active_users: '500K+ developers',
+    user_rating: 4.5,
+    monthly_active_users: '200K+',
     key_features: [
-      'PostgreSQL completo en la nube',
-      'Autenticación social y email',
-      'APIs REST y GraphQL automáticas',
-      'Subscripciones en tiempo real'
+      'PostgreSQL database managed',
+      'Authentication y autorización',
+      'APIs auto-generadas',
+      'Real-time subscriptions'
     ],
     pros: [
-      'Open source y transparente',
-      'PostgreSQL completo (no NoSQL limitado)',
+      'Open-source y transparente',
+      'PostgreSQL completo',
       'Muy fácil de empezar',
-      'Excelente relación precio-valor'
+      'Excelente documentación'
     ],
     cons: [
-      'Más nuevo que Firebase',
-      'Menos integraciones third-party',
-      'Documentación en evolución'
+      'Relativamente nuevo',
+      'Ecosistema más pequeño que Firebase',
+      'Algunas funciones still en beta'
     ],
     best_for: [
+      'Startups que valoran open-source',
       'Desarrolladores que prefieren SQL',
-      'Startups conscientes de vendor lock-in',
-      'Apps que necesitan funcionalidad completa de DB',
-      'Proyectos que valoran open source'
+      'Proyectos que necesitan real-time',
+      'Apps que requieren escalabilidad'
     ],
     alternatives: ['Firebase', 'AWS Amplify', 'PlanetScale']
   },
 
   {
-    id: 'firebase',
-    name: 'Firebase',
-    category: 'Database & Backend',
-    subcategory: 'Backend as a Service',
-    description: 'Plataforma de Google para desarrollo de aplicaciones con base de datos NoSQL y servicios backend.',
-    pricing: 'Spark gratis, Blaze pay-as-you-go',
+    id: 'vs-code',
+    name: 'Visual Studio Code',
+    category: 'Development Tools',
+    subcategory: 'Code Editor',
+    description: 'Editor de código gratuito y potente con extensiones, debugging y Git integrado.',
+    pricing: 'Completamente gratis',
     complexity: 'intermediate',
     difficulty_level: 4,
     learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['Google Cloud', 'Analytics', 'AdMob', 'ML Kit', 'Third-party services'],
-    tags: ['Google', 'NoSQL', 'realtime', 'analytics', 'hosting', 'functions'],
-    logoPlaceholder: 'photo-1516996087931-5ae405802f9f',
-    website: 'https://firebase.google.com',
+    integration_options: ['Git', 'Terminals', 'Debuggers', '20000+ extensions', 'Cloud sync'],
+    tags: ['editor', 'debugging', 'extensions', 'git', 'multiplataforma'],
+    logoPlaceholder: 'photo-1629654297299-c8506221ca97',
+    website: 'https://code.visualstudio.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Apps móviles con sync en tiempo real',
-      'Chat applications y social apps',
-      'Analytics y crash reporting',
-      'Hosting de SPAs y static sites'
+      'Desarrollo web frontend y backend',
+      'Python, JavaScript, TypeScript development',
+      'DevOps y automation scripts',
+      'Data science y machine learning'
     ],
     comparison_matrix: {
       ease_of_use: 8,
       feature_richness: 10,
+      pricing_value: 10,
+      support_quality: 9,
+      scalability: 9
+    },
+    similar_tools: ['sublime-text', 'atom', 'jetbrains-ides'],
+    founded_year: 2015,
+    user_rating: 4.8,
+    monthly_active_users: '14M+',
+    key_features: [
+      'IntelliSense y autocomplete',
+      'Debugging integrado',
+      'Git y source control',
+      'Terminal integrada'
+    ],
+    pros: [
+      'Completamente gratis',
+      'Extremadamente extensible',
+      'Performance excelente',
+      'Ecosistema de extensions gigantesco'
+    ],
+    cons: [
+      'Puede ser resource-intensive',
+      'Setup inicial puede ser complejo',
+      'Muchas opciones pueden abrumar'
+    ],
+    best_for: [
+      'Desarrolladores de cualquier nivel',
+      'Múltiples lenguajes de programación',
+      'Equipos de desarrollo',
+      'Proyectos open source'
+    ],
+    alternatives: ['Sublime Text', 'WebStorm', 'Atom']
+  },
+
+  // ====== DATABASE & BACKEND ======
+  {
+    id: 'firebase',
+    name: 'Firebase',
+    category: 'Database & Backend',
+    subcategory: 'Backend-as-a-Service',
+    description: 'Plataforma de desarrollo de aplicaciones de Google con database, auth, hosting y analytics.',
+    pricing: 'Gratis básico, Blaze pay-per-use',
+    complexity: 'intermediate',
+    difficulty_level: 5,
+    learning_curve: 'moderate',
+    community_size: 'massive',
+    integration_options: ['Android', 'iOS', 'Web', 'Flutter', 'Unity', 'C++'],
+    tags: ['database', 'authentication', 'hosting', 'analytics', 'real-time'],
+    logoPlaceholder: 'photo-1551434678-e076c223a692',
+    website: 'https://firebase.google.com',
+    apiAvailable: true,
+    freeVersion: true,
+    use_case_examples: [
+      'Apps móviles iOS y Android',
+      'Aplicaciones web en tiempo real',
+      'Chat y messaging apps',
+      'Gaming leaderboards y analytics'
+    ],
+    comparison_matrix: {
+      ease_of_use: 8,
+      feature_richness: 9,
       pricing_value: 8,
       support_quality: 9,
-      scalability: 10
+      scalability: 9
     },
-    similar_tools: ['supabase', 'aws-amplify', 'mongodb'],
+    similar_tools: ['supabase', 'aws-amplify', 'mongodb-atlas'],
     founded_year: 2011,
     user_rating: 4.4,
     monthly_active_users: '3M+ apps',
     key_features: [
-      'Firestore NoSQL database',
-      'Authentication providers múltiples',
-      'Cloud Functions serverless',
-      'Analytics y performance monitoring'
+      'Firestore real-time database',
+      'Authentication completa',
+      'Cloud hosting y CDN',
+      'Analytics y crash reporting'
     ],
     pros: [
-      'Ecosistema Google completo',
-      'Escalabilidad masiva',
-      'Documentación excelente',
-      'Integración con Google Cloud'
+      'Ecosistema muy completo',
+      'Escalabilidad automática',
+      'Integración perfecta con Google Cloud',
+      'Excelente para móviles'
     ],
     cons: [
       'Vendor lock-in con Google',
-      'Pricing puede ser impredecible',
-      'NoSQL puede ser limitante'
+      'Costos pueden escalar rápido',
+      'Menos control que soluciones self-hosted'
     ],
     best_for: [
-      'Apps móviles (especialmente Android)',
-      'Aplicaciones que necesitan analytics',
-      'Startups que valoran ecosystem completo',
-      'Proyectos que escalarán masivamente'
+      'Desarrollo móvil iOS/Android',
+      'Startups que necesitan escalar rápido',
+      'Apps que requieren real-time features',
+      'Proyectos que valoran simplicidad'
     ],
     alternatives: ['Supabase', 'AWS Amplify', 'MongoDB Atlas']
   },
 
   {
-    id: 'planetscale',
-    name: 'PlanetScale',
+    id: 'mongodb-atlas',
+    name: 'MongoDB Atlas',
     category: 'Database & Backend',
-    subcategory: 'Serverless Database',
-    description: 'Base de datos MySQL serverless con branching como Git y escalabilidad automática.',
-    pricing: 'Hobby gratis, Scaler $29/mes, Pro $39/mes',
-    complexity: 'intermediate',
-    difficulty_level: 5,
-    learning_curve: 'moderate',
-    community_size: 'medium',
-    integration_options: ['Prisma', 'Drizzle', 'MySQL drivers', 'GraphQL', 'REST APIs'],
-    tags: ['MySQL', 'serverless', 'branching', 'vitess', 'database-ops'],
-    logoPlaceholder: 'photo-1516996087931-5ae405802f9f',
-    website: 'https://planetscale.com',
+    subcategory: 'NoSQL Database',
+    description: 'Base de datos MongoDB completamente administrada en la nube con escalabilidad automática.',
+    pricing: 'Gratis hasta 512MB, Dedicated desde $57/mes',
+    complexity: 'advanced',
+    difficulty_level: 6,
+    learning_curve: 'steep',
+    community_size: 'large',
+    integration_options: ['Node.js', 'Python', 'Java', 'C#', 'Drivers múltiples', 'BI tools'],
+    tags: ['nosql', 'database', 'cloud', 'escalable', 'documentos'],
+    logoPlaceholder: 'photo-1558655146-d09347e92766',
+    website: 'https://mongodb.com/atlas',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'APIs con MySQL que necesitan escalar',
-      'E-commerce con alta concurrencia',
-      'SaaS con multi-tenancy',
-      'Apps con database branching workflow'
+      'APIs backend para aplicaciones',
+      'Analytics y big data',
+      'Content management systems',
+      'IoT y real-time applications'
     ],
     comparison_matrix: {
-      ease_of_use: 7,
-      feature_richness: 8,
-      pricing_value: 8,
+      ease_of_use: 6,
+      feature_richness: 9,
+      pricing_value: 7,
       support_quality: 8,
       scalability: 10
     },
-    similar_tools: ['supabase', 'mysql', 'aws-rds'],
-    founded_year: 2018,
-    user_rating: 4.5,
-    monthly_active_users: '50K+ developers',
+    similar_tools: ['firebase', 'dynamodb', 'cosmosdb'],
+    founded_year: 2016,
+    user_rating: 4.3,
+    monthly_active_users: '31K+ customers',
     key_features: [
-      'Database branching y merging',
-      'Auto-scaling horizontal',
-      'Schema migrations sin downtime',
-      'Insights y query performance'
+      'Auto-scaling y auto-failover',
+      'Global clusters y replication',
+      'Built-in security y compliance',
+      'Real-time analytics'
     ],
     pros: [
-      'Branching revolucionario para DB',
-      'Performance excepcional',
-      'Escalabilidad automática',
-      'Developer experience superior'
+      'Escalabilidad horizontal excelente',
+      'Flexibilidad de esquema',
+      'Performance muy alta',
+      'Ecosistema maduro'
     ],
     cons: [
-      'Solo MySQL (no PostgreSQL)',
-      'Relativamente caro',
-      'Curva de aprendizaje para branching'
+      'Curva de aprendizaje para SQL developers',
+      'Puede ser costoso en escala',
+      'Requires NoSQL mindset'
     ],
     best_for: [
-      'Aplicaciones MySQL de alto tráfico',
-      'Equipos que valoran DB ops avanzadas',
-      'E-commerce y SaaS escalables',
-      'Developers que quieren Git-like workflow'
+      'Aplicaciones que manejan big data',
+      'Startups con growth rápido',
+      'APIs que necesitan performance',
+      'Aplicaciones con datos no estructurados'
     ],
-    alternatives: ['AWS RDS', 'Google Cloud SQL', 'Supabase']
+    alternatives: ['Firebase Firestore', 'AWS DynamoDB', 'Azure Cosmos DB']
   },
 
   // ====== COMMUNICATION ======
@@ -2090,24 +1908,24 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     id: 'slack',
     name: 'Slack',
     category: 'Communication',
-    subcategory: 'Team Messaging',
-    description: 'Plataforma de comunicación empresarial con canales, mensajería directa e integraciones.',
-    pricing: 'Gratis básico, Pro $7.25/usuario/mes, Business+ $12.50/usuario/mes',
+    subcategory: 'Team Chat',
+    description: 'Plataforma de comunicación empresarial con canales, mensajería directa y integraciones.',
+    pricing: 'Gratis hasta 10K mensajes, Pro $7.25/mes por usuario',
     complexity: 'beginner',
     difficulty_level: 2,
     learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['2000+ apps', 'Zapier', 'Google Workspace', 'Microsoft 365', 'Custom bots'],
-    tags: ['comunicación', 'equipos', 'chat', 'integraciones', 'productividad'],
+    integration_options: ['2400+ apps', 'Custom bots', 'Workflows', 'API', 'Webhooks'],
+    tags: ['chat', 'comunicación', 'equipos', 'integraciones', 'productividad'],
     logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://slack.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Comunicación de equipos remotos',
-      'Canales por proyecto o departamento',
-      'Integraciones con herramientas de trabajo',
-      'Bots para automatización de tareas'
+      'Comunicación interna de equipos',
+      'Coordinación de proyectos',
+      'Soporte al cliente interno',
+      'Integración con herramientas de trabajo'
     ],
     comparison_matrix: {
       ease_of_use: 9,
@@ -2118,92 +1936,92 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     },
     similar_tools: ['microsoft-teams', 'discord', 'mattermost'],
     founded_year: 2013,
-    user_rating: 4.3,
-    monthly_active_users: '12M+',
+    user_rating: 4.4,
+    monthly_active_users: '18M+',
     key_features: [
-      'Canales organizados por temas',
+      'Canales organizados por tema',
       'Mensajería directa y grupal',
-      'Llamadas de voz y video',
-      'Historial de mensajes buscable'
+      'Compartir archivos y pantalla',
+      'Búsqueda potente en historial'
     ],
     pros: [
-      'Interfaz muy intuitiva',
-      'Excelentes integraciones',
-      'Búsqueda poderosa',
-      'Cultura de empresa establecida'
+      'Muy fácil de adoptar',
+      'Integraciones excelentes',
+      'Interface intuitiva',
+      'Comunidad activa'
     ],
     cons: [
-      'Puede ser distractor',
-      'Precios altos para equipos grandes',
+      'Puede ser caro para equipos grandes',
+      'Notificaciones pueden ser abrumadoras',
       'Limitaciones en plan gratuito'
     ],
     best_for: [
       'Equipos remotos y distribuidos',
-      'Startups tech-savvy',
-      'Empresas que valoran integraciones',
-      'Equipos creativos y ágiles'
+      'Startups y empresas tech',
+      'Proyectos que requieren colaboración',
+      'Empresas que usan muchas herramientas'
     ],
-    alternatives: ['Microsoft Teams', 'Discord', 'Google Chat']
+    alternatives: ['Microsoft Teams', 'Discord', 'Mattermost']
   },
 
   {
-    id: 'discord',
-    name: 'Discord',
+    id: 'zoom',
+    name: 'Zoom',
     category: 'Communication',
-    subcategory: 'Community Platform',
-    description: 'Plataforma de comunicación por voz, video y texto diseñada para crear comunidades.',
-    pricing: 'Gratis, Nitro $9.99/mes, Nitro Basic $2.99/mes',
+    subcategory: 'Video Conferencing',
+    description: 'Plataforma de videollamadas y webinars para reuniones remotas y colaboración.',
+    pricing: 'Gratis hasta 40 min, Pro $14.99/mes por licencia',
     complexity: 'beginner',
     difficulty_level: 2,
     learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['Bots ecosystem', 'Webhooks', 'Screen sharing', 'Game integrations'],
-    tags: ['gaming', 'comunidades', 'voz', 'bots', 'servidores'],
-    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
-    website: 'https://discord.com',
+    integration_options: ['Calendar apps', 'Slack', 'CRM', 'LMS', 'Streaming platforms'],
+    tags: ['videollamadas', 'reuniones', 'webinars', 'remoto', 'presentaciones'],
+    logoPlaceholder: 'photo-1588196749597-9ff075ee6b5b',
+    website: 'https://zoom.us',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Comunidades de gaming y hobbies',
-      'Equipos de desarrollo y tech',
-      'Grupos de estudio y educación',
-      'Eventos virtuales y meetups'
+      'Reuniones de equipo remotas',
+      'Webinars y eventos online',
+      'Clases y training online',
+      'Soporte al cliente face-to-face'
     ],
     comparison_matrix: {
-      ease_of_use: 9,
+      ease_of_use: 10,
       feature_richness: 8,
-      pricing_value: 10,
-      support_quality: 7,
+      pricing_value: 8,
+      support_quality: 8,
       scalability: 9
     },
-    similar_tools: ['slack', 'telegram', 'teamspeak'],
-    founded_year: 2015,
-    user_rating: 4.5,
-    monthly_active_users: '150M+',
+    similar_tools: ['google-meet', 'microsoft-teams', 'webex'],
+    founded_year: 2011,
+    user_rating: 4.4,
+    monthly_active_users: '300M+',
     key_features: [
-      'Servidores con canales múltiples',
-      'Voice channels de alta calidad',
-      'Bots y automatización',
-      'Screen sharing y streaming'
+      'HD video y audio de calidad',
+      'Screen sharing y annotation',
+      'Recording y transcription',
+      'Breakout rooms y polls'
     ],
     pros: [
-      'Completamente gratis para uso básico',
-      'Excelente calidad de audio',
-      'Comunidades muy activas',
-      'Ecosistema de bots robusto'
+      'Calidad de video excelente',
+      'Muy fácil de usar',
+      'Funciona en cualquier dispositivo',
+      'Features avanzadas incluidas'
     ],
     cons: [
-      'Puede ser ruidoso y distractivo',
-      'No ideal para comunicación empresarial',
-      'Moderación de contenido variable'
+      'Limitaciones de tiempo en plan gratuito',
+      'Algunos security concerns',
+      'Puede consumir mucho bandwidth'
     ],
     best_for: [
-      'Comunidades de gaming',
-      'Equipos creativos informales',
-      'Educación y grupos de estudio',
-      'Eventos y conferencias virtuales'
+      'Equipos trabajando remoto',
+      'Educators y trainers',
+      'Eventos y webinars',
+      'Cualquier empresa que hace reuniones'
     ],
-    alternatives: ['Slack', 'Telegram', 'Clubhouse']
+    alternatives: ['Google Meet', 'Microsoft Teams', 'Cisco Webex']
   },
 
   // ====== PROJECT MANAGEMENT ======
@@ -2212,59 +2030,59 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Notion',
     category: 'Project Management',
     subcategory: 'All-in-One Workspace',
-    description: 'Workspace todo-en-uno que combina notas, bases de datos, wikis y gestión de proyectos.',
-    pricing: 'Gratis individual, Plus $8/usuario/mes, Business $15/usuario/mes',
+    description: 'Workspace todo-en-uno que combina notas, documentos, wikis, bases de datos y gestión de proyectos.',
+    pricing: 'Gratis para personal, Plus $8/mes por usuario',
     complexity: 'intermediate',
     difficulty_level: 4,
     learning_curve: 'moderate',
-    community_size: 'massive',
-    integration_options: ['Slack', 'Google Calendar', 'Zapier', 'Figma', 'GitHub', 'API'],
-    tags: ['productividad', 'notas', 'base-datos', 'wiki', 'colaborativo'],
-    logoPlaceholder: 'photo-1586281380614-a1d62c273cd5',
+    community_size: 'large',
+    integration_options: ['Slack', 'Google Drive', 'Figma', 'GitHub', '50+ integraciones'],
+    tags: ['workspace', 'notas', 'documentos', 'bases-datos', 'colaboración'],
+    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://notion.so',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Documentación y wikis de empresa',
-      'Gestión de proyectos y roadmaps',
-      'Base de conocimiento personal',
-      'CRM simple y tracking de leads'
+      'Wikis y documentación de empresa',
+      'Gestión de proyectos y tareas',
+      'CRM simple y bases de datos',
+      'Knowledge management personal'
     ],
     comparison_matrix: {
       ease_of_use: 7,
-      feature_richness: 10,
+      feature_richness: 9,
       pricing_value: 9,
       support_quality: 7,
       scalability: 8
     },
-    similar_tools: ['obsidian', 'airtable', 'confluence'],
+    similar_tools: ['obsidian', 'roam-research', 'airtable'],
     founded_year: 2016,
-    user_rating: 4.4,
-    monthly_active_users: '20M+',
+    user_rating: 4.5,
+    monthly_active_users: '35M+',
     key_features: [
-      'Bloques flexibles para cualquier contenido',
-      'Bases de datos relacionales',
-      'Templates y galería comunitaria',
+      'Blocks modulares y flexibles',
+      'Databases relacionales',
+      'Templates personalizables',
       'Colaboración en tiempo real'
     ],
     pros: [
-      'Flexibilidad extrema',
+      'Extremadamente flexible',
+      'All-in-one workspace',
       'Plan gratuito muy generoso',
-      'Comunidad muy activa',
-      'Constante innovación'
+      'Comunidad y templates activos'
     ],
     cons: [
-      'Curva de aprendizaje pronunciada',
-      'Performance lenta con mucho contenido',
-      'Puede ser abrumador para usuarios simples'
+      'Puede ser lento con mucho contenido',
+      'Curva de aprendizaje inicial',
+      'Tantas opciones pueden abrumar'
     ],
     best_for: [
-      'Equipos que necesitan máxima flexibilidad',
-      'Startups y empresas ágiles',
-      'Knowledge workers',
-      'Usuarios que aman personalizar'
+      'Startups organizando conocimiento',
+      'Equipos que quieren todo en un lugar',
+      'Content creators y writers',
+      'Estudiantes y researchers'
     ],
-    alternatives: ['Obsidian', 'Airtable', 'Confluence']
+    alternatives: ['Obsidian', 'Roam Research', 'Coda']
   },
 
   {
@@ -2272,23 +2090,23 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Trello',
     category: 'Project Management',
     subcategory: 'Kanban Boards',
-    description: 'Herramienta visual de gestión de proyectos basada en tableros Kanban.',
-    pricing: 'Gratis básico, Standard $5/usuario/mes, Premium $10/usuario/mes',
+    description: 'Herramienta visual de gestión de proyectos basada en tableros Kanban con tarjetas y listas.',
+    pricing: 'Gratis básico, Standard $5/mes por usuario',
     complexity: 'beginner',
-    difficulty_level: 1,
+    difficulty_level: 2,
     learning_curve: 'immediate',
     community_size: 'massive',
-    integration_options: ['Power-Ups', 'Slack', 'Google Drive', 'GitHub', 'Zapier'],
-    tags: ['kanban', 'visual', 'simple', 'tarjetas', 'colaborativo'],
-    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
+    integration_options: ['Google Drive', 'Slack', 'GitHub', 'Time tracking', '200+ power-ups'],
+    tags: ['kanban', 'visual', 'simple', 'colaboración', 'organización'],
+    logoPlaceholder: 'photo-1611077457269-11f01b5ad2f5',
     website: 'https://trello.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Gestión de tareas personales',
-      'Proyectos pequeños de equipo',
-      'Editorial calendar para contenido',
-      'Organización de eventos'
+      'Gestión ágil de proyectos',
+      'Planificación de contenido',
+      'Seguimiento de bugs y features',
+      'Organización personal de tareas'
     ],
     comparison_matrix: {
       ease_of_use: 10,
@@ -2299,30 +2117,30 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     },
     similar_tools: ['asana', 'monday', 'clickup'],
     founded_year: 2011,
-    user_rating: 4.2,
+    user_rating: 4.3,
     monthly_active_users: '50M+',
     key_features: [
-      'Tableros, listas y tarjetas visuales',
-      'Power-Ups para funcionalidad extra',
-      'Colaboración simple en equipo',
-      'Apps móviles completas'
+      'Drag-and-drop interface',
+      'Cards con checklists y attachments',
+      'Labels y due dates',
+      'Power-ups para funcionalidad extra'
     ],
     pros: [
-      'Extremadamente fácil de usar',
-      'Perfecto para equipos pequeños',
-      'Plan gratuito muy útil',
-      'Metáfora visual intuitiva'
+      'Extremadamente simple y visual',
+      'Gratis para equipos pequeños',
+      'Adopción inmediata',
+      'Perfect para metodología Kanban'
     ],
     cons: [
       'Limitado para proyectos complejos',
-      'Faltan funciones avanzadas de PM',
-      'Escalabilidad limitada'
+      'Faltan features avanzadas',
+      'No ideal para reporting'
     ],
     best_for: [
-      'Equipos pequeños y ágiles',
+      'Equipos pequeños y startups',
       'Proyectos simples y visuales',
-      'Usuarios que prefieren simplicidad',
-      'Gestión personal de tareas'
+      'Personal task management',
+      'Teams que adoptan Kanban'
     ],
     alternatives: ['Asana', 'Monday.com', 'ClickUp']
   },
@@ -2332,119 +2150,59 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Asana',
     category: 'Project Management',
     subcategory: 'Team Collaboration',
-    description: 'Plataforma de gestión de proyectos y equipos con múltiples vistas y automatización.',
-    pricing: 'Gratis hasta 15 usuarios, Starter $10.99/mes, Advanced $24.99/mes',
+    description: 'Plataforma de gestión de proyectos y tareas con múltiples vistas y herramientas de colaboración.',
+    pricing: 'Gratis hasta 15 miembros, Premium $10.99/mes por usuario',
     complexity: 'intermediate',
     difficulty_level: 4,
     learning_curve: 'moderate',
     community_size: 'large',
     integration_options: ['Slack', 'Google Workspace', 'Adobe', 'Salesforce', '200+ apps'],
-    tags: ['project-management', 'tasks', 'timeline', 'goals', 'portfolios'],
+    tags: ['gestión-proyectos', 'tareas', 'equipos', 'timeline', 'colaboración'],
     logoPlaceholder: 'photo-1611224923853-80b023f02d71',
     website: 'https://asana.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Gestión de proyectos complejos',
-      'Coordinación entre departamentos',
-      'Campaigns de marketing',
-      'Product roadmaps y releases'
+      'Gestión de proyectos de marketing',
+      'Coordinación de equipos de producto',
+      'Planning y roadmaps',
+      'Tracking de goals y OKRs'
     ],
     comparison_matrix: {
       ease_of_use: 8,
-      feature_richness: 9,
-      pricing_value: 8,
-      support_quality: 8,
-      scalability: 9
-    },
-    similar_tools: ['monday', 'clickup', 'smartsheet'],
-    founded_year: 2008,
-    user_rating: 4.4,
-    monthly_active_users: '2M+ teams',
-    key_features: [
-      'Múltiples vistas (List, Board, Timeline, Calendar)',
-      'Goals y progress tracking',
-      'Portfolios para múltiples proyectos',
-      'Custom fields y automatización'
-    ],
-    pros: [
-      'Interface limpia y intuitiva',
-      'Funcionalidades robustas',
-      'Excelente para equipos medianos',
-      'Plan gratuito útil'
-    ],
-    cons: [
-      'Puede ser complejo para usuarios simples',
-      'Reportes limitados en planes básicos',
-      'Performance lenta con muchos datos'
-    ],
-    best_for: [
-      'Equipos de marketing y creativos',
-      'Project managers profesionales',
-      'Empresas medianas en crecimiento',
-      'Proyectos con múltiples stakeholders'
-    ],
-    alternatives: ['Monday.com', 'ClickUp', 'Smartsheet']
-  },
-
-  {
-    id: 'linear',
-    name: 'Linear',
-    category: 'Project Management',
-    subcategory: 'Issue Tracking',
-    description: 'Herramienta de issue tracking y project management diseñada para equipos de desarrollo.',
-    pricing: 'Gratis hasta 10 usuarios, Startup $8/mes, Business $14/mes',
-    complexity: 'intermediate',
-    difficulty_level: 4,
-    learning_curve: 'moderate',
-    community_size: 'medium',
-    integration_options: ['GitHub', 'GitLab', 'Slack', 'Figma', 'Sentry', 'API'],
-    tags: ['issue-tracking', 'development', 'fast', 'keyboard-shortcuts', 'sprints'],
-    logoPlaceholder: 'photo-1611224923853-80b023f02d71',
-    website: 'https://linear.app',
-    apiAvailable: true,
-    freeVersion: true,
-    use_case_examples: [
-      'Bug tracking y feature requests',
-      'Sprint planning y roadmaps',
-      'Product development workflows',
-      'Engineering team coordination'
-    ],
-    comparison_matrix: {
-      ease_of_use: 9,
       feature_richness: 8,
       pricing_value: 8,
       support_quality: 8,
       scalability: 8
     },
-    similar_tools: ['jira', 'github-issues', 'clickup'],
-    founded_year: 2019,
-    user_rating: 4.6,
-    monthly_active_users: '500K+ users',
+    similar_tools: ['monday', 'clickup', 'jira'],
+    founded_year: 2008,
+    user_rating: 4.4,
+    monthly_active_users: '100K+ organizations',
     key_features: [
-      'Performance excepcional y UI moderna',
-      'Keyboard shortcuts avanzados',
-      'Git integrations automáticas',
-      'Cycles y roadmap planning'
+      'Múltiples vistas (List, Board, Timeline)',
+      'Custom fields y templates',
+      'Goals tracking y reporting',
+      'Proofing y approvals'
     ],
     pros: [
-      'Extremadamente rápido y responsive',
-      'Interface moderna y limpia',
-      'Perfecto para desarrolladores',
-      'Excelente experiencia móvil'
+      'Balance perfecto entre simple y potente',
+      'Excelente para equipos medianos',
+      'Reporting bastante bueno',
+      'Interface muy pulida'
     ],
     cons: [
-      'Menos features que Jira',
-      'Enfocado principalmente en development',
-      'Ecosistema de integraciones limitado'
+      'Puede ser caro para equipos grandes',
+      'Advanced features requieren premium',
+      'Learning curve para features avanzadas'
     ],
     best_for: [
-      'Equipos de desarrollo de software',
-      'Startups tech-first',
-      'Product teams ágiles',
-      'Equipos que valoran velocidad'
+      'Equipos de marketing y creativos',
+      'Startups en crecimiento',
+      'Gestión de proyectos cross-functional',
+      'Empresas que valoran usabilidad'
     ],
-    alternatives: ['Jira', 'GitHub Issues', 'ClickUp']
+    alternatives: ['Monday.com', 'ClickUp', 'Jira']
   },
 
   // ====== MARKETING & ANALYTICS ======
@@ -2453,23 +2211,23 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Google Analytics',
     category: 'Marketing & Analytics',
     subcategory: 'Web Analytics',
-    description: 'Plataforma gratuita de análisis web para medir tráfico, comportamiento y conversiones.',
-    pricing: 'Gratis, Analytics 360 $150K/año',
+    description: 'Plataforma de analytics web para medir tráfico, comportamiento de usuarios y conversiones.',
+    pricing: 'Gratis para GA4, Analytics 360 desde $50K/año',
     complexity: 'intermediate',
     difficulty_level: 5,
-    learning_curve: 'steep',
+    learning_curve: 'moderate',
     community_size: 'massive',
-    integration_options: ['Google Ads', 'Search Console', 'Google Tag Manager', 'Data Studio', 'Third-party tools'],
-    tags: ['analytics', 'web-tracking', 'conversiones', 'audience', 'reporting'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
+    integration_options: ['Google Ads', 'Search Console', 'Tag Manager', 'Data Studio', 'APIs'],
+    tags: ['analytics', 'web-tracking', 'conversiones', 'audiencias', 'reportes'],
+    logoPlaceholder: 'photo-1551288049-bebda4e38f71',
     website: 'https://analytics.google.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Tracking de conversiones e-commerce',
-      'Análisis de comportamiento de usuarios',
-      'Optimización de funnel de ventas',
-      'Reportes de ROI de marketing'
+      'Tracking de performance de sitios web',
+      'Análisis de campañas de marketing',
+      'Optimización de conversiones',
+      'Understanding user behavior'
     ],
     comparison_matrix: {
       ease_of_use: 6,
@@ -2478,34 +2236,34 @@ export const expandedToolsDatabase: EnhancedTool[] = [
       support_quality: 7,
       scalability: 10
     },
-    similar_tools: ['mixpanel', 'amplitude', 'hotjar'],
+    similar_tools: ['mixpanel', 'adobe-analytics', 'hotjar'],
     founded_year: 2005,
-    user_rating: 4.1,
+    user_rating: 4.2,
     monthly_active_users: '50M+ websites',
     key_features: [
-      'Tracking completo de website/app',
-      'Reportes personalizables',
-      'Audiencias para remarketing',
-      'Integración con Google Ads'
+      'Real-time user tracking',
+      'Conversion y goal tracking',
+      'Audience segmentation',
+      'Custom reports y dashboards'
     ],
     pros: [
-      'Completamente gratuito',
-      'Estándar de la industria',
-      'Integración perfecta con Google',
-      'Datos ilimitados'
+      'Completamente gratis',
+      'Datos extremadamente detallados',
+      'Integración perfecta con Google ecosystem',
+      'Estándar de la industria'
     ],
     cons: [
-      'Interfaz compleja para principiantes',
-      'Configuración puede ser técnica',
-      'Privacy concerns'
+      'Interface puede ser abrumadora',
+      'Privacy concerns',
+      'Setup inicial complejo'
     ],
     best_for: [
-      'Cualquier website o app',
-      'E-commerce y lead generation',
-      'Equipos de marketing digital',
-      'Análisis profundo de comportamiento'
+      'Cualquier sitio web o app',
+      'E-commerce tracking',
+      'Marketing teams',
+      'Data-driven organizations'
     ],
-    alternatives: ['Mixpanel', 'Amplitude', 'Adobe Analytics']
+    alternatives: ['Mixpanel', 'Adobe Analytics', 'Plausible']
   },
 
   {
@@ -2513,23 +2271,23 @@ export const expandedToolsDatabase: EnhancedTool[] = [
     name: 'Mailchimp',
     category: 'Marketing & Analytics',
     subcategory: 'Email Marketing',
-    description: 'Plataforma de email marketing con automatización, segmentación y analytics avanzados.',
-    pricing: 'Gratis hasta 2,000 contactos, Essentials $10/mes, Standard $15/mes',
+    description: 'Plataforma de email marketing con automatización, segmentación y analytics integrados.',
+    pricing: 'Gratis hasta 2000 contactos, Essentials $9.99/mes',
     complexity: 'beginner',
     difficulty_level: 3,
     learning_curve: 'gentle',
     community_size: 'massive',
-    integration_options: ['Shopify', 'WordPress', 'Zapier', 'Facebook', 'Google Analytics'],
-    tags: ['email-marketing', 'automation', 'newsletters', 'segmentation', 'landing-pages'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
+    integration_options: ['E-commerce platforms', 'CRM', 'Social media', 'Analytics', '300+ apps'],
+    tags: ['email-marketing', 'automatización', 'newsletters', 'campañas', 'segmentación'],
+    logoPlaceholder: 'photo-1563013544-824ae1b704d3',
     website: 'https://mailchimp.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Newsletters y comunicaciones regulares',
-      'Email campaigns de e-commerce',
-      'Automatización de onboarding',
-      'Segmentación y personalización'
+      'Newsletters regulares',
+      'Secuencias de onboarding automatizadas',
+      'Campañas promocionales y ofertas',
+      'Re-engagement de usuarios inactivos'
     ],
     comparison_matrix: {
       ease_of_use: 9,
@@ -2538,159 +2296,219 @@ export const expandedToolsDatabase: EnhancedTool[] = [
       support_quality: 8,
       scalability: 8
     },
-    similar_tools: ['convertkit', 'constantcontact', 'sendinblue'],
+    similar_tools: ['convertkit', 'klaviyo', 'constant-contact'],
     founded_year: 2001,
-    user_rating: 4.2,
-    monthly_active_users: '13M+ users',
+    user_rating: 4.1,
+    monthly_active_users: '14M+ customers',
     key_features: [
       'Drag-and-drop email builder',
-      'Automatización de marketing',
-      'A/B testing integrado',
-      'Segmentación avanzada'
+      'Automation workflows avanzados',
+      'A/B testing y optimization',
+      'Analytics y reporting detallado'
     ],
     pros: [
       'Muy fácil de usar',
       'Plan gratuito generoso',
       'Templates profesionales',
-      'Reportes detallados'
+      'Integrations excelentes'
     ],
     cons: [
-      'Precios escalan rápidamente',
-      'Limitaciones en automatización básica',
-      'Support puede ser lento'
+      'Precios pueden crecer rápido',
+      'Advanced features requieren planes altos',
+      'Algunas limitaciones en customización'
     ],
     best_for: [
-      'Pequeñas empresas y startups',
-      'E-commerce y retail',
-      'Content creators y bloggers',
-      'Marketing teams que empiezan'
+      'Small businesses y startups',
+      'E-commerce companies',
+      'Content creators',
+      'Cualquiera empezando con email marketing'
     ],
-    alternatives: ['ConvertKit', 'Constant Contact', 'Sendinblue']
+    alternatives: ['ConvertKit', 'Klaviyo', 'Constant Contact']
   },
 
   {
-    id: 'hotjar',
-    name: 'Hotjar',
+    id: 'hubspot',
+    name: 'HubSpot',
     category: 'Marketing & Analytics',
-    subcategory: 'User Experience Analytics',
-    description: 'Plataforma de analytics de UX con heatmaps, session recordings y user feedback.',
-    pricing: 'Gratis básico, Plus $32/mes, Business $80/mes',
-    complexity: 'beginner',
-    difficulty_level: 3,
-    learning_curve: 'gentle',
+    subcategory: 'CRM & Marketing Platform',
+    description: 'Plataforma completa de CRM, marketing, ventas y servicio al cliente con herramientas integradas.',
+    pricing: 'Gratis básico, Starter $45/mes, Professional $800/mes',
+    complexity: 'advanced',
+    difficulty_level: 6,
+    learning_curve: 'steep',
     community_size: 'large',
-    integration_options: ['Google Analytics', 'Zapier', 'Slack', 'HubSpot', 'Shopify'],
-    tags: ['heatmaps', 'user-experience', 'recordings', 'feedback', 'conversion'],
-    logoPlaceholder: 'photo-1460925895917-afdab827c52f',
-    website: 'https://hotjar.com',
+    integration_options: ['1000+ apps', 'Email platforms', 'Social media', 'Analytics', 'Custom APIs'],
+    tags: ['CRM', 'marketing-automation', 'ventas', 'inbound', 'lead-generation'],
+    logoPlaceholder: 'photo-1551434678-e076c223a692',
+    website: 'https://hubspot.com',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Optimización de conversion rate',
-      'Análisis de user experience',
-      'Testing de nuevas features',
-      'Identificación de friction points'
+      'Inbound marketing y lead generation',
+      'Sales pipeline management',
+      'Customer support y ticketing',
+      'Marketing automation campaigns'
     ],
     comparison_matrix: {
-      ease_of_use: 9,
-      feature_richness: 7,
-      pricing_value: 8,
-      support_quality: 8,
-      scalability: 7
+      ease_of_use: 7,
+      feature_richness: 10,
+      pricing_value: 6,
+      support_quality: 9,
+      scalability: 10
     },
-    similar_tools: ['fullstory', 'logrocket', 'crazy-egg'],
-    founded_year: 2014,
-    user_rating: 4.3,
-    monthly_active_users: '500K+ websites',
+    similar_tools: ['salesforce', 'pipedrive', 'marketo'],
+    founded_year: 2006,
+    user_rating: 4.5,
+    monthly_active_users: '135K+ customers',
     key_features: [
-      'Heatmaps de clicks, scrolls y movimiento',
-      'Session recordings completas',
-      'Surveys y feedback widgets',
-      'Conversion funnels'
+      'CRM completo y gratuito',
+      'Marketing automation potente',
+      'Sales pipeline y forecasting',
+      'Content management y SEO tools'
     ],
     pros: [
-      'Muy fácil de implementar',
-      'Insights visuales poderosos',
-      'Plan gratuito útil',
-      'Interface intuitiva'
+      'Platform muy completa',
+      'CRM gratuito excelente',
+      'Educación y resources increíbles',
+      'Integrations nativas potentes'
     ],
     cons: [
-      'Limitado en plan gratuito',
-      'Performance impact en algunos sites',
-      'Menos features técnicas que competidores'
+      'Muy caro en niveles altos',
+      'Puede ser abrumador',
+      'Lock-in del ecosistema HubSpot'
     ],
     best_for: [
-      'UX designers y product managers',
-      'E-commerce optimization',
-      'Marketing teams',
-      'Startups que optimizan conversión'
+      'Empresas B2B en crecimiento',
+      'Marketing teams que hacen inbound',
+      'Sales teams que necesitan CRM',
+      'Empresas que quieren all-in-one solution'
     ],
-    alternatives: ['FullStory', 'LogRocket', 'Crazy Egg']
+    alternatives: ['Salesforce', 'Pipedrive', 'ActiveCampaign']
   },
 
   // ====== MOBILE DEVELOPMENT ======
   {
-    id: 'flutterflow',
-    name: 'FlutterFlow',
+    id: 'flutter',
+    name: 'Flutter',
     category: 'Mobile Development',
-    subcategory: 'No-Code Mobile Apps',
-    description: 'Constructor visual de aplicaciones móviles que genera código Flutter nativo.',
-    pricing: 'Gratis básico, Standard $30/mes, Pro $70/mes',
-    complexity: 'intermediate',
-    difficulty_level: 4,
-    learning_curve: 'moderate',
-    community_size: 'medium',
-    integration_options: ['Firebase', 'Supabase', 'APIs REST', 'Payment providers', 'Push notifications'],
-    tags: ['mobile-apps', 'Flutter', 'visual-builder', 'iOS', 'Android'],
-    logoPlaceholder: 'photo-1516996087931-5ae405802f9f',
-    website: 'https://flutterflow.io',
+    subcategory: 'Cross-Platform Framework',
+    description: 'Framework de Google para crear aplicaciones nativas multiplataforma desde una sola base de código.',
+    pricing: 'Completamente gratis y open-source',
+    complexity: 'advanced',
+    difficulty_level: 7,
+    learning_curve: 'steep',
+    community_size: 'large',
+    integration_options: ['Firebase', 'APIs REST', 'Native plugins', 'Platform channels', 'State management'],
+    tags: ['mobile', 'cross-platform', 'native', 'dart', 'google'],
+    logoPlaceholder: 'photo-1512941937669-90a1b58e7e9c',
+    website: 'https://flutter.dev',
     apiAvailable: true,
     freeVersion: true,
     use_case_examples: [
-      'Apps móviles para startups',
-      'Prototipos funcionales de apps',
-      'MVPs para validación de mercado',
-      'Apps internas de empresa'
+      'Apps móviles iOS y Android',
+      'Progressive web apps (PWA)',
+      'Desktop applications',
+      'Embedded device interfaces'
     ],
     comparison_matrix: {
-      ease_of_use: 8,
-      feature_richness: 8,
-      pricing_value: 8,
-      support_quality: 7,
-      scalability: 8
+      ease_of_use: 6,
+      feature_richness: 9,
+      pricing_value: 10,
+      support_quality: 8,
+      scalability: 9
     },
-    similar_tools: ['adalo', 'glide', 'appgyver'],
-    founded_year: 2020,
-    user_rating: 4.3,
-    monthly_active_users: '100K+',
+    similar_tools: ['react-native', 'xamarin', 'ionic'],
+    founded_year: 2017,
+    user_rating: 4.6,
+    monthly_active_users: '4M+ developers',
     key_features: [
-      'Constructor visual drag-and-drop',
-      'Genera código Flutter real',
-      'Deploy directo a App Stores',
-      'Integración con backends populares'
+      'Hot reload para desarrollo rápido',
+      'Widget-based architecture',
+      'Performance nativa',
+      'Single codebase para múltiples platforms'
     ],
     pros: [
-      'Código Flutter nativo generado',
-      'Performance superior a otras no-code',
-      'Flexibilidad de personalización',
-      'Comunidad activa'
+      'Performance excelente',
+      'Desarrollo muy rápido',
+      'Backed by Google',
+      'Comunidad creciente rápidamente'
     ],
     cons: [
-      'Requiere conocimiento básico de Flutter',
-      'Menos templates que competidores',
-      'Precios pueden ser altos para individuales'
+      'Dart language learning curve',
+      'App size puede ser grande',
+      'Ecosistema más nuevo'
     ],
     best_for: [
-      'Desarrolladores que quieren velocidad',
-      'Startups que necesitan MVPs móviles',
-      'Agencias que desarrollan múltiples apps',
-      'Equipos que valoran performance nativa'
+      'Startups que necesitan apps iOS y Android',
+      'Developers que quieren performance nativa',
+      'Equipos con resources limitados',
+      'Apps que requieren UI custom'
     ],
-    alternatives: ['Adalo', 'Glide', 'Bubble (mobile)']
+    alternatives: ['React Native', 'Xamarin', 'Ionic']
+  },
+
+  {
+    id: 'react-native',
+    name: 'React Native',
+    category: 'Mobile Development',
+    subcategory: 'Cross-Platform Framework',
+    description: 'Framework de Facebook para crear apps móviles nativas usando React y JavaScript.',
+    pricing: 'Completamente gratis y open-source',
+    complexity: 'advanced',
+    difficulty_level: 7,
+    learning_curve: 'steep',
+    community_size: 'massive',
+    integration_options: ['REST APIs', 'GraphQL', 'Native modules', 'Third-party libraries', 'State management'],
+    tags: ['mobile', 'react', 'javascript', 'cross-platform', 'facebook'],
+    logoPlaceholder: 'photo-1512941937669-90a1b58e7e9c',
+    website: 'https://reactnative.dev',
+    apiAvailable: true,
+    freeVersion: true,
+    use_case_examples: [
+      'Apps móviles native iOS y Android',
+      'Prototipos rápidos de apps',
+      'MVPs de startups móviles',
+      'Apps que reutilizan lógica web'
+    ],
+    comparison_matrix: {
+      ease_of_use: 6,
+      feature_richness: 9,
+      pricing_value: 10,
+      support_quality: 8,
+      scalability: 9
+    },
+    similar_tools: ['flutter', 'xamarin', 'ionic'],
+    founded_year: 2015,
+    user_rating: 4.4,
+    monthly_active_users: '2M+ developers',
+    key_features: [
+      'Hot reloading',
+      'Native performance',
+      'Code sharing between platforms',
+      'Large ecosystem of libraries'
+    ],
+    pros: [
+      'Leverages existing React knowledge',
+      'Huge community y ecosystem',
+      'Backed by Meta (Facebook)',
+      'Code reuse entre web y móvil'
+    ],
+    cons: [
+      'Bridge overhead',
+      'Platform-specific bugs',
+      'Frequent breaking changes'
+    ],
+    best_for: [
+      'Teams con experiencia en React',
+      'Startups con developers web',
+      'Apps que comparten lógica con web',
+      'MVPs rápidos de mobile'
+    ],
+    alternatives: ['Flutter', 'Xamarin', 'Ionic']
   }
 ];
 
-// Helper arrays for filtering
+// ====== CATEGORIZATION HELPERS ======
 export const enhancedCategories = [
   'AI Writing & Content',
   'No-Code Platforms', 
@@ -2709,40 +2527,38 @@ export const subcategories = [
   'Conversational AI',
   'Marketing Content',
   'Writing Assistant',
-  'Research Assistant',
-  'AI Image Generation',
+  'Productivity Assistant',
+  'Content Generation',
   'AI-Powered Development',
   'Web App Builder',
   'Automation',
-  'Database & Collaboration',
-  'Open Source Automation',
-  'Professional Web Design',
-  'Interactive Design',
+  'Database & Apps',
+  'Internal Tools',
+  'Visual Web Design',
   'CMS Platform',
-  'All-in-One Website Builder',
+  'All-in-One Builder',
   'Drag & Drop Builder',
-  'Publishing Platform',
-  'Complete E-commerce',
+  'Design-to-Code',
+  'Full E-commerce',
   'WordPress E-commerce',
-  'Enterprise E-commerce',
-  'Digital Products',
+  'Payment Processing',
   'UI/UX Design',
   'Graphic Design',
+  'Professional Design Suite',
   'Version Control',
   'Hosting & Deployment',
-  'Full-Stack Hosting',
-  'Backend as a Service',
-  'Serverless Database',
-  'Team Messaging',
-  'Community Platform',
+  'Backend-as-a-Service',
+  'Code Editor',
+  'NoSQL Database',
+  'Team Chat',
+  'Video Conferencing',
   'All-in-One Workspace',
   'Kanban Boards',
   'Team Collaboration',
-  'Issue Tracking',
   'Web Analytics',
   'Email Marketing',
-  'User Experience Analytics',
-  'No-Code Mobile Apps'
+  'CRM & Marketing Platform',
+  'Cross-Platform Framework'
 ];
 
 export const difficultyLevels = [
@@ -2755,7 +2571,7 @@ export const difficultyLevels = [
 export const learningCurves = [
   'immediate',
   'gentle',
-  'moderate',
+  'moderate', 
   'steep'
 ];
 
@@ -2765,4 +2581,3 @@ export const communitySizes = [
   'large',
   'massive'
 ];
-
