@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -35,20 +36,19 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Enhanced accessibility colors */
+    --focus-ring: 217.2 91.2% 59.8%;
+    --error: 0 84.2% 60.2%;
+    --success: 142.1 76.2% 36.3%;
+    --warning: 47.9 95.8% 53.1%;
   }
 
   .dark {
@@ -87,6 +87,12 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Enhanced accessibility colors for dark mode */
+    --focus-ring: 217.2 91.2% 59.8%;
+    --error: 0 84.2% 60.2%;
+    --success: 142.1 70.6% 45.3%;
+    --warning: 47.9 95.8% 53.1%;
   }
 }
 
@@ -97,5 +103,78 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Enhanced focus styles for better accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-focus-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Skip to content link for screen readers */
+  .skip-to-content {
+    @apply absolute -top-full left-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-md;
+    @apply focus:top-4 transition-all duration-200;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    :root {
+      --border: 0 0% 20%;
+      --input: 0 0% 20%;
+      --ring: 0 0% 0%;
+    }
+    
+    .dark {
+      --border: 0 0% 80%;
+      --input: 0 0% 80%;
+      --ring: 0 0% 100%;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Better button contrast */
+  .btn-high-contrast {
+    @apply bg-gray-900 text-white border-2 border-gray-900;
+    @apply hover:bg-gray-800 hover:border-gray-800;
+    @apply focus:ring-2 focus:ring-gray-900 focus:ring-offset-2;
+    @apply dark:bg-gray-100 dark:text-gray-900 dark:border-gray-100;
+    @apply dark:hover:bg-gray-200 dark:hover:border-gray-200;
+    @apply dark:focus:ring-gray-100;
+  }
+
+  /* Improve text contrast */
+  .text-high-contrast {
+    @apply text-gray-900 dark:text-gray-100;
+  }
+
+  .text-medium-contrast {
+    @apply text-gray-700 dark:text-gray-200;
+  }
+
+  .text-low-contrast {
+    @apply text-gray-600 dark:text-gray-300;
+  }
+}
+
+/* Custom utilities for accessibility */
+@layer utilities {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2;
+  }
+
+  .keyboard-only-focus:focus:not(:focus-visible) {
+    @apply outline-none ring-0;
+  }
+
+  .sr-only-focusable:focus {
+    @apply not-sr-only;
   }
 }
