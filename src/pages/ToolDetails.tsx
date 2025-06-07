@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ExternalLink, Star, Users, DollarSign, Clock } from "lucide-react";
 import { expandedAiTools } from "@/data/expandedAiTools";
-import { ReviewsSection } from "@/components/reviews/ReviewsSection";
+import { EnhancedReviewsSection } from "@/components/reviews/EnhancedReviewsSection";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ToolStats {
@@ -195,8 +195,8 @@ const ToolDetails = () => {
           </CardContent>
         </Card>
 
-        {/* Reviews Section */}
-        <ReviewsSection
+        {/* Enhanced Reviews Section */}
+        <EnhancedReviewsSection
           toolId={tool.id}
           toolName={tool.name}
           averageRating={toolStats.averageRating}

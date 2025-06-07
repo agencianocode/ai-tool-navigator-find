@@ -70,6 +70,31 @@ const Navigation = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
+                  <NavigationMenuTrigger>Comunidad</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid gap-3 p-6 w-[400px]">
+                      <Link
+                        to="/community"
+                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      >
+                        <div className="text-sm font-medium leading-none">Centro de Comunidad</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Foro, mentores expertos y eventos virtuales
+                        </p>
+                      </Link>
+                      <Link
+                        to="/content"
+                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      >
+                        <div className="text-sm font-medium leading-none">Centro de Contenido</div>
+                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                          Tutoriales, casos de uso y webinars con expertos
+                        </p>
+                      </Link>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
                   <Link
                     to="/guides"
                     className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
@@ -140,6 +165,20 @@ const Navigation = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Analytics e Insights
+              </Link>
+              <Link
+                to="/community"
+                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Comunidad
+              </Link>
+              <Link
+                to="/content"
+                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Centro de Contenido
               </Link>
               <Link
                 to="/guides"

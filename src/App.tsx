@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
@@ -24,6 +23,8 @@ import NotFound from './pages/NotFound';
 import AuthGuard from './components/AuthGuard';
 import Templates from './pages/Templates';
 import Analytics from './pages/Analytics';
+import Community from './pages/Community';
+import ContentHubPage from './pages/ContentHub';
 
 // Create a client instance
 const queryClient = new QueryClient({
@@ -103,6 +104,8 @@ function App() {
                   </AuthGuard>
                 }
               />
+              <Route path="/community" element={<Community />} />
+              <Route path="/content" element={<ContentHubPage />} />
               <Route
                 path="/profile"
                 element={
