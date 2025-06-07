@@ -76,8 +76,27 @@ const Roadmap = () => {
             });
           } else if (data) {
             console.log('Roadmap loaded:', data);
-            setRoadmapData(data);
-            setRoadmap(data.roadmap_data);
+            
+            // Convertir los datos de Supabase al formato local
+            const convertedRoadmapData: RoadmapData = {
+              id: data.id,
+              title: data.title,
+              description: data.description || undefined,
+              project_type: data.project_type || undefined,
+              skill_level: data.skill_level || undefined,
+              budget_range: data.budget_range || undefined,
+              timeline: data.timeline || undefined,
+              roadmap_data: Array.isArray(data.roadmap_data) ? data.roadmap_data as RoadmapPhase[] : [],
+              selected_tools: Array.isArray(data.selected_tools) ? data.selected_tools : [],
+              questionnaire_answers: data.questionnaire_answers || {},
+              custom_name: data.custom_name || undefined,
+              status: data.status || 'active',
+              created_at: data.created_at || '',
+              updated_at: data.updated_at || ''
+            };
+            
+            setRoadmapData(convertedRoadmapData);
+            setRoadmap(convertedRoadmapData.roadmap_data);
           }
         } catch (error) {
           console.error('Error loading roadmap:', error);
@@ -133,7 +152,7 @@ const Roadmap = () => {
       const { error } = await supabase
         .from('roadmaps')
         .update({ 
-          roadmap_data: generatedRoadmap,
+          roadmap_data: generatedRoadmap as any,
           updated_at: new Date().toISOString()
         })
         .eq('id', roadmapData.id)
