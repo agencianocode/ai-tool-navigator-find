@@ -18,6 +18,7 @@ export const useUserActivities = () => {
     if (!user) return;
 
     try {
+      console.log('Logging activity:', activityData);
       const { error } = await supabase
         .from('user_activities')
         .insert({
@@ -27,6 +28,8 @@ export const useUserActivities = () => {
 
       if (error) {
         console.error('Error logging activity:', error);
+      } else {
+        console.log('Activity logged successfully');
       }
     } catch (error) {
       console.error('Error logging activity:', error);

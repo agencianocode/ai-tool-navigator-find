@@ -1,12 +1,15 @@
+
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, RefreshCw, Loader2, Clock, CheckCircle, AlertTriangle } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { generateRoadmap } from "@/utils/roadmapGenerator";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface RoadmapPhase {
   id: number;
@@ -20,42 +23,84 @@ interface RoadmapPhase {
   resources: string[];
 }
 
+interface RoadmapData {
+  id: string;
+  title: string;
+  description?: string;
+  project_type?: string;
+  skill_level?: string;
+  budget_range?: string;
+  timeline?: string;
+  roadmap_data: RoadmapPhase[];
+  selected_tools: any[];
+  questionnaire_answers: any;
+  custom_name?: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
 const Roadmap = () => {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
-  const [answers, setAnswers] = useState<Record<string, any>>({});
-  const [selectedTools, setSelectedTools] = useState<any[]>([]);
+  const { user } = useAuth();
+  
+  const [roadmapData, setRoadmapData] = useState<RoadmapData | null>(null);
   const [roadmap, setRoadmap] = useState<RoadmapPhase[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [expandedPhases, setExpandedPhases] = useState<number[]>([1]);
 
   useEffect(() => {
-    // Get data from location state or localStorage
-    const answersFromState = location.state?.answers;
-    const toolsFromState = location.state?.selectedTools;
-    const answersFromStorage = localStorage.getItem('questionnaireAnswers');
-    const toolsFromStorage = localStorage.getItem('selectedTools');
-    
-    if (answersFromState) {
-      setAnswers(answersFromState);
-    } else if (answersFromStorage) {
-      setAnswers(JSON.parse(answersFromStorage));
-    }
+    const loadRoadmap = async () => {
+      // Primero intentar obtener desde URL params
+      const roadmapId = searchParams.get('id') || location.state?.roadmapId;
+      
+      if (roadmapId && user) {
+        console.log('Loading roadmap with ID:', roadmapId);
+        try {
+          const { data, error } = await supabase
+            .from('roadmaps')
+            .select('*')
+            .eq('id', roadmapId)
+            .eq('user_id', user.id)
+            .single();
 
-    if (toolsFromState) {
-      setSelectedTools(toolsFromState);
-    } else if (toolsFromStorage) {
-      setSelectedTools(JSON.parse(toolsFromStorage));
-    }
-  }, [location]);
+          if (error) {
+            console.error('Error loading roadmap:', error);
+            toast({
+              title: "Error",
+              description: "No se pudo cargar la hoja de ruta",
+              variant: "destructive",
+            });
+          } else if (data) {
+            console.log('Roadmap loaded:', data);
+            setRoadmapData(data);
+            setRoadmap(data.roadmap_data);
+          }
+        } catch (error) {
+          console.error('Error loading roadmap:', error);
+        }
+      } else {
+        // Fallback a datos del localStorage
+        const answersFromStorage = localStorage.getItem('questionnaireAnswers');
+        const toolsFromStorage = localStorage.getItem('selectedTools');
+        
+        if (answersFromStorage && toolsFromStorage) {
+          const answers = JSON.parse(answersFromStorage);
+          const selectedTools = JSON.parse(toolsFromStorage);
+          await generateInitialRoadmap(answers, selectedTools);
+        }
+      }
+      
+      setIsLoading(false);
+    };
 
-  useEffect(() => {
-    if (Object.keys(answers).length > 0 && selectedTools.length > 0) {
-      generateInitialRoadmap();
-    }
-  }, [answers, selectedTools]);
+    loadRoadmap();
+  }, [searchParams, location.state, user]);
 
-  const generateInitialRoadmap = async () => {
+  const generateInitialRoadmap = async (answers: any, selectedTools: any[]) => {
     setIsGenerating(true);
     try {
       const generatedRoadmap = await generateRoadmap(answers, selectedTools, false, 'openai');
@@ -73,9 +118,31 @@ const Roadmap = () => {
   };
 
   const handleRegenerateRoadmap = async () => {
+    if (!roadmapData) return;
+    
     setIsGenerating(true);
     try {
-      const generatedRoadmap = await generateRoadmap(answers, selectedTools, true, 'openai');
+      const generatedRoadmap = await generateRoadmap(
+        roadmapData.questionnaire_answers, 
+        roadmapData.selected_tools, 
+        true, 
+        'openai'
+      );
+      
+      // Actualizar en la base de datos
+      const { error } = await supabase
+        .from('roadmaps')
+        .update({ 
+          roadmap_data: generatedRoadmap,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', roadmapData.id)
+        .eq('user_id', user?.id);
+
+      if (error) {
+        throw error;
+      }
+
       setRoadmap(generatedRoadmap);
       toast({
         title: "Éxito",
@@ -123,6 +190,30 @@ const Roadmap = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <Card className="w-full max-w-md">
+              <CardContent className="pt-6">
+                <div className="text-center">
+                  <Loader2 className="h-16 w-16 text-purple-600 mx-auto mb-4 animate-spin" />
+                  <h2 className="text-xl font-bold text-gray-900 mb-2">
+                    Cargando Hoja de Ruta
+                  </h2>
+                  <p className="text-gray-600">
+                    Recuperando tu hoja de ruta personalizada...
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isGenerating && roadmap.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 py-8">
@@ -152,20 +243,27 @@ const Roadmap = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Link to="/results">
+          <Link to="/dashboard">
             <Button variant="ghost" className="mb-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver a Resultados
+              Volver al Dashboard
             </Button>
           </Link>
           <div className="flex justify-between items-start">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Tu Hoja de Ruta Personalizada de Implementación IA
+                {roadmapData?.custom_name || roadmapData?.title || 'Tu Hoja de Ruta Personalizada de Implementación IA'}
               </h1>
               <p className="text-gray-600">
-                Un plan paso a paso de 12 semanas generado con OpenAI y adaptado a tu proyecto
+                {roadmapData?.description || 'Un plan paso a paso de 12 semanas generado con OpenAI y adaptado a tu proyecto'}
               </p>
+              {roadmapData && (
+                <div className="flex items-center gap-2 mt-2">
+                  <Badge variant="outline">{roadmapData.project_type}</Badge>
+                  <Badge variant="outline">{roadmapData.skill_level}</Badge>
+                  <Badge variant="outline">{roadmapData.status}</Badge>
+                </div>
+              )}
             </div>
             <div className="flex gap-2">
               <Button 
@@ -295,11 +393,11 @@ const Roadmap = () => {
                 Esta hoja de ruta está personalizada basada en tus respuestas usando OpenAI. Ajústala según sea necesario para tus requerimientos específicos.
               </p>
               <div className="flex justify-center gap-4">
-                <Link to="/results">
-                  <Button variant="outline">Ver Detalles de Herramientas</Button>
+                <Link to="/dashboard">
+                  <Button variant="outline">Volver al Dashboard</Button>
                 </Link>
                 <Link to="/questionnaire">
-                  <Button variant="outline">Repetir Evaluación</Button>
+                  <Button variant="outline">Crear Nueva Hoja de Ruta</Button>
                 </Link>
                 <Link to="/">
                   <Button variant="ghost">Volver al Inicio</Button>

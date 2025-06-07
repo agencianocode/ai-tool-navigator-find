@@ -2,11 +2,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, FileText, Star, Plus, CheckCircle, Search } from "lucide-react";
+import { Clock, FileText, Star, Plus, CheckCircle, Search, Eye } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
+import { Link } from "react-router-dom";
 
 const ActivityHistory = () => {
   const { user } = useAuth();
@@ -16,29 +17,43 @@ const ActivityHistory = () => {
     queryFn: async () => {
       if (!user) return [];
       
+      console.log('Fetching activities for user:', user.id);
+      
       // Fetch user activities from the new table
-      const { data: userActivities } = await supabase
+      const { data: userActivities, error: activitiesError } = await supabase
         .from('user_activities')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(20);
 
+      if (activitiesError) {
+        console.error('Error fetching user activities:', activitiesError);
+      }
+
       // Fetch legacy roadmaps for backward compatibility
-      const { data: roadmaps } = await supabase
+      const { data: roadmaps, error: roadmapsError } = await supabase
         .from('roadmaps')
         .select('id, title, created_at, updated_at')
         .eq('user_id', user.id)
         .order('updated_at', { ascending: false })
         .limit(10);
 
+      if (roadmapsError) {
+        console.error('Error fetching roadmaps:', roadmapsError);
+      }
+
       // Fetch reviews
-      const { data: reviews } = await supabase
+      const { data: reviews, error: reviewsError } = await supabase
         .from('tool_reviews')
         .select('id, tool_name, rating, created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(10);
+
+      if (reviewsError) {
+        console.error('Error fetching reviews:', reviewsError);
+      }
 
       const activities = [];
       
@@ -107,9 +122,12 @@ const ActivityHistory = () => {
       });
 
       // Sort by timestamp
-      return activities.sort((a, b) => 
+      const sortedActivities = activities.sort((a, b) => 
         new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
       );
+      
+      console.log('Final activities:', sortedActivities);
+      return sortedActivities;
     },
     enabled: !!user,
   });
@@ -126,6 +144,22 @@ const ActivityHistory = () => {
       default:
         return 'Actividad';
     }
+  };
+
+  const renderActivityAction = (activity: any) => {
+    if (activity.type === 'roadmap' || activity.type === 'roadmap_created' || activity.type === 'questionnaire_completed') {
+      if (activity.relatedId) {
+        return (
+          <Link to={`/roadmap?id=${activity.relatedId}`}>
+            <Badge variant="outline" className="cursor-pointer hover:bg-blue-50 flex items-center gap-1">
+              <Eye className="h-3 w-3" />
+              Ver
+            </Badge>
+          </Link>
+        );
+      }
+    }
+    return null;
   };
 
   return (
@@ -158,9 +192,12 @@ const ActivityHistory = () => {
                       })}
                     </p>
                   </div>
-                  <Badge variant="secondary" className="text-xs">
-                    {getActivityBadgeText(activity.type)}
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    {renderActivityAction(activity)}
+                    <Badge variant="secondary" className="text-xs">
+                      {getActivityBadgeText(activity.type)}
+                    </Badge>
+                  </div>
                 </div>
               );
             })

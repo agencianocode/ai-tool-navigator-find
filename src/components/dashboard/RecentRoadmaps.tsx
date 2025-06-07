@@ -118,18 +118,18 @@ const RecentRoadmaps = ({ roadmaps, onDelete, onToggleFavorite }: RecentRoadmaps
                     Actualizada: {formatDate(roadmap.updated_at)}
                   </span>
                   <div className="flex items-center gap-1">
-                    <Link to={`/roadmap`} state={{ roadmapId: roadmap.id }}>
-                      <Button variant="ghost" size="sm">
+                    <Link to={`/roadmap?id=${roadmap.id}`}>
+                      <Button variant="ghost" size="sm" title="Ver hoja de ruta">
                         <ExternalLink className="h-4 w-4" />
                       </Button>
                     </Link>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" title="Descargar">
                       <Download className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" title="Duplicar">
                       <Copy className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" title="Editar">
                       <Edit3 className="h-4 w-4" />
                     </Button>
                     <Button 
@@ -137,6 +137,7 @@ const RecentRoadmaps = ({ roadmaps, onDelete, onToggleFavorite }: RecentRoadmaps
                       size="sm"
                       onClick={() => onDelete(roadmap.id)}
                       className="text-red-600 hover:text-red-700"
+                      title="Eliminar"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

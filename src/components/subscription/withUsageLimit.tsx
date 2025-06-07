@@ -27,6 +27,7 @@ export const withUsageLimit = (WrappedComponent: React.ComponentType<any>) => {
       const checkAdminStatus = async () => {
         if (!user) return;
         
+        console.log('Checking admin status for user:', user.id);
         const { data } = await supabase
           .from('user_roles')
           .select('role')
@@ -34,6 +35,7 @@ export const withUsageLimit = (WrappedComponent: React.ComponentType<any>) => {
           .eq('role', 'admin')
           .single();
         
+        console.log('Admin check result:', data);
         setIsAdmin(!!data);
       };
 
@@ -44,10 +46,15 @@ export const withUsageLimit = (WrappedComponent: React.ComponentType<any>) => {
       if (!user) return false;
 
       // Los admins tienen acceso ilimitado
-      if (isAdmin) return true;
+      if (isAdmin) {
+        console.log('Admin user - unlimited access granted');
+        return true;
+      }
 
       const limits = getLimitsForTier(subscriptionStatus.subscription_tier);
       const featureLimit = limits[feature];
+      
+      console.log('Usage limit check:', { feature, limit: featureLimit, tier: subscriptionStatus.subscription_tier });
       
       if (featureLimit === -1) return true; // unlimited
 
@@ -99,7 +106,7 @@ export const withUsageLimit = (WrappedComponent: React.ComponentType<any>) => {
 
     return (
       <>
-        <WrappedComponent {...props} checkUsageLimit={checkUsageLimit} />
+        <WrappedComponent {...props} checkUsageLimit={checkUsageLimit} isAdmin={isAdmin} />
         <AlertDialog open={showLimitDialog} onOpenChange={setShowLimitDialog}>
           <AlertDialogContent>
             <AlertDialogHeader>
