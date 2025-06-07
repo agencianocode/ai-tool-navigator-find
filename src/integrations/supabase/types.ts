@@ -180,6 +180,69 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_codes: {
+        Row: {
+          code: string
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string | null
+          uses_count: number | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string | null
+          uses_count?: number | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string | null
+          uses_count?: number | null
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          created_at: string
+          id: string
+          referral_code: string
+          referred_id: string | null
+          referrer_id: string | null
+          reward_amount: number | null
+          reward_claimed: boolean | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          referral_code: string
+          referred_id?: string | null
+          referrer_id?: string | null
+          reward_amount?: number | null
+          reward_claimed?: boolean | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          referral_code?: string
+          referred_id?: string | null
+          referrer_id?: string | null
+          reward_amount?: number | null
+          reward_claimed?: boolean | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       review_reports: {
         Row: {
           created_at: string | null
@@ -604,7 +667,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_referral_code: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

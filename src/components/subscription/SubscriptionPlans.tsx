@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Crown, Zap, Star, RefreshCw, Settings } from "lucide-react";
+import { Check, Crown, Zap, Star, RefreshCw, Settings, Gift } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +16,11 @@ interface SubscriptionPlan {
   features: string[];
   popular?: boolean;
   icon: React.ReactNode;
+  limits: {
+    roadmaps: number | string;
+    tools_explored: number | string;
+    budget_plans: number | string;
+  };
 }
 
 export const SubscriptionPlans = () => {
@@ -27,50 +31,69 @@ export const SubscriptionPlans = () => {
 
   const plans: SubscriptionPlan[] = [
     {
-      id: "basic",
-      name: "Básico",
-      price: 9,
-      interval: "mes",
-      description: "Perfecto para emprendedores individuales",
+      id: "free",
+      name: "Free",
+      price: 0,
+      interval: "siempre",
+      description: "Perfecto para probar la plataforma",
       features: [
-        "Hasta 5 roadmaps por mes",
-        "Acceso a herramientas básicas",
-        "Soporte por email",
-        "Análisis básico de herramientas"
+        "3 roadmaps por mes",
+        "20 herramientas exploradas",
+        "1 plan de presupuesto",
+        "Comparaciones básicas",
+        "Soporte por email"
       ],
+      limits: {
+        roadmaps: 3,
+        tools_explored: 20,
+        budget_plans: 1
+      },
       icon: <Zap className="w-6 h-6" />
     },
     {
-      id: "premium",
-      name: "Premium",
-      price: 29,
+      id: "basic",
+      name: "Pro",
+      price: 9,
       interval: "mes",
-      description: "Ideal para equipos pequeños y medianos",
+      description: "Ideal para emprendedores y freelancers",
       features: [
         "Roadmaps ilimitados",
-        "Acceso a todas las herramientas",
-        "Generador de presupuestos",
-        "Integraciones con Make",
-        "Soporte prioritario",
-        "Analytics avanzados"
+        "Herramientas ilimitadas",
+        "Planes de presupuesto ilimitados",
+        "Templates premium",
+        "Exportar a PDF",
+        "Comparaciones avanzadas",
+        "Soporte prioritario"
       ],
       popular: true,
+      limits: {
+        roadmaps: "Ilimitados",
+        tools_explored: "Ilimitadas",
+        budget_plans: "Ilimitados"
+      },
       icon: <Star className="w-6 h-6" />
     },
     {
       id: "enterprise",
       name: "Enterprise",
-      price: 99,
+      price: 29,
       interval: "mes",
       description: "Para empresas con necesidades avanzadas",
       features: [
-        "Todo lo de Premium",
+        "Todo lo de Pro",
         "API personalizada",
-        "Gestión de equipos",
+        "White-label branding",
+        "Consultorías 1:1",
         "Integraciones personalizadas",
         "Soporte dedicado 24/7",
-        "Onboarding personalizado"
+        "Onboarding personalizado",
+        "Analytics empresariales"
       ],
+      limits: {
+        roadmaps: "Ilimitados",
+        tools_explored: "Ilimitadas",
+        budget_plans: "Ilimitados"
+      },
       icon: <Crown className="w-6 h-6" />
     }
   ];
@@ -85,6 +108,14 @@ export const SubscriptionPlans = () => {
       return;
     }
 
+    if (planId === "free") {
+      toast({
+        title: "Plan Free",
+        description: "Ya estás usando el plan gratuito",
+      });
+      return;
+    }
+
     setIsLoading(planId);
 
     try {
@@ -95,7 +126,6 @@ export const SubscriptionPlans = () => {
       if (error) throw error;
 
       if (data?.url) {
-        // Abrir Stripe checkout en una nueva pestaña
         window.open(data.url, '_blank');
       }
 
@@ -163,6 +193,16 @@ export const SubscriptionPlans = () => {
     }
   };
 
+  const getCurrentPlan = () => {
+    if (!subscriptionStatus.subscribed) return 'free';
+    return subscriptionStatus.subscription_tier;
+  };
+
+  const isCurrentPlan = (planId: string) => {
+    const currentPlan = getCurrentPlan();
+    return currentPlan === planId;
+  };
+
   return (
     <div className="py-12">
       <div className="text-center mb-12">
@@ -178,10 +218,10 @@ export const SubscriptionPlans = () => {
             <div className="text-sm text-gray-600">
               Estado: {subscriptionStatus.subscribed ? (
                 <span className="text-green-600 font-medium">
-                  Suscrito ({subscriptionStatus.subscription_tier})
+                  Suscrito ({subscriptionStatus.subscription_tier === 'basic' ? 'Pro' : subscriptionStatus.subscription_tier})
                 </span>
               ) : (
-                <span className="text-gray-500">Sin suscripción</span>
+                <span className="text-gray-500">Plan Free</span>
               )}
             </div>
             <Button 
@@ -208,40 +248,59 @@ export const SubscriptionPlans = () => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {plans.map((plan) => {
-          const isCurrentPlan = subscriptionStatus.subscribed && 
-            subscriptionStatus.subscription_tier === plan.id;
+          const isUserCurrentPlan = isCurrentPlan(plan.id);
           
           return (
             <Card key={plan.id} className={`relative ${
-              plan.popular ? 'border-purple-500 border-2' : ''
-            } ${isCurrentPlan ? 'ring-2 ring-green-500' : ''}`}>
+              plan.popular ? 'border-purple-500 border-2 lg:scale-105' : ''
+            } ${isUserCurrentPlan ? 'ring-2 ring-green-500' : ''}`}>
               {plan.popular && (
                 <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-500">
                   Más Popular
                 </Badge>
               )}
               
-              {isCurrentPlan && (
+              {isUserCurrentPlan && (
                 <Badge className="absolute -top-3 right-4 bg-green-500">
                   Tu Plan
                 </Badge>
               )}
               
-              <CardHeader className="text-center">
+              <CardHeader className="text-center pb-4">
                 <div className="mx-auto mb-4 p-3 bg-gradient-to-r from-purple-100 to-blue-100 rounded-full w-fit">
                   {plan.icon}
                 </div>
                 <CardTitle className="text-xl font-bold">{plan.name}</CardTitle>
                 <div className="text-3xl font-bold text-gray-900">
-                  ${plan.price}
-                  <span className="text-sm font-normal text-gray-500">/{plan.interval}</span>
+                  {plan.price === 0 ? 'Gratis' : `$${plan.price}`}
+                  {plan.price > 0 && <span className="text-sm font-normal text-gray-500">/{plan.interval}</span>}
                 </div>
-                <p className="text-gray-600">{plan.description}</p>
+                <p className="text-gray-600 text-sm">{plan.description}</p>
               </CardHeader>
 
-              <CardContent>
+              <CardContent className="pt-0">
+                {/* Usage Limits */}
+                <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+                  <h4 className="text-sm font-semibold mb-3 text-gray-700">Límites de uso:</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span>Roadmaps:</span>
+                      <span className="font-medium">{plan.limits.roadmaps}/mes</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Herramientas:</span>
+                      <span className="font-medium">{plan.limits.tools_explored}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Presupuestos:</span>
+                      <span className="font-medium">{plan.limits.budget_plans}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Features */}
                 <ul className="space-y-3 mb-6">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-center gap-3">
@@ -253,17 +312,48 @@ export const SubscriptionPlans = () => {
 
                 <Button 
                   className={`w-full ${plan.popular ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700' : ''}`}
-                  variant={isCurrentPlan ? "outline" : plan.popular ? "default" : "outline"}
-                  onClick={() => isCurrentPlan ? handleManageSubscription() : handleSubscribe(plan.id)}
+                  variant={isUserCurrentPlan ? "outline" : plan.popular ? "default" : "outline"}
+                  onClick={() => isUserCurrentPlan ? handleManageSubscription() : handleSubscribe(plan.id)}
                   disabled={isLoading === plan.id || isLoading === 'manage'}
                 >
                   {isLoading === plan.id ? "Procesando..." : 
-                   isCurrentPlan ? "Gestionar Plan" : "Comenzar ahora"}
+                   isUserCurrentPlan ? "Plan Actual" : 
+                   plan.price === 0 ? "Plan Actual" : "Comenzar ahora"}
                 </Button>
               </CardContent>
             </Card>
           );
         })}
+      </div>
+
+      {/* Referral Program Banner */}
+      <div className="mt-12 max-w-4xl mx-auto">
+        <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-green-100 rounded-full">
+                  <Gift className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-green-800">
+                    ¡Programa de Referidos!
+                  </h3>
+                  <p className="text-green-700">
+                    Gana $5 por cada amigo que se suscriba a un plan de pago
+                  </p>
+                </div>
+              </div>
+              <Button 
+                variant="outline" 
+                className="border-green-300 text-green-700 hover:bg-green-100"
+                onClick={() => window.location.href = '/profile?tab=referrals'}
+              >
+                Ver mi código
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="text-center mt-8">
