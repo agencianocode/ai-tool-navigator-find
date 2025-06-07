@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
@@ -25,6 +26,7 @@ import Templates from './pages/Templates';
 import Analytics from './pages/Analytics';
 import Community from './pages/Community';
 import ContentHubPage from './pages/ContentHub';
+import EmergingTech from './pages/EmergingTech';
 
 // Create a client instance
 const queryClient = new QueryClient({
@@ -106,6 +108,7 @@ function App() {
               />
               <Route path="/community" element={<Community />} />
               <Route path="/content" element={<ContentHubPage />} />
+              <Route path="/emerging-tech" element={<EmergingTech />} />
               <Route
                 path="/profile"
                 element={

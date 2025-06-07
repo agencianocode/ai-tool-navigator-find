@@ -1,220 +1,110 @@
-
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import { Menu, X } from "lucide-react";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
+import { ModeToggle } from "./ModeToggle";
 import { useAuth } from "@/contexts/AuthContext";
-import UserMenu from "./UserMenu";
 
 const Navigation = () => {
+  const location = useLocation();
+  const { user, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user } = useAuth();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  const navigationItems = [
+    { href: "/", label: "Inicio" },
+    { href: "/tools", label: "Herramientas" },
+    { href: "/content", label: "Contenido" },
+    { href: "/community", label: "Comunidad" },
+    { href: "/emerging-tech", label: "IA & AR/VR" },
+  ];
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">AI</span>
-            </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-              AI Tool Navigator
-            </span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Herramientas</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid gap-3 p-6 w-[400px]">
-                      <Link
-                        to="/tools"
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      >
-                        <div className="text-sm font-medium leading-none">Explorar Herramientas</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Descubre más de 2,000 herramientas de IA organizadas por categorías
-                        </p>
-                      </Link>
-                      <Link
-                        to="/questionnaire"
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      >
-                        <div className="text-sm font-medium leading-none">Crear Hoja de Ruta</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Obtén recomendaciones personalizadas para tu proyecto
-                        </p>
-                      </Link>
-                      <Link
-                        to="/analytics"
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      >
-                        <div className="text-sm font-medium leading-none">Analytics e Insights</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Análisis de mercado y tendencias de IA
-                        </p>
-                      </Link>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Comunidad</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid gap-3 p-6 w-[400px]">
-                      <Link
-                        to="/community"
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      >
-                        <div className="text-sm font-medium leading-none">Centro de Comunidad</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Foro, mentores expertos y eventos virtuales
-                        </p>
-                      </Link>
-                      <Link
-                        to="/content"
-                        className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      >
-                        <div className="text-sm font-medium leading-none">Centro de Contenido</div>
-                        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                          Tutoriales, casos de uso y webinars con expertos
-                        </p>
-                      </Link>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link
-                    to="/guides"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                  >
-                    Guías
-                  </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link
-                    to="/budget-planner"
-                    className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                  >
-                    Presupuesto
-                  </Link>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-
-            {/* Auth buttons or user menu */}
-            {user ? (
-              <UserMenu />
-            ) : (
-              <div className="flex items-center space-x-4">
-                <Button variant="ghost" asChild>
-                  <Link to="/auth">Iniciar Sesión</Link>
-                </Button>
-                <Button asChild>
-                  <Link to="/auth">Registrarse</Link>
-                </Button>
-              </div>
-            )}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4">
-            {user && <UserMenu />}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+    <header className="bg-background sticky top-0 z-50 border-b">
+      <div className="container flex h-16 items-center justify-between">
+        <Link to="/" className="font-bold text-2xl">
+          AI Tool Navigator
+        </Link>
+        <div className="hidden md:flex items-center space-x-6">
+          {navigationItems.map((item) => (
+            <Link
+              key={item.label}
+              to={item.href}
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive(item.href) ? "text-primary" : "text-muted-foreground"
+              }`}
             >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
-          </div>
+              {item.label}
+            </Link>
+          ))}
+          <ModeToggle />
+          {user ? (
+            <>
+              <Link to="/dashboard">Dashboard</Link>
+              <Button size="sm" onClick={logout}>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Link to="/auth">
+              <Button size="sm">Get Started</Button>
+            </Link>
+          )}
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
-              <Link
-                to="/tools"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Explorar Herramientas
-              </Link>
-              <Link
-                to="/questionnaire"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Crear Hoja de Ruta
-              </Link>
-              <Link
-                to="/analytics"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Analytics e Insights
-              </Link>
-              <Link
-                to="/community"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Comunidad
-              </Link>
-              <Link
-                to="/content"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Centro de Contenido
-              </Link>
-              <Link
-                to="/guides"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Guías
-              </Link>
-              <Link
-                to="/budget-planner"
-                className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Presupuesto
-              </Link>
-              {!user && (
-                <div className="pt-4 pb-3 border-t border-gray-200">
-                  <div className="flex items-center px-3 space-x-3">
-                    <Button variant="ghost" asChild className="w-full">
-                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                        Iniciar Sesión
-                      </Link>
-                    </Button>
-                    <Button asChild className="w-full">
-                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                        Registrarse
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
+        <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="ghost" size="sm">
+              <Menu className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="sm:max-w-xs">
+            <SheetHeader>
+              <SheetTitle>Menu</SheetTitle>
+              <SheetDescription>
+                Explore the AI Tool Navigator
+              </SheetDescription>
+            </SheetHeader>
+            <div className="grid gap-4 py-4">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    isActive(item.href) ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <ModeToggle />
+              {user ? (
+                <>
+                  <Link to="/dashboard">Dashboard</Link>
+                  <Button size="sm" onClick={logout}>
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Link to="/auth">
+                  <Button size="sm">Get Started</Button>
+                </Link>
               )}
             </div>
-          </div>
-        )}
+          </SheetContent>
+        </Sheet>
       </div>
-    </nav>
+    </header>
   );
 };
 
