@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -77,7 +76,7 @@ const Roadmap = () => {
           } else if (data) {
             console.log('Roadmap loaded:', data);
             
-            // Convertir los datos de Supabase al formato local
+            // Convertir los datos de Supabase al formato local con validación adecuada
             const convertedRoadmapData: RoadmapData = {
               id: data.id,
               title: data.title,
@@ -86,7 +85,7 @@ const Roadmap = () => {
               skill_level: data.skill_level || undefined,
               budget_range: data.budget_range || undefined,
               timeline: data.timeline || undefined,
-              roadmap_data: Array.isArray(data.roadmap_data) ? data.roadmap_data as RoadmapPhase[] : [],
+              roadmap_data: Array.isArray(data.roadmap_data) ? (data.roadmap_data as unknown as RoadmapPhase[]) : [],
               selected_tools: Array.isArray(data.selected_tools) ? data.selected_tools : [],
               questionnaire_answers: data.questionnaire_answers || {},
               custom_name: data.custom_name || undefined,
