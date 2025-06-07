@@ -13,6 +13,7 @@ import QuickActions from "@/components/dashboard/QuickActions";
 import ActivityHistory from "@/components/dashboard/ActivityHistory";
 import UsageMetrics from "@/components/dashboard/UsageMetrics";
 import PersonalizedRecommendations from "@/components/dashboard/PersonalizedRecommendations";
+import { InsightsWidget } from "@/components/dashboard/InsightsWidget";
 import { UsageLimits } from "@/components/subscription/UsageLimits";
 import { InstallPrompt } from "@/components/PWA/InstallPrompt";
 import { SEO } from "@/components/SEO";
@@ -207,6 +208,7 @@ const Dashboard = () => {
                 {/* Sidebar */}
                 <div className="space-y-6">
                   <UsageLimits />
+                  <InsightsWidget />
                   <QuickActions />
                   <FavoriteTools favoriteTools={favoriteTools} />
                   
@@ -250,6 +252,12 @@ const Dashboard = () => {
                         className="block text-sm text-purple-600 hover:text-purple-800"
                       >
                         → Planificador de Presupuesto
+                      </Link>
+                      <Link
+                        to="/analytics"
+                        className="block text-sm text-purple-600 hover:text-purple-800"
+                      >
+                        → Analytics e Insights
                       </Link>
                     </CardContent>
                   </Card>

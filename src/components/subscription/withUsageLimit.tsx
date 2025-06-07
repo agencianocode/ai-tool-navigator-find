@@ -21,9 +21,30 @@ export const withUsageLimit = (WrappedComponent: React.ComponentType<any>) => {
     const [showLimitDialog, setShowLimitDialog] = useState(false);
     const [currentUsage, setCurrentUsage] = useState(0);
     const [limit, setLimit] = useState(0);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+      const checkAdminStatus = async () => {
+        if (!user) return;
+        
+        const { data } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'admin')
+          .single();
+        
+        setIsAdmin(!!data);
+      };
+
+      checkAdminStatus();
+    }, [user]);
 
     const checkUsageLimit = async (feature: FeatureType) => {
       if (!user) return false;
+
+      // Los admins tienen acceso ilimitado
+      if (isAdmin) return true;
 
       const limits = getLimitsForTier(subscriptionStatus.subscription_tier);
       const featureLimit = limits[feature];
