@@ -1,0 +1,41 @@
+
+/* Loading state improvements */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Toast-like feedback */
+.success-feedback {
+  @apply bg-green-50 border-green-200 text-green-800;
+  animation: bounce-in 0.4s ease-out;
+}
+
+.error-feedback {
+  @apply bg-red-50 border-red-200 text-red-800;
+  animation: bounce-in 0.4s ease-out;
+}
+
+.info-feedback {
+  @apply bg-blue-50 border-blue-200 text-blue-800;
+  animation: bounce-in 0.4s ease-out;
+}
+
+/* Glass morphism effects */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Improved mobile touch targets */
+.touch-target {
+  @apply min-h-[44px] min-w-[44px];
+}

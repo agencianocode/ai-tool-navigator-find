@@ -1,0 +1,24 @@
+
+/* Custom utilities for accessibility and UX */
+@layer utilities {
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring focus-visible:ring-offset-2;
+  }
+
+  .keyboard-only-focus:focus:not(:focus-visible) {
+    @apply outline-none ring-0;
+  }
+
+  .sr-only-focusable:focus {
+    @apply not-sr-only;
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .transition-bounce {
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+}
