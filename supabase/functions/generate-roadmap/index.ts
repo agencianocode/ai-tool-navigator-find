@@ -25,40 +25,40 @@ const generateClaudePrompt = (answers: Record<string, any>, selectedTools: any[]
   const skillLevel = answers.skillLevel || 'beginner';
   const budget = answers.budgetRange || 'low';
   const timeline = answers.timeline || 'flexible';
-  const toolNames = selectedTools.map(tool => tool.name).join(', ');
+  const toolNames = selectedTools.map(tool => tool.name || tool).join(', ') || 'Herramientas por definir';
 
-  return `You are an AI project management expert. Create a detailed 4-phase implementation roadmap for an AI tool project.
+  return `Eres un experto en gestión de proyectos de IA. Crea una hoja de ruta detallada de implementación de 4 fases para un proyecto de herramientas de IA.
 
-PROJECT CONTEXT:
-- Project Type: ${projectType}
-- User Skill Level: ${skillLevel}
-- Budget Range: ${budget}
-- Timeline Preference: ${timeline}
-- Selected Tools: ${toolNames}
-- Generate ${isAlternative ? 'alternative' : 'primary'} approach
+CONTEXTO DEL PROYECTO:
+- Tipo de Proyecto: ${projectType}
+- Nivel de Habilidad del Usuario: ${skillLevel}
+- Rango de Presupuesto: ${budget}
+- Preferencia de Cronograma: ${timeline}
+- Herramientas Seleccionadas: ${toolNames}
+- Generar enfoque ${isAlternative ? 'alternativo' : 'principal'}
 
-REQUIREMENTS:
-Generate a JSON response with 4 phases, each containing:
-- tasks: Array of 4-6 specific, actionable tasks
-- tools: Array of 2-4 relevant tool names from the selected tools
-- insights: Single paragraph with personalized advice (2-3 sentences)
-- challenges: Array of 2-3 potential obstacles
-- resources: Array of 3-4 learning resources or documentation links
+REQUISITOS:
+Genera una respuesta en JSON con 4 fases, cada una conteniendo:
+- tasks: Array de 4-6 tareas específicas y accionables
+- tools: Array de 2-4 nombres de herramientas relevantes de las herramientas seleccionadas
+- insights: Un párrafo con consejos personalizados (2-3 oraciones)
+- challenges: Array de 2-3 obstáculos potenciales
+- resources: Array de 3-4 recursos de aprendizaje o enlaces de documentación
 
-RESPONSE FORMAT (JSON only):
+FORMATO DE RESPUESTA (solo JSON):
 {
   "phases": [
     {
-      "tasks": ["Task 1", "Task 2", ...],
-      "tools": ["Tool1", "Tool2", ...],
-      "insights": "Personalized insight paragraph...",
-      "challenges": ["Challenge 1", "Challenge 2", ...],
-      "resources": ["Resource 1", "Resource 2", ...]
+      "tasks": ["Tarea 1", "Tarea 2", ...],
+      "tools": ["Herramienta1", "Herramienta2", ...],
+      "insights": "Párrafo de insight personalizado...",
+      "challenges": ["Desafío 1", "Desafío 2", ...],
+      "resources": ["Recurso 1", "Recurso 2", ...]
     }
   ]
 }
 
-Make tasks specific to the project type and tools. Adjust complexity based on skill level. Consider budget constraints in recommendations.`;
+IMPORTANTE: TODO EN ESPAÑOL. Haz las tareas específicas para el tipo de proyecto y herramientas. Ajusta la complejidad basada en el nivel de habilidad. Considera las restricciones de presupuesto en las recomendaciones.`;
 };
 
 Deno.serve(async (req) => {
@@ -117,7 +117,7 @@ Deno.serve(async (req) => {
     // Transform Claude response to our roadmap format
     const roadmapPhases: RoadmapPhase[] = parsedResponse.phases.map((phase: any, index: number) => ({
       id: index + 1,
-      title: `Phase ${index + 1}: ${getPhaseTitle(index)}`,
+      title: `Fase ${index + 1}: ${getPhaseTitle(index)}`,
       duration: getPhaseDuration(index),
       status: index === 0 ? 'current' : 'upcoming',
       tasks: phase.tasks || [],
@@ -145,7 +145,7 @@ Deno.serve(async (req) => {
       if (user) {
         await supabaseClient.from('roadmaps').insert({
           user_id: user.id,
-          title: `${answers.projectType || 'AI'} Project Roadmap`,
+          title: `Hoja de Ruta ${answers.projectType || 'IA'}`,
           project_type: answers.projectType,
           skill_level: answers.skillLevel,
           budget_range: answers.budgetRange,
@@ -175,20 +175,20 @@ Deno.serve(async (req) => {
 
 function getPhaseTitle(index: number): string {
   const titles = [
-    'Foundation & Setup',
-    'Core Implementation',
-    'Integration & Testing',
-    'Launch & Optimization'
+    'Fundamentos y Configuración',
+    'Implementación Central',
+    'Integración y Pruebas',
+    'Lanzamiento y Optimización'
   ];
-  return titles[index] || `Phase ${index + 1}`;
+  return titles[index] || `Fase ${index + 1}`;
 }
 
 function getPhaseDuration(index: number): string {
   const durations = [
-    'Weeks 1-2',
-    'Weeks 3-6',
-    'Weeks 7-8',
-    'Weeks 9-12'
+    'Semanas 1-2',
+    'Semanas 3-6',
+    'Semanas 7-8',
+    'Semanas 9-12'
   ];
-  return durations[index] || `Week ${index + 1}`;
+  return durations[index] || `Semana ${index + 1}`;
 }

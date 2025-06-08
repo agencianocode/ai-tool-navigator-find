@@ -13,7 +13,17 @@ import { useToast } from "@/hooks/use-toast";
 import { useQuestionnaire } from "../QuestionnaireContext";
 import { generateRoadmap } from "@/utils/roadmapGenerator";
 import { supabase } from "@/integrations/supabase/client";
-import { aiWritingContentTools, aiImageVideoTools, noCodePlatformsTools, websiteBuildersTools, designPrototypingTools, developmentToolsTools, aiProductivityAutomationTools, ecommercePlatformsTools, databaseBackendTools } from "@/data/categories";
+import { 
+  aiWritingContentTools, 
+  aiImageVideoTools, 
+  noCodePlatformsTools, 
+  websiteBuildersTools, 
+  designPrototypingTools, 
+  developmentToolsTools, 
+  aiProductivityAutomationTools, 
+  ecommercePlatformsTools, 
+  databaseBackendTools 
+} from "@/data/categories";
 
 const ResultsStep = () => {
   const { state } = useQuestionnaire();
@@ -31,7 +41,7 @@ const ResultsStep = () => {
     const { interests, skillLevel, projectType, budgetRange } = answers;
 
     // Combine all tools from different categories
-    let filteredTools = [
+    let allTools = [
       ...aiWritingContentTools,
       ...aiImageVideoTools,
       ...noCodePlatformsTools,
@@ -43,34 +53,61 @@ const ResultsStep = () => {
       ...databaseBackendTools
     ];
 
+    let filteredTools = allTools;
+
+    // Filter by interests
     if (interests && interests.length > 0) {
       filteredTools = filteredTools.filter(tool =>
-        interests.every((interest: string) => tool.tags.includes(interest))
-      );
-    }
-
-    if (skillLevel) {
-      filteredTools = filteredTools.filter(tool => tool.complexity === skillLevel);
-    }
-
-    if (projectType) {
-      filteredTools = filteredTools.filter(tool =>
-        tool.use_case_examples.some(example =>
-          example.toLowerCase().includes(projectType.toLowerCase())
+        interests.some((interest: string) => 
+          tool.tags.some(tag => tag.toLowerCase().includes(interest.toLowerCase())) ||
+          tool.category.toLowerCase().includes(interest.toLowerCase()) ||
+          tool.description.toLowerCase().includes(interest.toLowerCase())
         )
       );
     }
 
-    if (budgetRange) {
-      filteredTools = filteredTools.filter(tool => {
-        if (budgetRange === 'free') {
-          return tool.freeVersion;
-        }
-        return true;
-      });
+    // Filter by project type
+    if (projectType) {
+      const projectTypeFiltered = filteredTools.filter(tool =>
+        tool.use_case_examples.some(example =>
+          example.toLowerCase().includes(projectType.toLowerCase())
+        ) ||
+        tool.category.toLowerCase().includes(projectType.toLowerCase()) ||
+        tool.description.toLowerCase().includes(projectType.toLowerCase())
+      );
+      
+      if (projectTypeFiltered.length > 0) {
+        filteredTools = projectTypeFiltered;
+      }
     }
 
-    return filteredTools.slice(0, 6);
+    // Filter by budget
+    if (budgetRange === 'low') {
+      const budgetFiltered = filteredTools.filter(tool => tool.freeVersion);
+      if (budgetFiltered.length > 0) {
+        filteredTools = budgetFiltered;
+      }
+    }
+
+    // Filter by skill level
+    if (skillLevel) {
+      const skillFiltered = filteredTools.filter(tool => 
+        tool.complexity === skillLevel || 
+        (skillLevel === 'beginner' && tool.complexity === 'intermediate')
+      );
+      
+      if (skillFiltered.length > 0) {
+        filteredTools = skillFiltered;
+      }
+    }
+
+    // If no tools match, return popular general tools
+    if (filteredTools.length === 0) {
+      filteredTools = allTools.filter(tool => tool.freeVersion).slice(0, 8);
+    }
+
+    // Return top 8 tools
+    return filteredTools.slice(0, 8);
   };
 
   const handleGenerateRoadmap = async (isAlternative = false) => {
@@ -87,6 +124,8 @@ const ResultsStep = () => {
     
     try {
       const selectedTools = getRecommendedTools();
+      console.log('Selected tools for roadmap:', selectedTools);
+      
       const roadmapData = await generateRoadmap(answers, selectedTools, isAlternative);
       
       if (!roadmapData) {
@@ -172,17 +211,22 @@ const ResultsStep = () => {
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 text-green-500" />
                 <p className="text-sm font-medium">
-                  ¡Cuestionario completado! Hemos encontrado las siguientes herramientas para ti:
+                  ¡Cuestionario completado! Hemos encontrado {recommendedTools.length} herramientas perfectas para ti:
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recommendedTools.map((tool) => (
-                <div key={tool.id} className="border rounded-md p-3">
-                  <h3 className="text-sm font-semibold">{tool.name}</h3>
-                  <Badge variant="secondary">{tool.category}</Badge>
-                  <p className="text-xs text-gray-500">{tool.description.substring(0, 50)}...</p>
+                <div key={tool.id} className="border rounded-md p-3 hover:bg-gray-50">
+                  <h3 className="text-sm font-semibold mb-1">{tool.name}</h3>
+                  <Badge variant="secondary" className="mb-2">{tool.category}</Badge>
+                  <p className="text-xs text-gray-600 mb-2">{tool.description.substring(0, 80)}...</p>
+                  {tool.freeVersion && (
+                    <Badge variant="outline" className="text-xs">
+                      Versión Gratuita
+                    </Badge>
+                  )}
                 </div>
               ))}
             </div>
@@ -204,7 +248,7 @@ const ResultsStep = () => {
             >
               {isGenerating ? (
                 <>
-                  Generando...
+                  Generando Hoja de Ruta con IA...
                   <Loader2 className="ml-2 h-4 w-4 animate-spin" />
                 </>
               ) : (

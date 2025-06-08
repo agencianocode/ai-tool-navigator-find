@@ -35,20 +35,20 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured')
     }
 
-    // Build detailed prompt for OpenAI
-    const systemPrompt = `You are an AI consultant specializing in creating detailed, personalized implementation roadmaps for AI tool adoption. You must respond with ONLY a valid JSON array of exactly 4 phases.
+    // Build detailed prompt for OpenAI in Spanish
+    const systemPrompt = `Eres un consultor de IA especializado en crear hojas de ruta detalladas y personalizadas para la adopción de herramientas de IA. Debes responder ÚNICAMENTE con un array JSON válido de exactamente 4 fases EN ESPAÑOL.
 
-User Profile:
-- Project Type: ${answers.projectType || 'General'}
-- Skill Level: ${answers.skillLevel || 'Beginner'}
-- Budget Range: ${answers.budgetRange || 'Low'}
-- Timeline: ${answers.timeline || 'Flexible'}
-- Technical Expertise: ${answers.technicalExpertise || 'Beginner'}
-- Target Audience: ${answers.targetAudience || 'General'}
+Perfil del Usuario:
+- Tipo de Proyecto: ${answers.projectType || 'General'}
+- Nivel de Habilidad: ${answers.skillLevel || 'Principiante'}
+- Rango de Presupuesto: ${answers.budgetRange || 'Bajo'}
+- Cronograma: ${answers.timeline || 'Flexible'}
+- Experiencia Técnica: ${answers.technicalExpertise || 'Principiante'}
+- Audiencia Objetivo: ${answers.targetAudience || 'General'}
 
-Selected Tools: ${selectedTools.map(tool => tool.name).join(', ')}
+Herramientas Seleccionadas: ${selectedTools.map(tool => tool.name || tool).join(', ') || 'Herramientas por definir'}
 
-Create a practical 12-week implementation roadmap divided into 4 phases (3 weeks each). Each phase must have this exact structure:
+Crea una hoja de ruta práctica de implementación de 12 semanas dividida en 4 fases (3 semanas cada una). Cada fase debe tener esta estructura exacta:
 {
   "id": number,
   "title": string,
@@ -61,15 +61,17 @@ Create a practical 12-week implementation roadmap divided into 4 phases (3 weeks
   "resources": string[]
 }
 
-Requirements:
-- Phase 1 status should be "current", others "upcoming"
-- Include 4-6 specific, actionable tasks per phase
-- Distribute selected tools across phases logically
-- Provide personalized insights based on user profile
-- Include realistic challenges and helpful resources
-- Make it practical and achievable
+Requisitos OBLIGATORIOS:
+- TODO EN ESPAÑOL
+- La fase 1 debe tener status "current", las demás "upcoming"
+- Incluir 4-6 tareas específicas y accionables por fase
+- Distribuir las herramientas seleccionadas lógicamente entre las fases
+- Proporcionar insights personalizados basados en el perfil del usuario
+- Incluir desafíos realistas y recursos útiles
+- Hacer que sea práctico y alcanzable
+- Si no hay herramientas específicas, recomendar herramientas populares según el tipo de proyecto
 
-IMPORTANT: Respond with ONLY the JSON array, no markdown formatting, no code blocks, no additional text.`
+IMPORTANTE: Responde ÚNICAMENTE con el array JSON, sin formato markdown, sin bloques de código, sin texto adicional.`
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -86,7 +88,7 @@ IMPORTANT: Respond with ONLY the JSON array, no markdown formatting, no code blo
           },
           {
             role: 'user',
-            content: `Generate a detailed roadmap for implementing these AI tools: ${selectedTools.map(tool => tool.name).join(', ')}`
+            content: `Genera una hoja de ruta detallada EN ESPAÑOL para implementar estas herramientas de IA: ${selectedTools.map(tool => tool.name || tool).join(', ') || 'Herramientas recomendadas para ' + (answers.projectType || 'proyecto general')}`
           }
         ],
         temperature: 0.7,
@@ -130,8 +132,8 @@ IMPORTANT: Respond with ONLY the JSON array, no markdown formatting, no code blo
     // Ensure proper structure for each phase
     const validatedPhases = roadmapPhases.map((phase, index) => ({
       id: phase.id || index + 1,
-      title: phase.title || `Phase ${index + 1}`,
-      duration: phase.duration || `Weeks ${index * 3 + 1}-${(index + 1) * 3}`,
+      title: phase.title || `Fase ${index + 1}`,
+      duration: phase.duration || `Semanas ${index * 3 + 1}-${(index + 1) * 3}`,
       status: index === 0 ? 'current' : 'upcoming',
       tasks: Array.isArray(phase.tasks) ? phase.tasks : [],
       tools: Array.isArray(phase.tools) ? phase.tools : [],
