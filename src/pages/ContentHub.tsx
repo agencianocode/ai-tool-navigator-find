@@ -1,8 +1,8 @@
 
 import { useState } from "react";
 import { SEO } from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AnalyticsPageTracker } from "@/components/analytics/AnalyticsTracking";
 import { EnhancedTemplateMarketplace } from "@/components/templates/EnhancedTemplateMarketplace";
