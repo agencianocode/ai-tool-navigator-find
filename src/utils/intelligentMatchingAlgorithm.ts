@@ -1,4 +1,3 @@
-
 import { EnhancedTool } from '@/data/types';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -77,7 +76,8 @@ export async function generateIntelligentRecommendations(
     console.error('Error generating intelligent recommendations:', error);
     
     // Fallback final al algoritmo básico
-    return await fallbackToBasicMatching(answers, targetTools || []);
+    const { expandedToolsDatabase } = await import('@/data/expandedToolsDatabase');
+    return await fallbackToBasicMatching(answers, tools || expandedToolsDatabase);
   }
 }
 
@@ -163,7 +163,7 @@ async function generateAdvancedMatching(
     }
 
     // 5. Factor de comunidad y popularidad
-    if (tool.rating && tool.rating > 4.5) {
+    if (tool.user_rating && tool.user_rating > 4.5) {
       const communityScore = 5;
       score += communityScore;
       scoreBreakdown.community = communityScore;
