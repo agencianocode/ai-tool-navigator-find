@@ -9,6 +9,147 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          country: string | null
+          created_at: string
+          event_data: Json | null
+          event_name: string
+          event_type: string
+          id: string
+          ip_address: unknown | null
+          page_url: string | null
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          event_data?: Json | null
+          event_name: string
+          event_type: string
+          id?: string
+          ip_address?: unknown | null
+          page_url?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          event_data?: Json | null
+          event_name?: string
+          event_type?: string
+          id?: string
+          ip_address?: unknown | null
+          page_url?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      analytics_metrics: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json | null
+          metric_date: string
+          metric_name: string
+          metric_type: string
+          metric_value: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          metric_date: string
+          metric_name: string
+          metric_type: string
+          metric_value: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          metric_date?: string
+          metric_name?: string
+          metric_type?: string
+          metric_value?: number
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author_id: string | null
+          author_name: string
+          category: string
+          content: string
+          created_at: string
+          excerpt: string | null
+          featured_image: string | null
+          id: string
+          is_featured: boolean | null
+          likes_count: number | null
+          published_at: string | null
+          read_time: number | null
+          seo_description: string | null
+          seo_title: string | null
+          slug: string
+          status: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+          views_count: number | null
+        }
+        Insert: {
+          author_id?: string | null
+          author_name: string
+          category?: string
+          content: string
+          created_at?: string
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          is_featured?: boolean | null
+          likes_count?: number | null
+          published_at?: string | null
+          read_time?: number | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug: string
+          status?: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+          views_count?: number | null
+        }
+        Update: {
+          author_id?: string | null
+          author_name?: string
+          category?: string
+          content?: string
+          created_at?: string
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          is_featured?: boolean | null
+          likes_count?: number | null
+          published_at?: string | null
+          read_time?: number | null
+          seo_description?: string | null
+          seo_title?: string | null
+          slug?: string
+          status?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          views_count?: number | null
+        }
+        Relationships: []
+      }
       budget_templates: {
         Row: {
           base_cost: number
@@ -39,6 +180,72 @@ export type Database = {
           description?: string | null
           id?: string
           name?: string
+        }
+        Relationships: []
+      }
+      case_studies: {
+        Row: {
+          challenge_description: string
+          company_logo: string | null
+          company_name: string
+          created_at: string
+          featured_image: string | null
+          id: string
+          industry: string
+          is_featured: boolean | null
+          metrics: Json | null
+          results_description: string
+          slug: string
+          solution_description: string
+          testimonial: string | null
+          testimonial_author: string | null
+          testimonial_position: string | null
+          title: string
+          tools_used: Json
+          updated_at: string
+          views_count: number | null
+        }
+        Insert: {
+          challenge_description: string
+          company_logo?: string | null
+          company_name: string
+          created_at?: string
+          featured_image?: string | null
+          id?: string
+          industry: string
+          is_featured?: boolean | null
+          metrics?: Json | null
+          results_description: string
+          slug: string
+          solution_description: string
+          testimonial?: string | null
+          testimonial_author?: string | null
+          testimonial_position?: string | null
+          title: string
+          tools_used?: Json
+          updated_at?: string
+          views_count?: number | null
+        }
+        Update: {
+          challenge_description?: string
+          company_logo?: string | null
+          company_name?: string
+          created_at?: string
+          featured_image?: string | null
+          id?: string
+          industry?: string
+          is_featured?: boolean | null
+          metrics?: Json | null
+          results_description?: string
+          slug?: string
+          solution_description?: string
+          testimonial?: string | null
+          testimonial_author?: string | null
+          testimonial_position?: string | null
+          title?: string
+          tools_used?: Json
+          updated_at?: string
+          views_count?: number | null
         }
         Relationships: []
       }
@@ -75,6 +282,125 @@ export type Database = {
           total_cost?: number
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      guide_progress: {
+        Row: {
+          completed_at: string | null
+          completed_sections: Json | null
+          guide_id: string
+          id: string
+          last_accessed: string | null
+          progress_percentage: number | null
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          completed_sections?: Json | null
+          guide_id: string
+          id?: string
+          last_accessed?: string | null
+          progress_percentage?: number | null
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          completed_sections?: Json | null
+          guide_id?: string
+          id?: string
+          last_accessed?: string | null
+          progress_percentage?: number | null
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guide_progress_guide_id_fkey"
+            columns: ["guide_id"]
+            isOneToOne: false
+            referencedRelation: "guides"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guides: {
+        Row: {
+          author_id: string | null
+          author_name: string
+          category: string
+          completion_count: number | null
+          content: string
+          created_at: string
+          description: string | null
+          difficulty_level: string
+          estimated_time: number | null
+          featured_image: string | null
+          id: string
+          is_featured: boolean | null
+          is_premium: boolean | null
+          learning_objectives: string[] | null
+          prerequisites: string[] | null
+          published_at: string | null
+          rating: number | null
+          reviews_count: number | null
+          slug: string
+          title: string
+          tools_covered: string[] | null
+          updated_at: string
+          views_count: number | null
+        }
+        Insert: {
+          author_id?: string | null
+          author_name: string
+          category: string
+          completion_count?: number | null
+          content: string
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string
+          estimated_time?: number | null
+          featured_image?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_premium?: boolean | null
+          learning_objectives?: string[] | null
+          prerequisites?: string[] | null
+          published_at?: string | null
+          rating?: number | null
+          reviews_count?: number | null
+          slug: string
+          title: string
+          tools_covered?: string[] | null
+          updated_at?: string
+          views_count?: number | null
+        }
+        Update: {
+          author_id?: string | null
+          author_name?: string
+          category?: string
+          completion_count?: number | null
+          content?: string
+          created_at?: string
+          description?: string | null
+          difficulty_level?: string
+          estimated_time?: number | null
+          featured_image?: string | null
+          id?: string
+          is_featured?: boolean | null
+          is_premium?: boolean | null
+          learning_objectives?: string[] | null
+          prerequisites?: string[] | null
+          published_at?: string | null
+          rating?: number | null
+          reviews_count?: number | null
+          slug?: string
+          title?: string
+          tools_covered?: string[] | null
+          updated_at?: string
+          views_count?: number | null
         }
         Relationships: []
       }
@@ -323,18 +649,25 @@ export type Database = {
           author_type: string | null
           category: string
           created_at: string | null
+          demo_url: string | null
           description: string | null
           difficulty_level: string | null
           downloads_count: number | null
           estimated_timeline: string | null
           id: string
+          implementation_time: string | null
           industry: string
           is_featured: boolean | null
           is_premium: boolean | null
+          last_updated: string | null
           preview_image: string | null
+          preview_images: string[] | null
           price: number | null
           rating: number | null
           reviews_count: number | null
+          roi_metrics: Json | null
+          success_stories: string[] | null
+          support_level: string | null
           tags: string[] | null
           template_data: Json
           title: string
@@ -347,18 +680,25 @@ export type Database = {
           author_type?: string | null
           category: string
           created_at?: string | null
+          demo_url?: string | null
           description?: string | null
           difficulty_level?: string | null
           downloads_count?: number | null
           estimated_timeline?: string | null
           id?: string
+          implementation_time?: string | null
           industry: string
           is_featured?: boolean | null
           is_premium?: boolean | null
+          last_updated?: string | null
           preview_image?: string | null
+          preview_images?: string[] | null
           price?: number | null
           rating?: number | null
           reviews_count?: number | null
+          roi_metrics?: Json | null
+          success_stories?: string[] | null
+          support_level?: string | null
           tags?: string[] | null
           template_data: Json
           title: string
@@ -371,18 +711,25 @@ export type Database = {
           author_type?: string | null
           category?: string
           created_at?: string | null
+          demo_url?: string | null
           description?: string | null
           difficulty_level?: string | null
           downloads_count?: number | null
           estimated_timeline?: string | null
           id?: string
+          implementation_time?: string | null
           industry?: string
           is_featured?: boolean | null
           is_premium?: boolean | null
+          last_updated?: string | null
           preview_image?: string | null
+          preview_images?: string[] | null
           price?: number | null
           rating?: number | null
           reviews_count?: number | null
+          roi_metrics?: Json | null
+          success_stories?: string[] | null
+          support_level?: string | null
           tags?: string[] | null
           template_data?: Json
           title?: string
