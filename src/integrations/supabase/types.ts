@@ -493,34 +493,94 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_history: {
+        Row: {
+          channel: string
+          content: string
+          created_at: string
+          delivered_at: string | null
+          error_message: string | null
+          id: string
+          metadata: Json | null
+          notification_type: string
+          sent_at: string | null
+          status: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          channel: string
+          content: string
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          notification_type: string
+          sent_at?: string | null
+          status?: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          channel?: string
+          content?: string
+          created_at?: string
+          delivered_at?: string | null
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          notification_type?: string
+          sent_at?: string | null
+          status?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       notification_preferences: {
         Row: {
+          alert_notifications: boolean | null
           created_at: string
+          daily_digest: boolean | null
           email_new_tools: boolean | null
           email_reviews: boolean | null
           email_roadmap_updates: boolean | null
           email_weekly_digest: boolean | null
           id: string
+          marketing_emails: boolean | null
+          push_notifications: boolean | null
+          push_subscription: Json | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          alert_notifications?: boolean | null
           created_at?: string
+          daily_digest?: boolean | null
           email_new_tools?: boolean | null
           email_reviews?: boolean | null
           email_roadmap_updates?: boolean | null
           email_weekly_digest?: boolean | null
           id?: string
+          marketing_emails?: boolean | null
+          push_notifications?: boolean | null
+          push_subscription?: Json | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          alert_notifications?: boolean | null
           created_at?: string
+          daily_digest?: boolean | null
           email_new_tools?: boolean | null
           email_reviews?: boolean | null
           email_roadmap_updates?: boolean | null
           email_weekly_digest?: boolean | null
           id?: string
+          marketing_emails?: boolean | null
+          push_notifications?: boolean | null
+          push_subscription?: Json | null
           updated_at?: string
           user_id?: string
         }
@@ -592,6 +652,36 @@ export type Database = {
           updated_at?: string | null
           username?: string | null
           website?: string | null
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          created_at: string
+          endpoint: string
+          id: string
+          is_active: boolean
+          keys: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          endpoint: string
+          id?: string
+          is_active?: boolean
+          keys: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          endpoint?: string
+          id?: string
+          is_active?: boolean
+          keys?: Json
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

@@ -153,8 +153,33 @@ export const AlertsProcessor = () => {
         .update({ last_triggered: new Date().toISOString() })
         .eq('id', rule.id);
 
+      // Obtener información del usuario y sus preferencias
+      const { data: userData } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', rule.user_id)
+        .maybeSingle();
+
+      const { data: userAuth } = await supabase.auth.admin.getUserById(rule.user_id);
+      const userEmail = userAuth.user?.email;
+      const userName = userData?.full_name || userEmail?.split('@')[0] || 'Usuario';
+
+      // Verificar preferencias de notificación
+      const { data: preferences } = await supabase
+        .from('notification_preferences')
+        .select('*')
+        .eq('user_id', rule.user_id)
+        .maybeSingle();
+
+      const shouldSendEmail = preferences?.alert_notifications !== false && 
+                             (rule.notification_type === 'email' || rule.notification_type === 'both');
+
+      const shouldSendPush = preferences?.push_notifications !== false && 
+                            preferences?.alert_notifications !== false &&
+                            (rule.notification_type === 'in_app' || rule.notification_type === 'both');
+
       // Mostrar notificación in-app si está habilitada
-      if (rule.notification_type === 'in_app' || rule.notification_type === 'both') {
+      if (shouldSendPush) {
         toast({
           title: `⚠️ Alerta: ${rule.name}`,
           description: `Métrica ${rule.metric_type}: ${metricValue}`,
@@ -165,11 +190,60 @@ export const AlertsProcessor = () => {
         await supabase
           .from('notifications')
           .insert({
-            user_id: null,
+            user_id: rule.user_id,
             title: `Alerta: ${rule.name}`,
             message: `La métrica ${rule.metric_type} ha alcanzado el valor ${metricValue}`,
             type: 'warning'
           });
+      }
+
+      // Enviar email si está habilitado
+      if (shouldSendEmail && userEmail) {
+        try {
+          console.log(`Sending email alert to ${userEmail} for rule ${rule.name}`);
+          
+          await supabase.functions.invoke('send-alert-email', {
+            body: {
+              userEmail,
+              userName,
+              alertName: rule.name,
+              alertDescription: rule.description || 'Sin descripción',
+              metricValue,
+              metricType: rule.metric_type,
+              thresholdValue: rule.threshold_value,
+              condition: rule.condition
+            }
+          });
+
+          // Registrar en el historial
+          await supabase
+            .from('notification_history')
+            .insert({
+              user_id: rule.user_id,
+              notification_type: 'alert',
+              channel: 'email',
+              title: `Alerta: ${rule.name}`,
+              content: `Métrica ${rule.metric_type}: ${metricValue}`,
+              status: 'sent',
+              sent_at: new Date().toISOString()
+            });
+
+        } catch (emailError) {
+          console.error(`Error sending email for rule ${rule.name}:`, emailError);
+          
+          // Registrar error en el historial
+          await supabase
+            .from('notification_history')
+            .insert({
+              user_id: rule.user_id,
+              notification_type: 'alert',
+              channel: 'email',
+              title: `Alerta: ${rule.name}`,
+              content: `Métrica ${rule.metric_type}: ${metricValue}`,
+              status: 'failed',
+              error_message: emailError.message
+            });
+        }
       }
 
       console.log(`Alert triggered for rule ${rule.name}: ${metricValue}`);
