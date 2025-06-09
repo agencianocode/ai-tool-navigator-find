@@ -1,7 +1,8 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, Activity, Users, BarChart3 } from "lucide-react";
+import { TrendingUp, Activity, Users, BarChart3, Brain, Target } from "lucide-react";
+import { AdvancedAnalyticsDashboard } from "./AdvancedAnalyticsDashboard";
 import { MarketInsights } from "./MarketInsights";
 import { ToolTrends } from "./ToolTrends";
 import { ROIReports } from "./ROIReports";
@@ -14,7 +15,7 @@ export const AnalyticsDashboard = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Analytics e Inteligencia</h1>
           <p className="text-gray-600 mt-2">
-            Insights avanzados sobre tendencias de herramientas y análisis de mercado
+            Insights avanzados sobre tendencias de herramientas, análisis de mercado y comportamiento de usuarios
           </p>
         </div>
       </div>
@@ -74,13 +75,21 @@ export const AnalyticsDashboard = () => {
         </Card>
       </div>
 
-      <Tabs defaultValue="trends" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+      <Tabs defaultValue="advanced" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="advanced" className="flex items-center gap-2">
+            <Brain className="h-4 w-4" />
+            Dashboard Avanzado
+          </TabsTrigger>
           <TabsTrigger value="trends">Tendencias</TabsTrigger>
           <TabsTrigger value="market">Mercado</TabsTrigger>
           <TabsTrigger value="roi">ROI Reports</TabsTrigger>
           <TabsTrigger value="productivity">Productividad</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="advanced" className="space-y-6">
+          <AdvancedAnalyticsDashboard />
+        </TabsContent>
 
         <TabsContent value="trends" className="space-y-6">
           <ToolTrends />
