@@ -7,27 +7,39 @@ import { Brain, Target, TrendingUp, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export const RecommendationEffectiveness = () => {
-  // Análisis de efectividad de recomendaciones
+  // Análisis de efectividad de recomendaciones usando la estructura correcta
   const { data: recommendationData, isLoading } = useQuery({
     queryKey: ['recommendation-effectiveness'],
     queryFn: async () => {
       const { data: roadmaps } = await supabase
         .from('roadmaps')
-        .select('questionnaire_answers, recommended_tools, created_at')
+        .select('questionnaire_answers, roadmap_data, created_at')
         .not('questionnaire_answers', 'is', null);
 
       if (!roadmaps) return null;
 
-      // Analizar patrones de recomendaciones
+      // Analizar patrones de recomendaciones usando roadmap_data
       const analysisData = roadmaps.map(roadmap => {
         const answers = roadmap.questionnaire_answers as any;
-        const tools = roadmap.recommended_tools as any[];
+        const roadmapData = roadmap.roadmap_data as any;
+        
+        // Extraer herramientas del roadmap_data
+        let toolsCount = 0;
+        try {
+          if (roadmapData?.tools && Array.isArray(roadmapData.tools)) {
+            toolsCount = roadmapData.tools.length;
+          } else if (roadmapData?.recommended_tools && Array.isArray(roadmapData.recommended_tools)) {
+            toolsCount = roadmapData.recommended_tools.length;
+          }
+        } catch (error) {
+          console.log('Error parsing roadmap data:', error);
+        }
         
         return {
-          skillLevel: answers?.skillLevel || 'unknown',
-          budgetRange: answers?.budgetRange || 'unknown',
-          projectType: answers?.projectType || 'unknown',
-          toolsCount: tools?.length || 0,
+          skillLevel: answers?.skillLevel || answers?.skill_level || 'unknown',
+          budgetRange: answers?.budgetRange || answers?.budget_range || 'unknown',
+          projectType: answers?.projectType || answers?.project_type || 'unknown',
+          toolsCount,
           date: roadmap.created_at
         };
       });
@@ -82,27 +94,46 @@ export const RecommendationEffectiveness = () => {
     },
   });
 
-  // Obtener herramientas más recomendadas
+  // Obtener herramientas más recomendadas desde roadmap_data
   const { data: topRecommendedTools } = useQuery({
     queryKey: ['top-recommended-tools'],
     queryFn: async () => {
       const { data: roadmaps } = await supabase
         .from('roadmaps')
-        .select('recommended_tools')
-        .not('recommended_tools', 'is', null);
+        .select('roadmap_data')
+        .not('roadmap_data', 'is', null);
 
       if (!roadmaps) return [];
 
       const toolCounts: Record<string, number> = {};
       
       roadmaps.forEach(roadmap => {
-        const tools = roadmap.recommended_tools as any[];
-        if (Array.isArray(tools)) {
+        try {
+          const roadmapData = roadmap.roadmap_data as any;
+          let tools: any[] = [];
+          
+          // Buscar herramientas en diferentes estructuras posibles
+          if (roadmapData?.tools && Array.isArray(roadmapData.tools)) {
+            tools = roadmapData.tools;
+          } else if (roadmapData?.recommended_tools && Array.isArray(roadmapData.recommended_tools)) {
+            tools = roadmapData.recommended_tools;
+          } else if (roadmapData?.steps && Array.isArray(roadmapData.steps)) {
+            // Extraer herramientas de los pasos
+            roadmapData.steps.forEach((step: any) => {
+              if (step.tools && Array.isArray(step.tools)) {
+                tools = tools.concat(step.tools);
+              }
+            });
+          }
+          
           tools.forEach(tool => {
-            if (tool && tool.name) {
-              toolCounts[tool.name] = (toolCounts[tool.name] || 0) + 1;
+            if (tool && (tool.name || tool.title)) {
+              const toolName = tool.name || tool.title;
+              toolCounts[toolName] = (toolCounts[toolName] || 0) + 1;
             }
           });
+        } catch (error) {
+          console.log('Error parsing roadmap data:', error);
         }
       });
 
@@ -151,7 +182,7 @@ export const RecommendationEffectiveness = () => {
             <Zap className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{recommendationData.avgToolsPerRoadmap}</div>
+            <div className="text-2xl font-bold">{recommendationData.avgToolsPerRoadmap || 0}</div>
             <p className="text-xs text-muted-foreground">Por roadmap</p>
           </CardContent>
         </Card>

@@ -59,11 +59,16 @@ export const RealtimeMetrics = () => {
 
       if (!data) return [];
 
-      // Contar vistas por herramienta
+      // Contar vistas por herramienta - con type casting seguro
       const toolCounts = data.reduce((acc: Record<string, number>, event) => {
-        const toolName = event.event_data?.tool_name;
-        if (toolName) {
-          acc[toolName] = (acc[toolName] || 0) + 1;
+        try {
+          const eventData = event.event_data as any;
+          const toolName = eventData?.tool_name || eventData?.toolName;
+          if (toolName && typeof toolName === 'string') {
+            acc[toolName] = (acc[toolName] || 0) + 1;
+          }
+        } catch (error) {
+          console.log('Error parsing event data:', error);
         }
         return acc;
       }, {});
