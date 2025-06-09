@@ -96,7 +96,7 @@ export const AlertsManager = () => {
       if (!user) return [];
       
       const { data, error } = await supabase
-        .from('alert_rules' as any)
+        .from('alert_rules')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
@@ -105,7 +105,7 @@ export const AlertsManager = () => {
         console.error('Error fetching alert rules:', error);
         return [];
       }
-      return data as AlertRule[];
+      return (data || []) as AlertRule[];
     },
     enabled: !!user,
   });
@@ -117,10 +117,10 @@ export const AlertsManager = () => {
       if (!user) return [];
       
       const { data, error } = await supabase
-        .from('alert_triggers' as any)
+        .from('alert_triggers')
         .select(`
           *,
-          alert_rules!inner (name, description, metric_type)
+          alert_rules (name, description, metric_type)
         `)
         .eq('status', 'active')
         .order('triggered_at', { ascending: false });
@@ -129,7 +129,7 @@ export const AlertsManager = () => {
         console.error('Error fetching active alerts:', error);
         return [];
       }
-      return data as AlertTrigger[];
+      return (data || []) as AlertTrigger[];
     },
     enabled: !!user,
     refetchInterval: 30000,
@@ -141,7 +141,7 @@ export const AlertsManager = () => {
       if (!user) throw new Error('Usuario no autenticado');
 
       const { error } = await supabase
-        .from('alert_rules' as any)
+        .from('alert_rules')
         .insert({
           ...rule,
           user_id: user.id,
@@ -178,7 +178,7 @@ export const AlertsManager = () => {
   const updateAlertRule = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<AlertRule> }) => {
       const { error } = await supabase
-        .from('alert_rules' as any)
+        .from('alert_rules')
         .update(updates)
         .eq('id', id);
 
@@ -197,7 +197,7 @@ export const AlertsManager = () => {
   const resolveAlert = useMutation({
     mutationFn: async (alertId: string) => {
       const { error } = await supabase
-        .from('alert_triggers' as any)
+        .from('alert_triggers')
         .update({ 
           status: 'resolved',
           resolved_at: new Date().toISOString()

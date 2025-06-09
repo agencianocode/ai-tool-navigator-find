@@ -33,7 +33,7 @@ export const AlertsProcessor = () => {
     queryKey: ['active-alert-rules'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('alert_rules' as any)
+        .from('alert_rules')
         .select('*')
         .eq('is_active', true);
 
@@ -41,7 +41,7 @@ export const AlertsProcessor = () => {
         console.error('Error fetching alert rules:', error);
         return [];
       }
-      return data as AlertRule[];
+      return (data || []) as AlertRule[];
     },
     refetchInterval: 60000,
   });
@@ -110,7 +110,7 @@ export const AlertsProcessor = () => {
 
       // Actualizar última verificación
       await supabase
-        .from('alert_rules' as any)
+        .from('alert_rules')
         .update({ last_checked: new Date().toISOString() })
         .eq('id', rule.id);
 
@@ -124,7 +124,7 @@ export const AlertsProcessor = () => {
     try {
       // Verificar si ya existe una alerta activa para esta regla
       const { data: existingAlert } = await supabase
-        .from('alert_triggers' as any)
+        .from('alert_triggers')
         .select('id')
         .eq('alert_rule_id', rule.id)
         .eq('status', 'active')
@@ -137,7 +137,7 @@ export const AlertsProcessor = () => {
 
       // Crear nueva alerta
       const { error: insertError } = await supabase
-        .from('alert_triggers' as any)
+        .from('alert_triggers')
         .insert({
           alert_rule_id: rule.id,
           metric_value: metricValue,
@@ -149,7 +149,7 @@ export const AlertsProcessor = () => {
 
       // Actualizar última activación de la regla
       await supabase
-        .from('alert_rules' as any)
+        .from('alert_rules')
         .update({ last_triggered: new Date().toISOString() })
         .eq('id', rule.id);
 

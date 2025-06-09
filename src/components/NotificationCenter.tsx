@@ -61,7 +61,7 @@ export const NotificationCenter = () => {
         return [];
       }
       
-      return data as Notification[];
+      return (data || []) as Notification[];
     },
     enabled: !!user,
   });
@@ -71,10 +71,10 @@ export const NotificationCenter = () => {
     queryKey: ['alert-notifications'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('alert_triggers' as any)
+        .from('alert_triggers')
         .select(`
           *,
-          alert_rules!inner (name, description, metric_type)
+          alert_rules (name, description, metric_type)
         `)
         .eq('status', 'active')
         .order('triggered_at', { ascending: false })
@@ -85,7 +85,7 @@ export const NotificationCenter = () => {
         return [];
       }
       
-      return data as AlertNotification[];
+      return (data || []) as AlertNotification[];
     },
     refetchInterval: 30000,
   });
@@ -106,7 +106,7 @@ export const NotificationCenter = () => {
         return [];
       }
       
-      return data as Notification[];
+      return (data || []) as Notification[];
     },
     refetchInterval: 60000,
   });
@@ -166,7 +166,7 @@ export const NotificationCenter = () => {
   const resolveAlert = async (alertId: string) => {
     try {
       const { error } = await supabase
-        .from('alert_triggers' as any)
+        .from('alert_triggers')
         .update({ 
           status: 'resolved',
           resolved_at: new Date().toISOString()
