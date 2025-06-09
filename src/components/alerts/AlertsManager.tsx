@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 interface AlertRule {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   metric_type: string;
   condition: 'greater_than' | 'less_than' | 'equals';
   threshold_value: number;
@@ -35,15 +35,26 @@ interface AlertTrigger {
   status: 'active' | 'resolved';
   alert_rules?: {
     name: string;
-    description: string;
+    description?: string;
   };
+}
+
+interface NewAlertRule {
+  name: string;
+  description?: string;
+  metric_type: string;
+  condition: 'greater_than' | 'less_than' | 'equals';
+  threshold_value: number;
+  is_active: boolean;
+  notification_type: 'in_app' | 'email' | 'both';
+  check_interval: number;
 }
 
 export const AlertsManager = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [newRule, setNewRule] = useState<Partial<AlertRule>>({
+  const [newRule, setNewRule] = useState<NewAlertRule>({
     name: '',
     metric_type: 'conversion_rate',
     condition: 'less_than',
@@ -95,17 +106,22 @@ export const AlertsManager = () => {
     queryFn: async () => {
       if (!user) return [];
       
-      const { data, error } = await supabase
-        .from('alert_rules')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from('alert_rules')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching alert rules:', error);
+        if (error) {
+          console.error('Error fetching alert rules:', error);
+          return [];
+        }
+        return (data || []) as AlertRule[];
+      } catch (error) {
+        console.error('Error in alert rules query:', error);
         return [];
       }
-      return (data || []) as AlertRule[];
     },
     enabled: !!user,
   });
@@ -116,20 +132,26 @@ export const AlertsManager = () => {
     queryFn: async () => {
       if (!user) return [];
       
-      const { data, error } = await supabase
-        .from('alert_triggers')
-        .select(`
-          *,
-          alert_rules (name, description, metric_type)
-        `)
-        .eq('status', 'active')
-        .order('triggered_at', { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from('alert_triggers')
+          .select(`
+            *,
+            alert_rules!inner (name, description, metric_type, user_id)
+          `)
+          .eq('alert_rules.user_id', user.id)
+          .eq('status', 'active')
+          .order('triggered_at', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching active alerts:', error);
+        if (error) {
+          console.error('Error fetching active alerts:', error);
+          return [];
+        }
+        return (data || []) as AlertTrigger[];
+      } catch (error) {
+        console.error('Error in active alerts query:', error);
         return [];
       }
-      return (data || []) as AlertTrigger[];
     },
     enabled: !!user,
     refetchInterval: 30000,
@@ -137,14 +159,21 @@ export const AlertsManager = () => {
 
   // Mutación para crear regla de alerta
   const createAlertRule = useMutation({
-    mutationFn: async (rule: Partial<AlertRule>) => {
+    mutationFn: async (rule: NewAlertRule) => {
       if (!user) throw new Error('Usuario no autenticado');
 
       const { error } = await supabase
         .from('alert_rules')
         .insert({
-          ...rule,
           user_id: user.id,
+          name: rule.name,
+          description: rule.description,
+          metric_type: rule.metric_type,
+          condition: rule.condition,
+          threshold_value: rule.threshold_value,
+          is_active: rule.is_active,
+          notification_type: rule.notification_type,
+          check_interval: rule.check_interval
         });
 
       if (error) throw error;
@@ -166,6 +195,7 @@ export const AlertsManager = () => {
       });
     },
     onError: (error) => {
+      console.error('Error creating alert rule:', error);
       toast({
         title: "Error",
         description: "Error al crear la regla de alerta",
@@ -216,16 +246,25 @@ export const AlertsManager = () => {
   });
 
   const handleCreateRule = (template?: typeof alertTemplates[0]) => {
-    const ruleData = template ? {
+    const ruleData: NewAlertRule = template ? {
       name: template.name,
       description: template.description,
       metric_type: template.metric_type,
       condition: template.condition,
       threshold_value: template.threshold_value,
       is_active: true,
-      notification_type: 'both' as const,
+      notification_type: 'both',
       check_interval: 60
     } : newRule;
+
+    if (!ruleData.name || ruleData.threshold_value === 0) {
+      toast({
+        title: "Error",
+        description: "Por favor completa todos los campos requeridos",
+        variant: "destructive",
+      });
+      return;
+    }
 
     createAlertRule.mutate(ruleData);
   };
@@ -362,7 +401,7 @@ export const AlertsManager = () => {
                     id="condition"
                     className="w-full p-2 border rounded-md"
                     value={newRule.condition}
-                    onChange={(e) => setNewRule(prev => ({ ...prev, condition: e.target.value as any }))}
+                    onChange={(e) => setNewRule(prev => ({ ...prev, condition: e.target.value as 'greater_than' | 'less_than' | 'equals' }))}
                   >
                     <option value="less_than">Menor que</option>
                     <option value="greater_than">Mayor que</option>
@@ -382,7 +421,7 @@ export const AlertsManager = () => {
               </div>
               <Button 
                 onClick={() => handleCreateRule()}
-                disabled={!newRule.name || !newRule.threshold_value}
+                disabled={!newRule.name || newRule.threshold_value === 0}
                 className="w-full"
               >
                 Crear Regla
