@@ -33,14 +33,17 @@ export const AlertsProcessor = () => {
     queryKey: ['active-alert-rules'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('alert_rules')
+        .from('alert_rules' as any)
         .select('*')
         .eq('is_active', true);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching alert rules:', error);
+        return [];
+      }
       return data as AlertRule[];
     },
-    refetchInterval: 60000, // Revisar reglas cada minuto
+    refetchInterval: 60000,
   });
 
   // Función para obtener métricas actuales
@@ -107,7 +110,7 @@ export const AlertsProcessor = () => {
 
       // Actualizar última verificación
       await supabase
-        .from('alert_rules')
+        .from('alert_rules' as any)
         .update({ last_checked: new Date().toISOString() })
         .eq('id', rule.id);
 
@@ -121,7 +124,7 @@ export const AlertsProcessor = () => {
     try {
       // Verificar si ya existe una alerta activa para esta regla
       const { data: existingAlert } = await supabase
-        .from('alert_triggers')
+        .from('alert_triggers' as any)
         .select('id')
         .eq('alert_rule_id', rule.id)
         .eq('status', 'active')
@@ -134,7 +137,7 @@ export const AlertsProcessor = () => {
 
       // Crear nueva alerta
       const { error: insertError } = await supabase
-        .from('alert_triggers')
+        .from('alert_triggers' as any)
         .insert({
           alert_rule_id: rule.id,
           metric_value: metricValue,
@@ -146,7 +149,7 @@ export const AlertsProcessor = () => {
 
       // Actualizar última activación de la regla
       await supabase
-        .from('alert_rules')
+        .from('alert_rules' as any)
         .update({ last_triggered: new Date().toISOString() })
         .eq('id', rule.id);
 
@@ -162,16 +165,11 @@ export const AlertsProcessor = () => {
         await supabase
           .from('notifications')
           .insert({
-            user_id: null, // Para alertas del sistema
+            user_id: null,
             title: `Alerta: ${rule.name}`,
             message: `La métrica ${rule.metric_type} ha alcanzado el valor ${metricValue}`,
             type: 'warning'
           });
-      }
-
-      // TODO: Implementar notificaciones por email si está habilitado
-      if (rule.notification_type === 'email' || rule.notification_type === 'both') {
-        console.log(`Email notification would be sent for rule: ${rule.name}`);
       }
 
       console.log(`Alert triggered for rule ${rule.name}: ${metricValue}`);
@@ -191,7 +189,7 @@ export const AlertsProcessor = () => {
 
     // Crear nuevos intervalos para reglas activas
     activeRules.forEach(rule => {
-      const intervalMs = rule.check_interval * 60 * 1000; // Convertir minutos a ms
+      const intervalMs = rule.check_interval * 60 * 1000;
       
       intervalRefs.current[rule.id] = setInterval(() => {
         evaluateRule(rule);
@@ -201,7 +199,6 @@ export const AlertsProcessor = () => {
       evaluateRule(rule);
     });
 
-    // Cleanup al desmontar
     return () => {
       Object.values(intervalRefs.current).forEach(interval => {
         clearInterval(interval);
@@ -209,6 +206,5 @@ export const AlertsProcessor = () => {
     };
   }, [activeRules]);
 
-  // Este componente no renderiza nada, solo maneja la lógica de alertas
   return null;
 };

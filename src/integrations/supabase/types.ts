@@ -9,6 +9,95 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      alert_rules: {
+        Row: {
+          check_interval: number
+          condition: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          last_checked: string | null
+          last_triggered: string | null
+          metric_type: string
+          name: string
+          notification_type: string
+          threshold_value: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          check_interval?: number
+          condition: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          last_checked?: string | null
+          last_triggered?: string | null
+          metric_type: string
+          name: string
+          notification_type?: string
+          threshold_value: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          check_interval?: number
+          condition?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          last_checked?: string | null
+          last_triggered?: string | null
+          metric_type?: string
+          name?: string
+          notification_type?: string
+          threshold_value?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      alert_triggers: {
+        Row: {
+          alert_rule_id: string
+          created_at: string
+          id: string
+          metric_value: number
+          resolved_at: string | null
+          status: string
+          triggered_at: string
+        }
+        Insert: {
+          alert_rule_id: string
+          created_at?: string
+          id?: string
+          metric_value: number
+          resolved_at?: string | null
+          status?: string
+          triggered_at?: string
+        }
+        Update: {
+          alert_rule_id?: string
+          created_at?: string
+          id?: string
+          metric_value?: number
+          resolved_at?: string | null
+          status?: string
+          triggered_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_triggers_alert_rule_id_fkey"
+            columns: ["alert_rule_id"]
+            isOneToOne: false
+            referencedRelation: "alert_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       analytics_events: {
         Row: {
           country: string | null
@@ -446,7 +535,7 @@ export type Database = {
           read: boolean | null
           title: string
           type: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           action_url?: string | null
@@ -456,7 +545,7 @@ export type Database = {
           read?: boolean | null
           title: string
           type?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           action_url?: string | null
@@ -466,7 +555,7 @@ export type Database = {
           read?: boolean | null
           title?: string
           type?: string
-          user_id?: string
+          user_id?: string | null
         }
         Relationships: []
       }

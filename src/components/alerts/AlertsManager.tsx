@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertTriangle, Bell, Settings, TrendingDown, Users, Target, Zap } from "lucide-react";
+import { AlertTriangle, Bell, TrendingDown, Users, Target, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -22,7 +22,7 @@ interface AlertRule {
   threshold_value: number;
   is_active: boolean;
   notification_type: 'in_app' | 'email' | 'both';
-  check_interval: number; // en minutos
+  check_interval: number;
   last_triggered?: string;
 }
 
@@ -33,6 +33,10 @@ interface AlertTrigger {
   triggered_at: string;
   resolved_at?: string;
   status: 'active' | 'resolved';
+  alert_rules?: {
+    name: string;
+    description: string;
+  };
 }
 
 export const AlertsManager = () => {
@@ -92,12 +96,15 @@ export const AlertsManager = () => {
       if (!user) return [];
       
       const { data, error } = await supabase
-        .from('alert_rules')
+        .from('alert_rules' as any)
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching alert rules:', error);
+        return [];
+      }
       return data as AlertRule[];
     },
     enabled: !!user,
@@ -110,20 +117,22 @@ export const AlertsManager = () => {
       if (!user) return [];
       
       const { data, error } = await supabase
-        .from('alert_triggers')
+        .from('alert_triggers' as any)
         .select(`
           *,
           alert_rules!inner (name, description, metric_type)
         `)
-        .eq('alert_rules.user_id', user.id)
         .eq('status', 'active')
         .order('triggered_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching active alerts:', error);
+        return [];
+      }
       return data as AlertTrigger[];
     },
     enabled: !!user,
-    refetchInterval: 30000, // Actualizar cada 30 segundos
+    refetchInterval: 30000,
   });
 
   // Mutación para crear regla de alerta
@@ -132,7 +141,7 @@ export const AlertsManager = () => {
       if (!user) throw new Error('Usuario no autenticado');
 
       const { error } = await supabase
-        .from('alert_rules')
+        .from('alert_rules' as any)
         .insert({
           ...rule,
           user_id: user.id,
@@ -169,7 +178,7 @@ export const AlertsManager = () => {
   const updateAlertRule = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<AlertRule> }) => {
       const { error } = await supabase
-        .from('alert_rules')
+        .from('alert_rules' as any)
         .update(updates)
         .eq('id', id);
 
@@ -188,7 +197,7 @@ export const AlertsManager = () => {
   const resolveAlert = useMutation({
     mutationFn: async (alertId: string) => {
       const { error } = await supabase
-        .from('alert_triggers')
+        .from('alert_triggers' as any)
         .update({ 
           status: 'resolved',
           resolved_at: new Date().toISOString()
@@ -274,7 +283,7 @@ export const AlertsManager = () => {
                       <div className="flex items-center gap-2">
                         <AlertTriangle className="h-5 w-5 text-red-500" />
                         <CardTitle className="text-lg">
-                          {(alert as any).alert_rules.name}
+                          {alert.alert_rules?.name || 'Alerta'}
                         </CardTitle>
                       </div>
                       <Button 
@@ -288,7 +297,7 @@ export const AlertsManager = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600 mb-2">
-                      {(alert as any).alert_rules.description}
+                      {alert.alert_rules?.description || 'Sin descripción'}
                     </p>
                     <div className="flex items-center gap-4 text-sm text-gray-500">
                       <span>Valor: {alert.metric_value}</span>

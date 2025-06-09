@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,7 +71,7 @@ export const NotificationCenter = () => {
     queryKey: ['alert-notifications'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('alert_triggers')
+        .from('alert_triggers' as any)
         .select(`
           *,
           alert_rules!inner (name, description, metric_type)
@@ -87,10 +87,10 @@ export const NotificationCenter = () => {
       
       return data as AlertNotification[];
     },
-    refetchInterval: 30000, // Actualizar cada 30 segundos
+    refetchInterval: 30000,
   });
 
-  // Notificaciones del sistema (sin usuario específico)
+  // Notificaciones del sistema
   const { data: systemNotifications = [] } = useQuery({
     queryKey: ['system-notifications'],
     queryFn: async () => {
@@ -108,7 +108,7 @@ export const NotificationCenter = () => {
       
       return data as Notification[];
     },
-    refetchInterval: 60000, // Actualizar cada minuto
+    refetchInterval: 60000,
   });
 
   const allNotifications = [...notifications, ...systemNotifications];
@@ -166,7 +166,7 @@ export const NotificationCenter = () => {
   const resolveAlert = async (alertId: string) => {
     try {
       const { error } = await supabase
-        .from('alert_triggers')
+        .from('alert_triggers' as any)
         .update({ 
           status: 'resolved',
           resolved_at: new Date().toISOString()
