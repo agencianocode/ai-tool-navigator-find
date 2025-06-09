@@ -1,6 +1,4 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,23 +13,25 @@ serve(async (req) => {
   try {
     const { message, conversationHistory, userContext } = await req.json()
     
+    console.log('AI Chat Assistant request:', { message, hasHistory: !!conversationHistory, hasContext: !!userContext });
+
     const claudeApiKey = Deno.env.get('CLAUDE_API_KEY')
     if (!claudeApiKey) {
       throw new Error('Claude API key not configured')
     }
 
     // Build context-aware system prompt
-    const systemPrompt = `You are an AI assistant specialized in helping users find and implement the right AI tools and technologies. You have access to a comprehensive database of AI tools and can provide:
+    const systemPrompt = `Eres un asistente de IA especializado en ayudar a usuarios a encontrar e implementar las herramientas de IA y tecnologías correctas. Tienes acceso a una base de datos integral de herramientas de IA y puedes proporcionar:
 
-1. Tool recommendations based on specific needs
-2. Implementation guidance and roadmaps
-3. Comparisons between different tools
-4. Best practices and integration advice
-5. Troubleshooting and optimization tips
+1. Recomendaciones de herramientas basadas en necesidades específicas
+2. Guías de implementación y roadmaps
+3. Comparaciones entre diferentes herramientas
+4. Mejores prácticas y consejos de integración
+5. Solución de problemas y consejos de optimización
 
-User Context: ${userContext ? JSON.stringify(userContext) : 'No specific context'}
+Contexto del usuario: ${userContext ? JSON.stringify(userContext) : 'Sin contexto específico'}
 
-Always be helpful, concise, and provide actionable advice. If recommending tools, explain why they're suitable for the user's specific use case.`
+Siempre sé útil, conciso y proporciona consejos prácticos. Si recomiendas herramientas, explica por qué son adecuadas para el caso de uso específico del usuario. Responde siempre en español.`
 
     // Prepare conversation messages
     const messages = [
@@ -41,10 +41,21 @@ Always be helpful, concise, and provide actionable advice. If recommending tools
       }
     ]
 
-    // Add conversation history if available
+    // Add conversation history if available (keep last 8 messages for context)
     if (conversationHistory && conversationHistory.length > 0) {
-      messages.unshift(...conversationHistory.slice(-10)) // Keep last 10 messages for context
+      const validHistory = conversationHistory
+        .slice(-8)
+        .filter(msg => msg.role && msg.content && typeof msg.content === 'string')
+        .map(msg => ({
+          role: msg.role === 'user' ? 'user' : 'assistant',
+          content: msg.content.substring(0, 1000) // Limit message length
+        }));
+      
+      // Insert history before the current message
+      messages.unshift(...validHistory);
     }
+
+    console.log('Sending request to Claude with', messages.length, 'messages');
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -54,7 +65,7 @@ Always be helpful, concise, and provide actionable advice. If recommending tools
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-3-sonnet-20240229',
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 1000,
         system: systemPrompt,
         messages: messages
@@ -62,10 +73,18 @@ Always be helpful, concise, and provide actionable advice. If recommending tools
     })
 
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error(`Claude API error: ${response.status} - ${errorText}`)
       throw new Error(`Claude API error: ${response.status}`)
     }
 
     const data = await response.json()
+    console.log('Claude response received successfully')
+    
+    if (!data.content || !data.content[0] || !data.content[0].text) {
+      throw new Error('Invalid response format from Claude API')
+    }
+
     const assistantMessage = data.content[0].text
 
     // Analyze response for tool suggestions or actions

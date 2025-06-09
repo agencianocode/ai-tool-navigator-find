@@ -30,10 +30,15 @@ export const useAIIntegration = () => {
         body: { url }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Documentation analysis error:', error);
+        throw error;
+      }
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error analyzing documentation');
+      const errorMessage = err instanceof Error ? err.message : 'Error analyzing documentation';
+      console.error('Error in analyzeToolDocumentation:', errorMessage);
+      setError(errorMessage);
       return null;
     } finally {
       setIsLoading(false);
@@ -52,10 +57,15 @@ export const useAIIntegration = () => {
         body: { tools, options }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Roadmap generation error:', error);
+        throw error;
+      }
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error generating roadmap');
+      const errorMessage = err instanceof Error ? err.message : 'Error generating roadmap';
+      console.error('Error in generatePersonalizedRoadmap:', errorMessage);
+      setError(errorMessage);
       return null;
     } finally {
       setIsLoading(false);
@@ -67,15 +77,32 @@ export const useAIIntegration = () => {
     setError(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('ai-assistant', {
-        body: { question, context }
+      console.log('Calling AI assistant with question:', question);
+      
+      const { data, error } = await supabase.functions.invoke('ai-chat-assistant', {
+        body: { 
+          message: question, 
+          context,
+          conversationHistory: [],
+          userContext: context
+        }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('AI assistant error:', error);
+        throw new Error(error.message || 'Error calling AI assistant');
+      }
+
+      console.log('AI assistant response:', data);
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error processing question');
-      return null;
+      const errorMessage = err instanceof Error ? err.message : 'Error processing question';
+      console.error('Error in askAIAssistant:', errorMessage);
+      setError(errorMessage);
+      return {
+        message: 'Lo siento, hubo un error al procesar tu consulta. Por favor, intenta de nuevo más tarde.',
+        error: errorMessage
+      };
     } finally {
       setIsLoading(false);
     }
@@ -90,10 +117,15 @@ export const useAIIntegration = () => {
         body: { description, answers }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('User needs analysis error:', error);
+        throw error;
+      }
       return data;
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error analyzing needs');
+      const errorMessage = err instanceof Error ? err.message : 'Error analyzing needs';
+      console.error('Error in analyzeUserNeedsFromText:', errorMessage);
+      setError(errorMessage);
       return null;
     } finally {
       setIsLoading(false);
