@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,7 +5,9 @@ import { useToast } from "@/hooks/use-toast";
 
 interface AlertRule {
   id: string;
+  user_id: string;
   name: string;
+  description?: string;
   metric_type: string;
   condition: 'greater_than' | 'less_than' | 'equals';
   threshold_value: number;
@@ -14,6 +15,7 @@ interface AlertRule {
   notification_type: 'in_app' | 'email' | 'both';
   check_interval: number;
   last_checked?: string;
+  last_triggered?: string;
 }
 
 interface MetricValue {

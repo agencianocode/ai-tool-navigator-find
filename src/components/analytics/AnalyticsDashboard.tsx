@@ -1,8 +1,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, Activity, Users, BarChart3, Brain, Target } from "lucide-react";
+import { TrendingUp, Activity, Users, BarChart3, Brain, Target, Download } from "lucide-react";
 import { AdvancedAnalyticsDashboard } from "./AdvancedAnalyticsDashboard";
+import { AdvancedAnalyticsCharts } from "./AdvancedAnalyticsCharts";
+import { ExportableReports } from "./ExportableReports";
 import { MarketInsights } from "./MarketInsights";
 import { ToolTrends } from "./ToolTrends";
 import { ROIReports } from "./ROIReports";
@@ -75,17 +77,28 @@ export const AnalyticsDashboard = () => {
         </Card>
       </div>
 
-      <Tabs defaultValue="advanced" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+      <Tabs defaultValue="charts" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="charts" className="flex items-center gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Gráficos
+          </TabsTrigger>
           <TabsTrigger value="advanced" className="flex items-center gap-2">
             <Brain className="h-4 w-4" />
-            Dashboard Avanzado
+            Avanzado
           </TabsTrigger>
           <TabsTrigger value="trends">Tendencias</TabsTrigger>
           <TabsTrigger value="market">Mercado</TabsTrigger>
-          <TabsTrigger value="roi">ROI Reports</TabsTrigger>
-          <TabsTrigger value="productivity">Productividad</TabsTrigger>
+          <TabsTrigger value="roi">ROI</TabsTrigger>
+          <TabsTrigger value="reports" className="flex items-center gap-2">
+            <Download className="h-4 w-4" />
+            Reportes
+          </TabsTrigger>
         </TabsList>
+
+        <TabsContent value="charts" className="space-y-6">
+          <AdvancedAnalyticsCharts />
+        </TabsContent>
 
         <TabsContent value="advanced" className="space-y-6">
           <AdvancedAnalyticsDashboard />
@@ -100,11 +113,14 @@ export const AnalyticsDashboard = () => {
         </TabsContent>
 
         <TabsContent value="roi" className="space-y-6">
-          <ROIReports />
+          <div className="grid grid-cols-1 gap-6">
+            <ROIReports />
+            <ProductivityAnalytics />
+          </div>
         </TabsContent>
 
-        <TabsContent value="productivity" className="space-y-6">
-          <ProductivityAnalytics />
+        <TabsContent value="reports" className="space-y-6">
+          <ExportableReports />
         </TabsContent>
       </Tabs>
     </div>
