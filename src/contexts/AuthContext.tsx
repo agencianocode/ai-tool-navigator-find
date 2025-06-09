@@ -58,6 +58,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const userIsAdmin = roleData === 'admin';
         setIsAdmin(userIsAdmin);
         console.log('✅ Role set to:', roleData, 'isAdmin:', userIsAdmin);
+        
+        // Si es admin, establecer inmediatamente tier enterprise
+        if (userIsAdmin) {
+          console.log('🚀 Admin detected - setting enterprise tier immediately');
+          setSubscriptionStatus({
+            subscribed: true,
+            subscription_tier: 'enterprise',
+            subscription_end: null,
+          });
+        }
       } else {
         // Usuario nuevo o sin rol asignado, usar 'user' por defecto
         setUserRole('user');
@@ -78,22 +88,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
     
     try {
-      console.log('🔍 Checking subscription and admin status for user:', session.user.email);
+      console.log('🔍 Checking subscription for user:', session.user.email);
+      console.log('🔍 Current admin status:', isAdmin);
       
-      // Si es admin, establecer tier enterprise automáticamente
+      // Si es admin, NO verificar suscripción, mantener enterprise
       if (isAdmin) {
-        console.log('🚀 Admin detected - setting enterprise tier');
+        console.log('🚀 Admin detected - maintaining enterprise tier, skipping Stripe check');
         const enterpriseStatus = {
           subscribed: true,
           subscription_tier: 'enterprise',
-          subscription_end: null, // Sin límite para admins
+          subscription_end: null,
         };
         setSubscriptionStatus(enterpriseStatus);
-        console.log('✅ Enterprise status set for admin:', enterpriseStatus);
+        console.log('✅ Enterprise status maintained for admin:', enterpriseStatus);
         return;
       }
 
-      // Para usuarios no-admin, verificar suscripción normal
+      // Solo para usuarios no-admin, verificar suscripción normal
       const { data: dbData, error: dbError } = await supabase
         .from('subscribers')
         .select('*')
@@ -325,12 +336,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         
         // Manejar eventos específicos
         if (event === 'SIGNED_IN' && session) {
-          console.log('✅ User signed in, checking roles and subscription...');
-          // Primero obtener el rol, luego la suscripción
+          console.log('✅ User signed in, checking roles first...');
+          // Primero obtener el rol
           setTimeout(async () => {
             if (mounted) {
               await refreshUserRole();
-              await checkSubscription();
+              // Esperar un poco para que el rol se establezca antes de verificar suscripción
+              setTimeout(async () => {
+                if (mounted) {
+                  await checkSubscription();
+                }
+              }, 200);
             }
           }, 100);
         }
@@ -362,9 +378,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       // Si ya hay una sesión, verificar rol y suscripción inmediatamente
       if (session) {
-        console.log('✅ Existing session found, checking roles and subscription...');
+        console.log('✅ Existing session found, checking roles first...');
         await refreshUserRole();
-        await checkSubscription();
+        // Esperar un poco para que el rol se establezca
+        setTimeout(async () => {
+          if (mounted) {
+            await checkSubscription();
+          }
+        }, 200);
       }
     });
 
@@ -373,13 +394,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       subscription.unsubscribe();
     };
   }, []);
-
-  // Actualizar suscripción cuando cambie el rol
-  useEffect(() => {
-    if (session) {
-      checkSubscription();
-    }
-  }, [isAdmin, userRole]);
 
   const value = {
     user,
