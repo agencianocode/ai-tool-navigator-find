@@ -9,18 +9,32 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, User, Settings, LayoutDashboard } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { LogOut, User, Settings, LayoutDashboard, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 
 const UserMenu = () => {
-  const { user, signOut } = useAuth();
+  const { user, userRole, isAdmin, signOut } = useAuth();
 
   if (!user) return null;
 
   const getInitials = (email: string) => {
     return email.substring(0, 2).toUpperCase();
   };
+
+  const getRoleDisplay = (role: string | null) => {
+    switch (role) {
+      case 'admin':
+        return { label: 'Admin', color: 'destructive' as const };
+      case 'moderator':
+        return { label: 'Moderador', color: 'secondary' as const };
+      default:
+        return { label: 'Usuario', color: 'outline' as const };
+    }
+  };
+
+  const roleDisplay = getRoleDisplay(userRole);
 
   return (
     <DropdownMenu>
@@ -34,13 +48,16 @@ const UserMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col space-y-2">
             <p className="text-sm font-medium leading-none">
               {user.user_metadata?.full_name || "Usuario"}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}
             </p>
+            <Badge variant={roleDisplay.color} className="w-fit text-xs">
+              {roleDisplay.label}
+            </Badge>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -62,6 +79,17 @@ const UserMenu = () => {
             <span>Configuración</span>
           </Link>
         </DropdownMenuItem>
+        {isAdmin && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link to="/admin">
+                <Shield className="mr-2 h-4 w-4" />
+                <span>Panel Admin</span>
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={signOut}>
           <LogOut className="mr-2 h-4 w-4" />

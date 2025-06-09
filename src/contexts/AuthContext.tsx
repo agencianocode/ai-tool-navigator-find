@@ -1,14 +1,14 @@
-
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
   isAdmin: boolean;
+  userRole: string | null;
   subscriptionStatus: {
     subscribed: boolean;
     subscription_tier: string | null;
@@ -20,6 +20,7 @@ interface AuthContextType {
   signInWithGoogle: () => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<{ error: any }>;
+  refreshUserRole: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,12 +30,46 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [subscriptionStatus, setSubscriptionStatus] = useState({
     subscribed: false,
     subscription_tier: null,
     subscription_end: null,
   });
   const { toast } = useToast();
+
+  const refreshUserRole = async () => {
+    if (!session?.user) {
+      setIsAdmin(false);
+      setUserRole(null);
+      return;
+    }
+    
+    try {
+      console.log('🔍 Checking user role for:', session.user.email);
+      
+      const { data: roleData, error: roleError } = await supabase
+        .rpc('get_user_role', { target_user_id: session.user.id });
+
+      console.log('👑 Role check result:', { roleData, roleError });
+      
+      if (!roleError && roleData) {
+        setUserRole(roleData);
+        const userIsAdmin = roleData === 'admin';
+        setIsAdmin(userIsAdmin);
+        console.log('✅ Role set to:', roleData, 'isAdmin:', userIsAdmin);
+      } else {
+        // Usuario nuevo o sin rol asignado, usar 'user' por defecto
+        setUserRole('user');
+        setIsAdmin(false);
+        console.log('✅ Default role set to: user');
+      }
+    } catch (error) {
+      console.error('❌ Error checking user role:', error);
+      setUserRole('user');
+      setIsAdmin(false);
+    }
+  };
 
   const checkSubscription = async () => {
     if (!session) {
@@ -45,18 +80,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       console.log('🔍 Checking subscription and admin status for user:', session.user.email);
       
-      // 1. Verificar rol de admin PRIMERO usando la nueva función segura
-      const { data: roleData, error: roleError } = await supabase
-        .rpc('get_user_role', { target_user_id: session.user.id });
-
-      console.log('👑 Role check result:', { roleData, roleError });
-      
-      const userIsAdmin = roleData === 'admin';
-      setIsAdmin(userIsAdmin);
-      console.log('✅ Admin status set to:', userIsAdmin);
-
-      // 2. Si es admin, establecer tier enterprise automáticamente
-      if (userIsAdmin) {
+      // Si es admin, establecer tier enterprise automáticamente
+      if (isAdmin) {
         console.log('🚀 Admin detected - setting enterprise tier');
         const enterpriseStatus = {
           subscribed: true,
@@ -68,7 +93,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return;
       }
 
-      // 3. Para usuarios no-admin, verificar suscripción normal
+      // Para usuarios no-admin, verificar suscripción normal
       const { data: dbData, error: dbError } = await supabase
         .from('subscribers')
         .select('*')
@@ -88,7 +113,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return;
       }
 
-      // 4. Fallback a la función edge solo si no hay datos en DB
+      // Fallback a la función edge solo si no hay datos en DB
       console.log('⚠️ No data in DB, trying edge function fallback...');
       const { data, error } = await supabase.functions.invoke('check-subscription');
       if (error) {
@@ -106,7 +131,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSubscriptionStatus(fallbackStatus);
     } catch (error) {
       console.error('❌ Error checking subscription:', error);
-      setIsAdmin(false);
     }
   };
 
@@ -249,6 +273,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(null);
       setSession(null);
       setIsAdmin(false);
+      setUserRole(null);
       setSubscriptionStatus({
         subscribed: false,
         subscription_tier: null,
@@ -300,11 +325,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         
         // Manejar eventos específicos
         if (event === 'SIGNED_IN' && session) {
-          console.log('✅ User signed in, checking subscription and admin status...');
-          // Forzar verificación inmediata de suscripción y admin
-          setTimeout(() => {
+          console.log('✅ User signed in, checking roles and subscription...');
+          // Primero obtener el rol, luego la suscripción
+          setTimeout(async () => {
             if (mounted) {
-              checkSubscription();
+              await refreshUserRole();
+              await checkSubscription();
             }
           }, 100);
         }
@@ -312,6 +338,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (event === 'SIGNED_OUT') {
           console.log('🚪 User signed out, resetting all states');
           setIsAdmin(false);
+          setUserRole(null);
           setSubscriptionStatus({
             subscribed: false,
             subscription_tier: null,
@@ -322,7 +349,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     );
 
     // LUEGO verificar sesión existente
-    supabase.auth.getSession().then(({ data: { session }, error }) => {
+    supabase.auth.getSession().then(async ({ data: { session }, error }) => {
       if (!mounted) return;
       
       if (error) {
@@ -333,10 +360,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(session?.user ?? null);
       setLoading(false);
       
-      // Si ya hay una sesión, verificar suscripción y admin inmediatamente
+      // Si ya hay una sesión, verificar rol y suscripción inmediatamente
       if (session) {
-        console.log('✅ Existing session found, checking subscription and admin...');
-        checkSubscription();
+        console.log('✅ Existing session found, checking roles and subscription...');
+        await refreshUserRole();
+        await checkSubscription();
       }
     });
 
@@ -346,11 +374,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
   }, []);
 
+  // Actualizar suscripción cuando cambie el rol
+  useEffect(() => {
+    if (session) {
+      checkSubscription();
+    }
+  }, [isAdmin, userRole]);
+
   const value = {
     user,
     session,
     loading,
     isAdmin,
+    userRole,
     subscriptionStatus,
     checkSubscription,
     signIn,
@@ -358,6 +394,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     signInWithGoogle,
     signOut,
     resetPassword,
+    refreshUserRole,
   };
 
   return (

@@ -17,7 +17,7 @@ import UserMenu from "./UserMenu";
 
 const Navigation = () => {
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
@@ -36,6 +36,10 @@ const Navigation = () => {
     { href: "/dashboard", label: "Dashboard" },
     { href: "/favorites", label: "Favoritos" },
     { href: "/analytics", label: "Analytics" },
+  ];
+
+  const adminItems = [
+    { href: "/admin", label: "Admin", requireAdmin: true },
   ];
 
   return (
@@ -59,6 +63,18 @@ const Navigation = () => {
           ))}
           
           {user && authenticatedItems.map((item) => (
+            <Link
+              key={item.label}
+              to={item.href}
+              className={`text-sm font-medium transition-colors hover:text-primary ${
+                isActive(item.href) ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+
+          {user && isAdmin && adminItems.map((item) => (
             <Link
               key={item.label}
               to={item.href}
@@ -109,6 +125,19 @@ const Navigation = () => {
               ))}
               
               {user && authenticatedItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    isActive(item.href) ? "text-primary" : "text-muted-foreground"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+
+              {user && isAdmin && adminItems.map((item) => (
                 <Link
                   key={item.label}
                   to={item.href}
