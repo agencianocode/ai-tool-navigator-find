@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       console.log('🔍 Checking user role for:', session.user.email);
       
       const { data: roleData, error: roleError } = await supabase
-        .rpc('get_user_role', { target_user_id: session.user.id });
+        .rpc('get_user_role', { _user_id: session.user.id });
 
       console.log('👑 Role check result:', { roleData, roleError });
       
