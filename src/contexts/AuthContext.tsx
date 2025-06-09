@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -39,11 +38,47 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
   const { toast } = useToast();
 
+  // Función para establecer estado de admin y persistirlo
+  const setAdminState = (userId: string, adminStatus: boolean, role: string) => {
+    console.log('🔧 Setting admin state:', { userId, adminStatus, role });
+    setIsAdmin(adminStatus);
+    setUserRole(role);
+    
+    // Persistir en localStorage
+    if (adminStatus) {
+      localStorage.setItem(`admin_${userId}`, 'true');
+      localStorage.setItem(`role_${userId}`, role);
+      // Establecer inmediatamente el tier enterprise para admins
+      const enterpriseStatus = {
+        subscribed: true,
+        subscription_tier: 'enterprise',
+        subscription_end: null,
+      };
+      setSubscriptionStatus(enterpriseStatus);
+      console.log('✅ Admin state set with Enterprise tier:', enterpriseStatus);
+    } else {
+      localStorage.removeItem(`admin_${userId}`);
+      localStorage.removeItem(`role_${userId}`);
+    }
+  };
+
+  // Función para cargar estado persistido
+  const loadPersistedAdminState = (userId: string) => {
+    const persistedAdmin = localStorage.getItem(`admin_${userId}`) === 'true';
+    const persistedRole = localStorage.getItem(`role_${userId}`) || 'user';
+    
+    if (persistedAdmin) {
+      console.log('🚀 Loading persisted admin state:', { persistedAdmin, persistedRole });
+      setAdminState(userId, true, persistedRole);
+      return true;
+    }
+    return false;
+  };
+
   const refreshUserRole = async () => {
     if (!session?.user) {
       setIsAdmin(false);
       setUserRole(null);
-      // Reset subscription status if no user
       setSubscriptionStatus({
         subscribed: false,
         subscription_tier: null,
@@ -52,64 +87,47 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return;
     }
     
+    const userId = session.user.id;
+    
+    // Primero intentar cargar estado persistido
+    if (loadPersistedAdminState(userId)) {
+      return; // Si encontramos estado persistido, no necesitamos verificar la DB
+    }
+    
     try {
       console.log('🔍 Checking user role for:', session.user.email);
       
       const { data: roleData, error: roleError } = await supabase
-        .rpc('get_user_role', { _user_id: session.user.id });
+        .rpc('get_user_role', { _user_id: userId });
 
       console.log('👑 Role check result:', { roleData, roleError });
       
       if (!roleError && roleData) {
-        setUserRole(roleData);
         const userIsAdmin = roleData === 'admin';
-        setIsAdmin(userIsAdmin);
-        console.log('✅ Role set to:', roleData, 'isAdmin:', userIsAdmin);
-        
-        // CRÍTICO: Si es admin, establecer INMEDIATAMENTE tier enterprise
-        if (userIsAdmin) {
-          console.log('🚀 Admin detected - setting enterprise tier IMMEDIATELY');
-          setSubscriptionStatus({
-            subscribed: true,
-            subscription_tier: 'enterprise',
-            subscription_end: null,
-          });
-        }
+        setAdminState(userId, userIsAdmin, roleData);
       } else {
         // Usuario nuevo o sin rol asignado, usar 'user' por defecto
-        setUserRole('user');
-        setIsAdmin(false);
-        console.log('✅ Default role set to: user');
+        setAdminState(userId, false, 'user');
       }
     } catch (error) {
       console.error('❌ Error checking user role:', error);
-      setUserRole('user');
-      setIsAdmin(false);
+      setAdminState(userId, false, 'user');
     }
   };
 
   const checkSubscription = async () => {
-    if (!session) {
+    if (!session?.user) {
+      return;
+    }
+    
+    // CRÍTICO: Si ya es admin, NO hacer verificación de Stripe
+    if (isAdmin || userRole === 'admin') {
+      console.log('🚀 Admin confirmed - skipping all subscription checks, maintaining Enterprise');
       return;
     }
     
     try {
-      console.log('🔍 Checking subscription for user:', session.user.email);
-      console.log('🔍 Current admin status:', isAdmin);
-      console.log('🔍 Current user role:', userRole);
-      
-      // VERIFICACIÓN CRÍTICA: Si es admin por rol, SIEMPRE mantener enterprise
-      if (userRole === 'admin' || isAdmin) {
-        console.log('🚀 Admin confirmed - FORCING enterprise tier, skipping all Stripe checks');
-        const enterpriseStatus = {
-          subscribed: true,
-          subscription_tier: 'enterprise',
-          subscription_end: null,
-        };
-        setSubscriptionStatus(enterpriseStatus);
-        console.log('✅ Enterprise status FORCED for admin:', enterpriseStatus);
-        return;
-      }
+      console.log('🔍 Checking subscription for regular user:', session.user.email);
 
       // Solo para usuarios no-admin, verificar suscripción normal
       const { data: dbData, error: dbError } = await supabase
@@ -287,6 +305,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       console.log('🚪 Attempting to sign out...');
       
+      // Limpiar localStorage para este usuario
+      if (user?.id) {
+        localStorage.removeItem(`admin_${user.id}`);
+        localStorage.removeItem(`role_${user.id}`);
+      }
+      
       // Limpiar estados locales ANTES de llamar a signOut
       setUser(null);
       setSession(null);
@@ -330,7 +354,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     let mounted = true;
 
-    // Configurar listener de auth state PRIMERO
+    // Configurar listener de auth state
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!mounted) return;
@@ -341,19 +365,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(session?.user ?? null);
         setLoading(false);
         
-        // Manejar eventos específicos
         if (event === 'SIGNED_IN' && session) {
-          console.log('✅ User signed in, refreshing role and subscription in sequence...');
-          // SECUENCIA CRÍTICA: Primero rol, luego suscripción
-          if (mounted) {
-            await refreshUserRole();
-            // Pequeña pausa para asegurar que el rol se establezca
-            setTimeout(async () => {
-              if (mounted) {
-                await checkSubscription();
-              }
-            }, 100);
-          }
+          console.log('✅ User signed in, checking admin status immediately...');
+          await refreshUserRole();
+          // Solo verificar suscripción si no es admin
+          setTimeout(() => {
+            if (mounted && !isAdmin && userRole !== 'admin') {
+              checkSubscription();
+            }
+          }, 500);
         }
         
         if (event === 'SIGNED_OUT') {
@@ -369,7 +389,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     );
 
-    // LUEGO verificar sesión existente
+    // Verificar sesión existente
     supabase.auth.getSession().then(async ({ data: { session }, error }) => {
       if (!mounted) return;
       
@@ -381,16 +401,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(session?.user ?? null);
       setLoading(false);
       
-      // Si ya hay una sesión, verificar rol y suscripción en secuencia
       if (session && mounted) {
-        console.log('✅ Existing session found, refreshing role and subscription in sequence...');
+        console.log('✅ Existing session found, checking admin status immediately...');
         await refreshUserRole();
-        // Pequeña pausa para asegurar que el rol se establezca
-        setTimeout(async () => {
-          if (mounted) {
-            await checkSubscription();
+        // Solo verificar suscripción si no es admin
+        setTimeout(() => {
+          if (mounted && !isAdmin && userRole !== 'admin') {
+            checkSubscription();
           }
-        }, 100);
+        }, 500);
       }
     });
 
