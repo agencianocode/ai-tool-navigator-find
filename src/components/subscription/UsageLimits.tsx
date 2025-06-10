@@ -77,7 +77,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
   };
 
   const getLimits = () => {
-    // Los admins tienen acceso ilimitado
+    // Admins have unlimited access
     if (isAdmin) {
       console.log('🚀 [ADMIN] Admin detected - returning unlimited limits');
       return { 
@@ -93,7 +93,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
       };
     }
 
-    // Enterprise users tienen acceso ilimitado
+    // Enterprise users have unlimited access
     if (subscriptionStatus.subscription_tier === 'enterprise') {
       console.log('🏢 [USAGE] Enterprise subscription detected - returning unlimited limits');
       return { 

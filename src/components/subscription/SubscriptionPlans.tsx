@@ -109,9 +109,9 @@ export const SubscriptionPlans = () => {
       return;
     }
 
-    // GUARDIA ADMIN - No permitir suscripciones para admins
+    // Admin guard
     if (isAdmin) {
-      console.log('🚫 [ADMIN] handleSubscribe bloqueado para admin');
+      console.log('🚫 [ADMIN] handleSubscribe blocked for admin');
       toast({
         title: "Usuario Administrador",
         description: "Los administradores tienen acceso enterprise automático.",
@@ -163,9 +163,9 @@ export const SubscriptionPlans = () => {
       return;
     }
 
-    // GUARDIA ADMIN - No permitir gestión para admins
+    // Admin guard
     if (isAdmin) {
-      console.log('🚫 [ADMIN] handleManageSubscription bloqueado para admin');
+      console.log('🚫 [ADMIN] handleManageSubscription blocked for admin');
       toast({
         title: "Usuario Administrador",
         description: "Los administradores tienen acceso enterprise automático.",
@@ -198,9 +198,9 @@ export const SubscriptionPlans = () => {
   };
 
   const handleRefreshSubscription = async () => {
-    // GUARDIA ADMIN - No permitir refresh para admins
+    // Admin guard
     if (isAdmin) {
-      console.log('🚫 [ADMIN] handleRefreshSubscription bloqueado para admin');
+      console.log('🚫 [ADMIN] handleRefreshSubscription blocked for admin');
       toast({
         title: "Usuario Administrador",
         description: "El estado admin es automático y no requiere actualización.",

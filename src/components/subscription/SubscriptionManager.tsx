@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,9 +17,9 @@ export const SubscriptionManager = () => {
   const handleManageSubscription = async () => {
     if (!user) return;
 
-    // GUARDIA ADMIN - No permitir gestión de suscripción para admins
+    // Admin guard
     if (isAdmin) {
-      console.log('🚫 [ADMIN] handleManageSubscription bloqueado para admin');
+      console.log('🚫 [ADMIN] handleManageSubscription blocked for admin');
       toast({
         title: "Usuario Administrador",
         description: "Los administradores tienen acceso enterprise automático.",
@@ -51,9 +51,9 @@ export const SubscriptionManager = () => {
   };
 
   const handleRefreshStatus = async () => {
-    // GUARDIA ADMIN - No permitir refresh para admins
+    // Admin guard
     if (isAdmin) {
-      console.log('🚫 [ADMIN] handleRefreshStatus bloqueado para admin');
+      console.log('🚫 [ADMIN] handleRefreshStatus blocked for admin');
       toast({
         title: "Usuario Administrador",
         description: "El estado admin es automático y no requiere actualización.",
