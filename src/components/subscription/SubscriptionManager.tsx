@@ -3,19 +3,30 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, ExternalLink, RefreshCw } from "lucide-react";
+import { AlertCircle, ExternalLink, RefreshCw, Shield } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export const SubscriptionManager = () => {
-  const { user, subscriptionStatus, checkSubscription } = useAuth();
+  const { user, subscriptionStatus, checkSubscription, isAdmin } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const handleManageSubscription = async () => {
     if (!user) return;
+
+    // GUARDIA ADMIN - No permitir gestión de suscripción para admins
+    if (isAdmin) {
+      console.log('🚫 [ADMIN] handleManageSubscription bloqueado para admin');
+      toast({
+        title: "Usuario Administrador",
+        description: "Los administradores tienen acceso enterprise automático.",
+        variant: "default",
+      });
+      return;
+    }
 
     setIsLoading(true);
 
@@ -40,6 +51,17 @@ export const SubscriptionManager = () => {
   };
 
   const handleRefreshStatus = async () => {
+    // GUARDIA ADMIN - No permitir refresh para admins
+    if (isAdmin) {
+      console.log('🚫 [ADMIN] handleRefreshStatus bloqueado para admin');
+      toast({
+        title: "Usuario Administrador",
+        description: "El estado admin es automático y no requiere actualización.",
+        variant: "default",
+      });
+      return;
+    }
+
     setIsRefreshing(true);
     try {
       await checkSubscription();
@@ -59,12 +81,12 @@ export const SubscriptionManager = () => {
   };
 
   const isExpired = () => {
-    if (!subscriptionStatus.subscription_end) return false;
+    if (!subscriptionStatus.subscription_end || isAdmin) return false;
     return new Date(subscriptionStatus.subscription_end) < new Date();
   };
 
   const isExpiringSoon = () => {
-    if (!subscriptionStatus.subscription_end) return false;
+    if (!subscriptionStatus.subscription_end || isAdmin) return false;
     const endDate = new Date(subscriptionStatus.subscription_end);
     const now = new Date();
     const daysUntilExpiry = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
@@ -80,15 +102,23 @@ export const SubscriptionManager = () => {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           Gestión de Suscripción
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefreshStatus}
-            disabled={isRefreshing}
-          >
-            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-            Actualizar
-          </Button>
+          {!isAdmin && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefreshStatus}
+              disabled={isRefreshing}
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Actualizar
+            </Button>
+          )}
+          {isAdmin && (
+            <Badge variant="default" className="bg-green-600">
+              <Shield className="h-3 w-3 mr-1" />
+              Admin
+            </Badge>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -102,13 +132,14 @@ export const SubscriptionManager = () => {
         {subscriptionStatus.subscription_tier && (
           <div className="flex items-center justify-between">
             <span>Plan:</span>
-            <Badge variant="outline">
+            <Badge variant="outline" className={isAdmin ? "border-green-500 text-green-700" : ""}>
               {subscriptionStatus.subscription_tier}
+              {isAdmin && <Shield className="h-3 w-3 ml-1" />}
             </Badge>
           </div>
         )}
 
-        {subscriptionStatus.subscription_end && (
+        {subscriptionStatus.subscription_end && !isAdmin && (
           <div className="flex items-center justify-between">
             <span>Vence:</span>
             <div className="text-right">
@@ -125,7 +156,19 @@ export const SubscriptionManager = () => {
           </div>
         )}
 
-        {subscriptionStatus.subscribed && (
+        {isAdmin && (
+          <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+            <div className="flex items-center gap-2 text-green-800">
+              <Shield className="h-4 w-4" />
+              <span className="font-medium">Acceso Enterprise Ilimitado</span>
+            </div>
+            <p className="text-sm text-green-700 mt-1">
+              Como administrador, tienes acceso completo a todas las funciones sin restricciones.
+            </p>
+          </div>
+        )}
+
+        {subscriptionStatus.subscribed && !isAdmin && (
           <Button
             onClick={handleManageSubscription}
             disabled={isLoading}
@@ -137,12 +180,14 @@ export const SubscriptionManager = () => {
           </Button>
         )}
 
-        <div className="text-xs text-gray-500 space-y-1">
-          <p>• Cambiar método de pago</p>
-          <p>• Actualizar o cancelar plan</p>
-          <p>• Descargar facturas</p>
-          <p>• Ver historial de pagos</p>
-        </div>
+        {!isAdmin && (
+          <div className="text-xs text-gray-500 space-y-1">
+            <p>• Cambiar método de pago</p>
+            <p>• Actualizar o cancelar plan</p>
+            <p>• Descargar facturas</p>
+            <p>• Ver historial de pagos</p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

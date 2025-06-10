@@ -32,8 +32,8 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
   const fetchUsage = async () => {
     if (!user) return;
     
-    console.log('🔍 Fetching usage for user:', user.email);
-    console.log('🔍 Current auth state:', { isAdmin, subscriptionStatus });
+    console.log('🔍 [USAGE] Fetching usage for user:', user.email);
+    console.log('🔍 [USAGE] Current auth state:', { isAdmin, subscriptionStatus });
     
     try {
       setLoading(true);
@@ -62,7 +62,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
         template_purchases: purchases?.length || 0
       });
 
-      console.log('📊 Usage data fetched:', {
+      console.log('📊 [USAGE] Usage data fetched:', {
         isAdmin,
         subscriptionTier: subscriptionStatus.subscription_tier,
         subscribed: subscriptionStatus.subscribed,
@@ -70,7 +70,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
       });
 
     } catch (error) {
-      console.error('❌ Error fetching usage:', error);
+      console.error('❌ [USAGE] Error fetching usage:', error);
     } finally {
       setLoading(false);
     }
@@ -79,7 +79,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
   const getLimits = () => {
     // Los admins tienen acceso ilimitado
     if (isAdmin) {
-      console.log('🚀 Admin detected - returning unlimited limits');
+      console.log('🚀 [ADMIN] Admin detected - returning unlimited limits');
       return { 
         roadmaps: -1, 
         tools_explored: -1, 
@@ -95,7 +95,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
 
     // Enterprise users tienen acceso ilimitado
     if (subscriptionStatus.subscription_tier === 'enterprise') {
-      console.log('🏢 Enterprise subscription detected - returning unlimited limits');
+      console.log('🏢 [USAGE] Enterprise subscription detected - returning unlimited limits');
       return { 
         roadmaps: -1, 
         tools_explored: -1, 
@@ -216,6 +216,19 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
+        {/* Admin Notice */}
+        {isAdmin && (
+          <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+            <div className="flex items-center gap-2 text-green-800">
+              <Shield className="h-4 w-4" />
+              <span className="font-medium">Acceso Administrativo</span>
+            </div>
+            <p className="text-sm text-green-700 mt-1">
+              Como administrador, tienes acceso ilimitado a todas las funciones.
+            </p>
+          </div>
+        )}
+
         {/* Roadmaps Usage */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
@@ -233,7 +246,7 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
               className={`h-2 ${isNearLimit(usage.roadmaps, limits.roadmaps) ? 'bg-orange-100' : ''}`}
             />
           )}
-          {isAtLimit(usage.roadmaps, limits.roadmaps) && (
+          {isAtLimit(usage.roadmaps, limits.roadmaps) && !isAdmin && (
             <div className="flex items-center gap-1 text-sm text-red-600">
               <AlertTriangle className="h-4 w-4" />
               Límite alcanzado
@@ -353,18 +366,16 @@ export const UsageLimits = ({ showUpgrade = true }: UsageLimitsProps) => {
           </div>
         )}
 
-        {(subscriptionStatus.subscribed || isAdmin) && (
-          <div className="pt-4 border-t">
-            <p className="text-xs text-center text-gray-500">
-              Templates comprados: {usage.template_purchases}
+        <div className="pt-4 border-t">
+          <p className="text-xs text-center text-gray-500">
+            Templates comprados: {usage.template_purchases}
+          </p>
+          {(isAdmin || subscriptionStatus.subscription_tier === 'enterprise') && (
+            <p className="text-xs text-center text-green-600 font-medium">
+              🚀 Acceso ilimitado activado
             </p>
-            {(isAdmin || subscriptionStatus.subscription_tier === 'enterprise') && (
-              <p className="text-xs text-center text-green-600 font-medium">
-                🚀 Acceso ilimitado activado
-              </p>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </CardContent>
     </Card>
   );

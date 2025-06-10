@@ -1,8 +1,9 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Crown, Zap, Star, RefreshCw, Settings, Gift } from "lucide-react";
+import { Check, Crown, Zap, Star, RefreshCw, Settings, Gift, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -24,7 +25,7 @@ interface SubscriptionPlan {
 }
 
 export const SubscriptionPlans = () => {
-  const { user, subscriptionStatus, checkSubscription } = useAuth();
+  const { user, subscriptionStatus, checkSubscription, isAdmin } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -108,6 +109,17 @@ export const SubscriptionPlans = () => {
       return;
     }
 
+    // GUARDIA ADMIN - No permitir suscripciones para admins
+    if (isAdmin) {
+      console.log('🚫 [ADMIN] handleSubscribe bloqueado para admin');
+      toast({
+        title: "Usuario Administrador",
+        description: "Los administradores tienen acceso enterprise automático.",
+        variant: "default",
+      });
+      return;
+    }
+
     if (planId === "free") {
       toast({
         title: "Plan Free",
@@ -151,6 +163,17 @@ export const SubscriptionPlans = () => {
       return;
     }
 
+    // GUARDIA ADMIN - No permitir gestión para admins
+    if (isAdmin) {
+      console.log('🚫 [ADMIN] handleManageSubscription bloqueado para admin');
+      toast({
+        title: "Usuario Administrador",
+        description: "Los administradores tienen acceso enterprise automático.",
+        variant: "default",
+      });
+      return;
+    }
+
     setIsLoading('manage');
 
     try {
@@ -175,6 +198,17 @@ export const SubscriptionPlans = () => {
   };
 
   const handleRefreshSubscription = async () => {
+    // GUARDIA ADMIN - No permitir refresh para admins
+    if (isAdmin) {
+      console.log('🚫 [ADMIN] handleRefreshSubscription bloqueado para admin');
+      toast({
+        title: "Usuario Administrador",
+        description: "El estado admin es automático y no requiere actualización.",
+        variant: "default",
+      });
+      return;
+    }
+
     setIsRefreshing(true);
     try {
       await checkSubscription();
@@ -194,6 +228,7 @@ export const SubscriptionPlans = () => {
   };
 
   const getCurrentPlan = () => {
+    if (isAdmin) return 'enterprise';
     if (!subscriptionStatus.subscribed) return 'free';
     return subscriptionStatus.subscription_tier;
   };
@@ -216,7 +251,12 @@ export const SubscriptionPlans = () => {
         {user && (
           <div className="mt-6 flex items-center justify-center gap-4">
             <div className="text-sm text-gray-600">
-              Estado: {subscriptionStatus.subscribed ? (
+              Estado: {isAdmin ? (
+                <span className="text-green-600 font-medium flex items-center gap-1">
+                  <Shield className="h-4 w-4" />
+                  Administrador (Enterprise)
+                </span>
+              ) : subscriptionStatus.subscribed ? (
                 <span className="text-green-600 font-medium">
                   Suscrito ({subscriptionStatus.subscription_tier === 'basic' ? 'Pro' : subscriptionStatus.subscription_tier})
                 </span>
@@ -224,25 +264,29 @@ export const SubscriptionPlans = () => {
                 <span className="text-gray-500">Plan Free</span>
               )}
             </div>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={handleRefreshSubscription}
-              disabled={isRefreshing}
-            >
-              <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Actualizar
-            </Button>
-            {subscriptionStatus.subscribed && (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={handleManageSubscription}
-                disabled={isLoading === 'manage'}
-              >
-                <Settings className="mr-2 h-4 w-4" />
-                {isLoading === 'manage' ? "Abriendo..." : "Gestionar"}
-              </Button>
+            {!isAdmin && (
+              <>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={handleRefreshSubscription}
+                  disabled={isRefreshing}
+                >
+                  <RefreshCw className={`mr-2 h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  Actualizar
+                </Button>
+                {subscriptionStatus.subscribed && (
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleManageSubscription}
+                    disabled={isLoading === 'manage'}
+                  >
+                    <Settings className="mr-2 h-4 w-4" />
+                    {isLoading === 'manage' ? "Abriendo..." : "Gestionar"}
+                  </Button>
+                )}
+              </>
             )}
           </div>
         )}
@@ -264,7 +308,7 @@ export const SubscriptionPlans = () => {
               
               {isUserCurrentPlan && (
                 <Badge className="absolute -top-3 right-4 bg-green-500">
-                  Tu Plan
+                  {isAdmin ? "Admin" : "Tu Plan"}
                 </Badge>
               )}
               
@@ -313,11 +357,11 @@ export const SubscriptionPlans = () => {
                 <Button 
                   className={`w-full ${plan.popular ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700' : ''}`}
                   variant={isUserCurrentPlan ? "outline" : plan.popular ? "default" : "outline"}
-                  onClick={() => isUserCurrentPlan ? handleManageSubscription() : handleSubscribe(plan.id)}
-                  disabled={isLoading === plan.id || isLoading === 'manage'}
+                  onClick={() => isUserCurrentPlan && !isAdmin ? handleManageSubscription() : handleSubscribe(plan.id)}
+                  disabled={isLoading === plan.id || isLoading === 'manage' || (isAdmin && !isUserCurrentPlan)}
                 >
                   {isLoading === plan.id ? "Procesando..." : 
-                   isUserCurrentPlan ? "Plan Actual" : 
+                   isUserCurrentPlan ? (isAdmin ? "Plan Actual (Admin)" : "Gestionar Plan") : 
                    plan.price === 0 ? "Plan Actual" : "Comenzar ahora"}
                 </Button>
               </CardContent>

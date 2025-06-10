@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -37,9 +36,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     subscription_tier: null,
     subscription_end: null,
   });
+  const [adminStateInitialized, setAdminStateInitialized] = useState(false);
   const { toast } = useToast();
 
-  // ESTADO ADMIN INMUTABLE - La clave para evitar el problema
+  // ESTADO ADMIN INMUTABLE - Configuración enterprise permanente
   const ADMIN_ENTERPRISE_STATE = {
     subscribed: true,
     subscription_tier: 'enterprise',
@@ -47,15 +47,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   // Funciones de persistencia mejoradas
-  const getAdminStateKey = (userId: string) => `admin_state_v2_${userId}`;
+  const getAdminStateKey = (userId: string) => `admin_state_v3_${userId}`;
   
   const setAdminStatePermanently = (userId: string) => {
-    console.log('🔧 ESTABLECIENDO ESTADO ADMIN PERMANENTE para:', userId);
+    console.log('🔧 [ADMIN] ESTABLECIENDO ESTADO ADMIN PERMANENTE para:', userId);
     
     // Estados síncronos INMUTABLES
     setIsAdmin(true);
     setUserRole('admin');
     setSubscriptionStatus({ ...ADMIN_ENTERPRISE_STATE });
+    setAdminStateInitialized(true);
     
     // Persistencia robusta
     const adminData = {
@@ -63,15 +64,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       userRole: 'admin',
       subscriptionStatus: { ...ADMIN_ENTERPRISE_STATE },
       timestamp: Date.now(),
-      version: 2 // Para invalidar versiones anteriores
+      version: 3
     };
     
     localStorage.setItem(getAdminStateKey(userId), JSON.stringify(adminData));
-    console.log('✅ Estado admin persistido permanentemente');
+    console.log('✅ [ADMIN] Estado admin persistido permanentemente e inmutable');
   };
 
   const loadPersistedAdminState = (userId: string): boolean => {
-    console.log('💾 Verificando estado admin persistido para:', userId);
+    console.log('💾 [ADMIN] Verificando estado admin persistido para:', userId);
     
     try {
       const stateKey = getAdminStateKey(userId);
@@ -81,13 +82,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const state = JSON.parse(persistedState);
         
         // Verificar versión y validez
-        if (state.version === 2 && state.isAdmin && state.userRole === 'admin') {
-          console.log('🚀 RESTAURANDO estado admin desde localStorage');
+        if (state.version === 3 && state.isAdmin && state.userRole === 'admin') {
+          console.log('🚀 [ADMIN] RESTAURANDO estado admin desde localStorage');
           
           // Restauración síncrona e inmutable
           setIsAdmin(true);
           setUserRole('admin');
           setSubscriptionStatus({ ...ADMIN_ENTERPRISE_STATE });
+          setAdminStateInitialized(true);
           
           return true;
         } else {
@@ -96,23 +98,33 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
       }
     } catch (error) {
-      console.error('❌ Error cargando estado admin persistido:', error);
+      console.error('❌ [ADMIN] Error cargando estado admin persistido:', error);
     }
     
     return false;
   };
 
   const clearAdminState = (userId?: string) => {
-    console.log('🧹 Limpiando estado admin');
+    console.log('🧹 [ADMIN] Limpiando estado admin');
     setIsAdmin(false);
     setUserRole('user');
+    setAdminStateInitialized(false);
     
     if (userId) {
       localStorage.removeItem(getAdminStateKey(userId));
     }
   };
 
-  // Función principal para verificar role - REDISEÑADA
+  // GUARDIA CRÍTICA - Protege contra verificaciones de suscripción para admins
+  const isAdminProtected = () => {
+    const adminStatus = isAdmin || userRole === 'admin';
+    if (adminStatus) {
+      console.log('🛡️ [ADMIN] GUARDIA ACTIVADA - Operación bloqueada para admin');
+    }
+    return adminStatus;
+  };
+
+  // Función principal para verificar role - MEJORADA con prioridad admin
   const refreshUserRole = async () => {
     if (!session?.user) {
       clearAdminState();
@@ -121,42 +133,45 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         subscription_tier: null,
         subscription_end: null,
       });
+      setAdminStateInitialized(true);
       return;
     }
     
     const userId = session.user.id;
     
-    // PASO 1: Verificar estado persistido PRIMERO
+    // PASO 1: Verificar estado persistido PRIMERO (SÍNCRONO)
     if (loadPersistedAdminState(userId)) {
-      console.log('🚀 Admin state restaurado - SALTANDO verificación DB');
+      console.log('🚀 [ADMIN] Admin state restaurado - SALTANDO verificación DB');
       return;
     }
     
     try {
-      console.log('🔍 Verificando role en base de datos para:', session.user.email);
+      console.log('🔍 [AUTH] Verificando role en base de datos para:', session.user.email);
       
       const { data: roleData, error: roleError } = await supabase
         .rpc('get_user_role', { _user_id: userId });
 
-      console.log('👑 Resultado verificación role:', { roleData, roleError });
+      console.log('👑 [AUTH] Resultado verificación role:', { roleData, roleError });
       
       if (!roleError && roleData === 'admin') {
         // USUARIO ES ADMIN - Estado inmutable y permanente
         setAdminStatePermanently(userId);
-        console.log('🎯 ADMIN CONFIRMADO - Estado establecido permanentemente');
+        console.log('🎯 [ADMIN] ADMIN CONFIRMADO - Estado establecido permanentemente');
       } else {
         // Usuario regular - limpiar cualquier estado admin residual
         clearAdminState(userId);
         setUserRole(roleData || 'user');
+        setAdminStateInitialized(true);
         
         // SOLO para usuarios NO-admin verificar suscripción
-        console.log('👤 Usuario regular detectado - verificando suscripción...');
+        console.log('👤 [AUTH] Usuario regular detectado - verificando suscripción...');
         await checkSubscriptionForRegularUser();
       }
     } catch (error) {
-      console.error('❌ Error verificando role:', error);
+      console.error('❌ [AUTH] Error verificando role:', error);
       clearAdminState(userId);
       setUserRole('user');
+      setAdminStateInitialized(true);
     }
   };
 
@@ -164,8 +179,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const checkSubscriptionForRegularUser = async () => {
     if (!session?.user) return;
     
+    // GUARDIA CRÍTICA - Nunca ejecutar para admins
+    if (isAdminProtected()) {
+      console.log('🚫 [ADMIN] checkSubscriptionForRegularUser bloqueado para admin');
+      return;
+    }
+    
     try {
-      console.log('🔍 Verificando suscripción para usuario regular');
+      console.log('🔍 [SUB] Verificando suscripción para usuario regular');
 
       const { data: dbData, error: dbError } = await supabase
         .from('subscribers')
@@ -173,7 +194,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         .eq('user_id', session.user.id)
         .single();
 
-      console.log('📊 Datos suscripción desde DB:', { dbData, dbError });
+      console.log('📊 [SUB] Datos suscripción desde DB:', { dbData, dbError });
 
       if (!dbError && dbData) {
         const newStatus = {
@@ -181,16 +202,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           subscription_tier: dbData.subscription_tier || null,
           subscription_end: dbData.subscription_end || null,
         };
-        console.log('✅ Estableciendo estado suscripción regular:', newStatus);
+        console.log('✅ [SUB] Estableciendo estado suscripción regular:', newStatus);
         setSubscriptionStatus(newStatus);
         return;
       }
 
       // Fallback a función edge
-      console.log('⚠️ Sin datos en DB, probando función edge...');
+      console.log('⚠️ [SUB] Sin datos en DB, probando función edge...');
       const { data, error } = await supabase.functions.invoke('check-subscription');
       if (error) {
-        console.error('❌ Error verificando suscripción via función:', error);
+        console.error('❌ [SUB] Error verificando suscripción via función:', error);
         return;
       }
       
@@ -199,26 +220,41 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         subscription_tier: data.subscription_tier || null,
         subscription_end: data.subscription_end || null,
       };
-      console.log('✅ Estableciendo estado suscripción fallback:', fallbackStatus);
+      console.log('✅ [SUB] Estableciendo estado suscripción fallback:', fallbackStatus);
       setSubscriptionStatus(fallbackStatus);
     } catch (error) {
-      console.error('❌ Error verificando suscripción:', error);
+      console.error('❌ [SUB] Error verificando suscripción:', error);
     }
   };
 
-  // Función checkSubscription pública - CON GUARDIA CRÍTICA
+  // Función checkSubscription pública - CON GUARDIA CRÍTICA MEJORADA
   const checkSubscription = async () => {
-    if (!session?.user) return;
+    if (!session?.user) {
+      console.log('⚠️ [SUB] No hay usuario, saltando checkSubscription');
+      return;
+    }
     
     // GUARDIA ABSOLUTA - Nunca verificar suscripción para admins
-    if (isAdmin || userRole === 'admin') {
-      console.log('🚀 ADMIN DETECTADO - SALTANDO verificación suscripción completamente');
+    if (isAdminProtected()) {
+      console.log('🚫 [ADMIN] checkSubscription BLOQUEADO para admin');
+      toast({
+        title: "Usuario Admin",
+        description: "Los administradores tienen acceso ilimitado automáticamente.",
+        variant: "default",
+      });
       return;
     }
     
     // Verificar estado persistido por si acaso
     if (loadPersistedAdminState(session.user.id)) {
-      console.log('🚀 Estado admin restaurado durante checkSubscription - SALTANDO');
+      console.log('🚀 [ADMIN] Estado admin restaurado durante checkSubscription - SALTANDO');
+      return;
+    }
+    
+    // Esperar a que la inicialización admin esté completa
+    if (!adminStateInitialized) {
+      console.log('⏳ [AUTH] Esperando inicialización admin...');
+      setTimeout(() => checkSubscription(), 500);
       return;
     }
     
@@ -358,7 +394,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const signOut = async () => {
     try {
-      console.log('🚪 Iniciando logout...');
+      console.log('🚪 [AUTH] Iniciando logout...');
       
       // Limpiar localStorage para este usuario
       if (user?.id) {
@@ -370,6 +406,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setSession(null);
       setIsAdmin(false);
       setUserRole(null);
+      setAdminStateInitialized(false);
       setSubscriptionStatus({
         subscribed: false,
         subscription_tier: null,
@@ -379,14 +416,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const { error } = await supabase.auth.signOut();
       
       if (error) {
-        console.error('❌ Error durante signOut:', error);
+        console.error('❌ [AUTH] Error durante signOut:', error);
         toast({
           title: "Error",
           description: "Ocurrió un error al cerrar sesión.",
           variant: "destructive",
         });
       } else {
-        console.log('✅ Logout exitoso');
+        console.log('✅ [AUTH] Logout exitoso');
         toast({
           title: "Sesión cerrada",
           description: "Has cerrado sesión exitosamente.",
@@ -395,7 +432,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         window.location.href = '/';
       }
     } catch (error) {
-      console.error('❌ Error inesperado durante signOut:', error);
+      console.error('❌ [AUTH] Error inesperado durante signOut:', error);
       toast({
         title: "Error",
         description: "Ocurrió un error al cerrar sesión.",
@@ -404,7 +441,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  // Effect principal - REDISEÑADO para evitar condiciones de carrera
+  // Effect principal - MEJORADO con inicialización prioritaria de admin
   useEffect(() => {
     let mounted = true;
 
@@ -412,18 +449,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       async (event, session) => {
         if (!mounted) return;
         
-        console.log('🔐 Cambio estado auth:', event, session?.user?.email);
+        console.log('🔐 [AUTH] Cambio estado auth:', event, session?.user?.email);
         
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
         
         if (event === 'SIGNED_IN' && session) {
-          console.log('✅ Usuario autenticado, verificando estado admin...');
+          console.log('✅ [AUTH] Usuario autenticado, inicializando estado...');
           
           // PRIORIDAD MÁXIMA: Verificar estado admin persistido INMEDIATAMENTE
           if (loadPersistedAdminState(session.user.id)) {
-            console.log('🚀 Estado admin restaurado inmediatamente - SIN verificación DB');
+            console.log('🚀 [ADMIN] Estado admin restaurado inmediatamente - SIN verificación DB');
             return;
           }
           
@@ -432,40 +469,43 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
         
         if (event === 'SIGNED_OUT') {
-          console.log('🚪 Usuario desconectado, reseteando estados');
+          console.log('🚪 [AUTH] Usuario desconectado, reseteando estados');
           clearAdminState();
           setSubscriptionStatus({
             subscribed: false,
             subscription_tier: null,
             subscription_end: null,
           });
+          setAdminStateInitialized(true);
         }
       }
     );
 
-    // Verificar sesión existente
+    // Verificar sesión existente con prioridad admin
     supabase.auth.getSession().then(async ({ data: { session }, error }) => {
       if (!mounted) return;
       
       if (error) {
-        console.error('❌ Error obteniendo sesión:', error);
+        console.error('❌ [AUTH] Error obteniendo sesión:', error);
       }
-      console.log('🔐 Verificación sesión inicial:', session?.user?.email);
+      console.log('🔐 [AUTH] Verificación sesión inicial:', session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
       
       if (session && mounted) {
-        console.log('✅ Sesión existente encontrada, verificando estado admin...');
+        console.log('✅ [AUTH] Sesión existente encontrada, inicializando estado...');
         
         // PRIORIDAD MÁXIMA: Verificar estado admin persistido PRIMERO
         if (loadPersistedAdminState(session.user.id)) {
-          console.log('🚀 Estado admin restaurado desde persistencia en carga inicial');
+          console.log('🚀 [ADMIN] Estado admin restaurado desde persistencia en carga inicial');
           return;
         }
         
         // Solo si NO hay estado persistido, verificar en DB
         await refreshUserRole();
+      } else {
+        setAdminStateInitialized(true);
       }
     });
 
