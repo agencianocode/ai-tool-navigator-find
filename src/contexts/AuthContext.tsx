@@ -38,17 +38,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
   const { toast } = useToast();
 
-  // PRIORITY 1: Verificación inmediata de admin al inicio
-  const immediateAdminCheck = (userId: string): boolean => {
-    console.log('🚀 IMMEDIATE admin check for user:', userId);
+  // ADMIN STATE MANAGEMENT - Prioridad absoluta
+  const getAdminStateKey = (userId: string) => `admin_state_${userId}`;
+  
+  const setAdminState = (userId: string, isAdminUser: boolean) => {
+    console.log('🔧 Setting admin state:', { userId, isAdminUser });
     
-    const persistedAdmin = localStorage.getItem(`admin_${userId}`) === 'true';
-    const persistedRole = localStorage.getItem(`role_${userId}`);
+    const stateKey = getAdminStateKey(userId);
     
-    if (persistedAdmin && persistedRole === 'admin') {
-      console.log('💾 IMMEDIATE admin state restored from persistence');
-      
-      // Establecer TODOS los estados de forma síncrona e inmediata
+    if (isAdminUser) {
+      // Establecer TODOS los estados de admin de manera síncrona
       setIsAdmin(true);
       setUserRole('admin');
       setSubscriptionStatus({
@@ -57,37 +56,60 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         subscription_end: null,
       });
       
-      console.log('✅ IMMEDIATE admin state established');
-      return true;
+      // Persistir en localStorage con timestamp
+      localStorage.setItem(stateKey, JSON.stringify({
+        isAdmin: true,
+        userRole: 'admin',
+        subscriptionStatus: {
+          subscribed: true,
+          subscription_tier: 'enterprise',
+          subscription_end: null,
+        },
+        timestamp: Date.now()
+      }));
+      
+      console.log('✅ Admin state established and persisted');
+    } else {
+      // Limpiar estado de admin
+      setIsAdmin(false);
+      setUserRole('user');
+      localStorage.removeItem(stateKey);
+      console.log('🧹 Admin state cleared');
     }
-    return false;
   };
 
-  // Función para establecer estado de admin de forma permanente
-  const establishAdminState = (userId: string) => {
-    console.log('🚀 Establishing permanent admin state for user:', userId);
+  const loadPersistedAdminState = (userId: string): boolean => {
+    console.log('💾 Loading persisted admin state for:', userId);
     
-    const adminState = {
-      isAdmin: true,
-      userRole: 'admin',
-      subscriptionStatus: {
-        subscribed: true,
-        subscription_tier: 'enterprise',
-        subscription_end: null,
+    try {
+      const stateKey = getAdminStateKey(userId);
+      const persistedState = localStorage.getItem(stateKey);
+      
+      if (persistedState) {
+        const state = JSON.parse(persistedState);
+        
+        // Verificar que no sea muy antiguo (24 horas)
+        const isRecent = Date.now() - state.timestamp < 24 * 60 * 60 * 1000;
+        
+        if (state.isAdmin && state.userRole === 'admin' && isRecent) {
+          console.log('🚀 Restoring admin state from localStorage');
+          
+          // Restaurar estado síncronamente
+          setIsAdmin(true);
+          setUserRole('admin');
+          setSubscriptionStatus(state.subscriptionStatus);
+          
+          return true;
+        } else {
+          // Limpiar estado expirado
+          localStorage.removeItem(stateKey);
+        }
       }
-    };
+    } catch (error) {
+      console.error('❌ Error loading persisted admin state:', error);
+    }
     
-    // Establecer todos los estados síncronamente
-    setIsAdmin(true);
-    setUserRole('admin');
-    setSubscriptionStatus(adminState.subscriptionStatus);
-    
-    // Persistir en localStorage
-    localStorage.setItem(`admin_${userId}`, 'true');
-    localStorage.setItem(`role_${userId}`, 'admin');
-    
-    console.log('✅ Permanent admin state established:', adminState);
-    return true;
+    return false;
   };
 
   const refreshUserRole = async () => {
@@ -104,10 +126,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     
     const userId = session.user.id;
     
-    // GUARDIA CRÍTICA: Verificar estado admin INMEDIATAMENTE
-    if (immediateAdminCheck(userId)) {
-      console.log('🚀 Admin verified immediately - EXITING refreshUserRole');
-      return; // Salir inmediatamente si es admin
+    // PASO 1: Verificar estado persistido primero
+    if (loadPersistedAdminState(userId)) {
+      console.log('🚀 Admin state loaded from persistence - skipping DB check');
+      return;
     }
     
     try {
@@ -119,17 +141,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       console.log('👑 Role check result:', { roleData, roleError });
       
       if (!roleError && roleData === 'admin') {
-        // Usuario es admin según DB - establecer permanentemente
-        establishAdminState(userId);
+        // Usuario es admin - establecer estado permanentemente
+        setAdminState(userId, true);
       } else {
-        // Usuario regular - establecer estados normales
-        setIsAdmin(false);
+        // Usuario regular
+        setAdminState(userId, false);
+        
+        // Solo para usuarios no-admin, establecer estado regular
         setUserRole(roleData || 'user');
-        // NO establecer subscriptionStatus aquí - se hará en checkSubscription
+        // La suscripción se verificará en checkSubscription
       }
     } catch (error) {
       console.error('❌ Error checking user role:', error);
-      setIsAdmin(false);
+      setAdminState(userId, false);
       setUserRole('user');
     }
   };
@@ -139,15 +163,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return;
     }
     
-    // GUARDIA CRÍTICA #1: Verificar admin persistido
-    if (immediateAdminCheck(session.user.id)) {
-      console.log('🚀 IMMEDIATE admin check passed - SKIPPING subscription check');
+    const userId = session.user.id;
+    
+    // GUARDIA CRÍTICA: No verificar suscripción para admins
+    if (isAdmin || userRole === 'admin') {
+      console.log('🚀 Admin user detected - SKIPPING subscription check');
       return;
     }
     
-    // GUARDIA CRÍTICA #2: Verificar estados actuales
-    if (isAdmin || userRole === 'admin') {
-      console.log('🚀 Current admin state detected - SKIPPING subscription check');
+    // Verificar estado persistido por si acaso
+    if (loadPersistedAdminState(userId)) {
+      console.log('🚀 Admin state restored during subscription check - SKIPPING');
       return;
     }
     
@@ -332,8 +358,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       
       // Limpiar localStorage para este usuario
       if (user?.id) {
-        localStorage.removeItem(`admin_${user.id}`);
-        localStorage.removeItem(`role_${user.id}`);
+        const stateKey = getAdminStateKey(user.id);
+        localStorage.removeItem(stateKey);
       }
       
       // Limpiar estados locales ANTES de llamar a signOut
@@ -391,15 +417,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setLoading(false);
         
         if (event === 'SIGNED_IN' && session) {
-          console.log('✅ User signed in, IMMEDIATE admin check...');
+          console.log('✅ User signed in, checking admin state...');
           
-          // PRIORIDAD MÁXIMA: Verificación inmediata de admin
-          if (immediateAdminCheck(session.user.id)) {
-            console.log('🚀 IMMEDIATE admin state established - NO further checks needed');
-            return; // Salir inmediatamente si es admin
+          // PRIORIDAD MÁXIMA: Verificar estado admin persistido primero
+          if (loadPersistedAdminState(session.user.id)) {
+            console.log('🚀 Admin state restored immediately - NO DB check needed');
+            return;
           }
           
-          // Si no es admin inmediato, verificar en DB
+          // Si no hay estado persistido, verificar en DB
           await refreshUserRole();
         }
         
@@ -429,15 +455,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setLoading(false);
       
       if (session && mounted) {
-        console.log('✅ Existing session found, IMMEDIATE admin check...');
+        console.log('✅ Existing session found, checking admin state...');
         
-        // PRIORIDAD MÁXIMA: Verificación inmediata de admin
-        if (immediateAdminCheck(session.user.id)) {
-          console.log('🚀 IMMEDIATE admin state established on initial load - NO further checks needed');
-          return; // Salir inmediatamente si es admin
+        // PRIORIDAD MÁXIMA: Verificar estado admin persistido primero
+        if (loadPersistedAdminState(session.user.id)) {
+          console.log('🚀 Admin state restored from persistence on initial load');
+          return;
         }
         
-        // Si no es admin inmediato, verificar en DB
+        // Si no hay estado persistido, verificar en DB
         await refreshUserRole();
       }
     });
@@ -448,16 +474,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
   }, []);
 
-  // MODIFICADO: Effect para verificar suscripción - CON GUARDIA REFORZADA
+  // Effect para verificar suscripción - SOLO para usuarios no-admin
   useEffect(() => {
-    // GUARDIA CRÍTICA: NO ejecutar para admins
-    if (session && userRole !== null && userRole !== 'admin' && !isAdmin) {
+    if (session && userRole !== null) {
+      if (userRole === 'admin' || isAdmin) {
+        console.log('🚀 Admin role detected - COMPLETELY SKIPPING subscription check');
+        return;
+      }
+      
       console.log('🔄 Role changed to non-admin, checking subscription...');
       checkSubscription();
-    } else if (userRole === 'admin' || isAdmin) {
-      console.log('🚀 Admin role detected - COMPLETELY SKIPPING subscription check');
     }
-  }, [userRole, isAdmin]); // Agregado isAdmin como dependencia
+  }, [userRole, isAdmin, session]);
 
   const value = {
     user,
