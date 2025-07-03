@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
 export const SubscriptionManager = () => {
-  const { user, subscriptionStatus, checkSubscription, isAdmin } = useAuth();
+  const { user, subscriptionStatus, checkSubscription, isAdmin, refreshUserRole } = useAuth();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -62,17 +62,21 @@ export const SubscriptionManager = () => {
       console.log('👑 [REFRESH] Current role in DB:', roleData);
       
       if (roleData === 'admin') {
-        // Force reload the page to reinitialize auth context
+        console.log('🎯 [REFRESH] Admin role detected, forcing context refresh...');
+        
+        // Force refresh the entire auth context
+        await refreshUserRole();
+        
         toast({
-          title: "Rol Detectado",
-          description: "Se detectó rol de administrador. Recargando página...",
+          title: "¡Administrador Detectado!",
+          description: "Tu acceso enterprise ha sido activado. Revisa tu plan.",
           variant: "default",
         });
         
-        // Wait a moment then reload
+        // Small delay to let the context update
         setTimeout(() => {
-          window.location.reload();
-        }, 1500);
+          setIsRefreshing(false);
+        }, 1000);
         return;
       }
       
