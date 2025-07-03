@@ -108,21 +108,23 @@ export const SubscriptionManager = () => {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           Gestión de Suscripción
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleRefreshStatus}
-            disabled={isRefreshing}
-          >
-            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-            Verificar Estado
-          </Button>
-          {isAdmin && (
-            <Badge variant="default" className="bg-green-600">
-              <Shield className="h-3 w-3 mr-1" />
-              Admin
-            </Badge>
-          )}
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefreshStatus}
+              disabled={isRefreshing}
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+              Verificar Estado
+            </Button>
+            {isAdmin && (
+              <Badge variant="default" className="bg-green-600">
+                <Shield className="h-3 w-3 mr-1" />
+                Admin
+              </Badge>
+            )}
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
