@@ -53,29 +53,38 @@ export const SubscriptionManager = () => {
   const handleRefreshStatus = async () => {
     setIsRefreshing(true);
     try {
-      // Force refresh of user role from database
-      await checkSubscription();
+      console.log('🔄 [REFRESH] Starting complete status refresh...');
       
-      // If still not admin, force role refresh
-      if (!isAdmin) {
-        console.log('🔄 [AUTH] Forcing role refresh from database...');
-        const { data: roleData } = await supabase
-          .rpc('get_user_role', { _user_id: user?.id });
+      // First, force refresh user role from database
+      const { data: roleData } = await supabase
+        .rpc('get_user_role', { _user_id: user?.id });
+      
+      console.log('👑 [REFRESH] Current role in DB:', roleData);
+      
+      if (roleData === 'admin') {
+        // Force reload the page to reinitialize auth context
+        toast({
+          title: "Rol Detectado",
+          description: "Se detectó rol de administrador. Recargando página...",
+          variant: "default",
+        });
         
-        if (roleData === 'admin') {
-          toast({
-            title: "Rol actualizado",
-            description: "Se detectó rol de administrador. Recarga la página.",
-            variant: "default",
-          });
-        }
+        // Wait a moment then reload
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+        return;
       }
+      
+      // If not admin, proceed with subscription check
+      await checkSubscription();
       
       toast({
         title: "Estado actualizado",
         description: "El estado ha sido verificado en la base de datos.",
       });
     } catch (error) {
+      console.error('❌ [REFRESH] Error:', error);
       toast({
         title: "Error",
         description: "No se pudo actualizar el estado.",
