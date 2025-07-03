@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { SubscriptionPlans } from "@/components/subscription/SubscriptionPlans";
+import { SubscriptionManager } from "@/components/subscription/SubscriptionManager";
 import { PremiumFeatures } from "@/components/subscription/PremiumFeatures";
 import { UsageLimits } from "@/components/subscription/UsageLimits";
 import { Button } from "@/components/ui/button";
@@ -48,7 +49,8 @@ const Subscriptions = () => {
             <SubscriptionPlans />
             
             {user && (
-              <div className="max-w-md mx-auto">
+              <div className="max-w-md mx-auto space-y-6">
+                <SubscriptionManager />
                 <UsageLimits showUpgrade={false} />
               </div>
             )}
