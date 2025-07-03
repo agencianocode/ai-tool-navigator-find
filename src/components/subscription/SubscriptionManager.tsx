@@ -51,28 +51,34 @@ export const SubscriptionManager = () => {
   };
 
   const handleRefreshStatus = async () => {
-    // Admin guard
-    if (isAdmin) {
-      console.log('🚫 [ADMIN] handleRefreshStatus blocked for admin');
-      toast({
-        title: "Usuario Administrador",
-        description: "El estado admin es automático y no requiere actualización.",
-        variant: "default",
-      });
-      return;
-    }
-
     setIsRefreshing(true);
     try {
+      // Force refresh of user role from database
       await checkSubscription();
+      
+      // If still not admin, force role refresh
+      if (!isAdmin) {
+        console.log('🔄 [AUTH] Forcing role refresh from database...');
+        const { data: roleData } = await supabase
+          .rpc('get_user_role', { _user_id: user?.id });
+        
+        if (roleData === 'admin') {
+          toast({
+            title: "Rol actualizado",
+            description: "Se detectó rol de administrador. Recarga la página.",
+            variant: "default",
+          });
+        }
+      }
+      
       toast({
         title: "Estado actualizado",
-        description: "El estado de tu suscripción ha sido actualizado.",
+        description: "El estado ha sido verificado en la base de datos.",
       });
     } catch (error) {
       toast({
         title: "Error",
-        description: "No se pudo actualizar el estado de la suscripción.",
+        description: "No se pudo actualizar el estado.",
         variant: "destructive",
       });
     } finally {
@@ -102,17 +108,15 @@ export const SubscriptionManager = () => {
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           Gestión de Suscripción
-          {!isAdmin && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRefreshStatus}
-              disabled={isRefreshing}
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Actualizar
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefreshStatus}
+            disabled={isRefreshing}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+            Verificar Estado
+          </Button>
           {isAdmin && (
             <Badge variant="default" className="bg-green-600">
               <Shield className="h-3 w-3 mr-1" />
