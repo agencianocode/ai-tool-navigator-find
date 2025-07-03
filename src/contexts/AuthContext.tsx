@@ -135,11 +135,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     
     const userId = session.user.id;
     
-    // Check persisted state first
-    if (loadPersistedAdminState(userId)) {
-      console.log('🚀 [ADMIN] Admin state restored - skipping DB verification');
-      return;
-    }
+    // Always clear persisted state and check fresh from DB
+    localStorage.removeItem(getAdminStateKey(userId));
     
     try {
       console.log('🔍 [AUTH] Verifying role in database for:', session.user.email);
