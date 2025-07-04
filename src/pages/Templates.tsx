@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 import { Star, Download, Clock, DollarSign, Crown, Search, Filter } from "lucide-react";
 import { Link } from "react-router-dom";
 import { SEO } from "@/components/SEO";
@@ -37,6 +38,7 @@ interface RoadmapTemplate {
 const Templates = () => {
   const { user, subscriptionStatus } = useAuth();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [priceFilter, setPriceFilter] = useState("all");
@@ -100,6 +102,16 @@ const Templates = () => {
       return;
     }
 
+    // Verificar si ya fue comprado
+    if (userPurchases.includes(template.id)) {
+      toast({
+        title: "Ya tienes este template",
+        description: "Este template ya está en tu biblioteca",
+        variant: "default",
+      });
+      return;
+    }
+
     if (template.price === 0) {
       // Template gratuito - agregar directamente
       try {
@@ -113,11 +125,15 @@ const Templates = () => {
 
         if (error) throw error;
 
+        // Refrescar las compras del usuario
+        queryClient.invalidateQueries({ queryKey: ['user-template-purchases', user.id] });
+
         toast({
           title: "¡Template agregado!",
           description: "El template gratuito se agregó a tu biblioteca",
         });
       } catch (error) {
+        console.error('Error adding free template:', error);
         toast({
           title: "Error",
           description: "No se pudo agregar el template",
@@ -134,12 +150,16 @@ const Templates = () => {
         if (error) throw error;
 
         if (data?.url) {
-          window.open(data.url, '_blank');
+          // Abrir Stripe Checkout en la misma ventana
+          window.location.href = data.url;
+        } else {
+          throw new Error('No se recibió URL de pago');
         }
       } catch (error) {
+        console.error('Error processing purchase:', error);
         toast({
           title: "Error",
-          description: "No se pudo procesar la compra",
+          description: error.message || "No se pudo procesar la compra",
           variant: "destructive",
         });
       }

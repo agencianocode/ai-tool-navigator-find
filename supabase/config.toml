@@ -75,6 +75,12 @@ verify_jwt = true
 [functions.real-time-tool-data]
 verify_jwt = true
 
+[functions.analytics-tracker]
+verify_jwt = false
+
+[functions.purchase-template]
+verify_jwt = true
+
 [edge-runtime]
 policy = "per_worker"
 inspector_port = 8083
