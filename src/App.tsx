@@ -28,9 +28,11 @@ import Guides from "./pages/Guides";
 import Templates from "./pages/Templates";
 import EmergingTech from "./pages/EmergingTech";
 import EnhancedTools from "./pages/EnhancedTools";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { EnhancedChatbot } from "@/components/ai/EnhancedChatbot";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 import "./App.css";
 
@@ -75,9 +77,14 @@ function App() {
                       <Route path="/content" element={<ContentHub />} />
                       <Route path="/budget" element={<BudgetPlanner />} />
                       <Route path="/guides" element={<Guides />} />
-                      <Route path="/templates" element={<Templates />} />
-                      <Route path="/emerging-tech" element={<EmergingTech />} />
-                      <Route path="*" element={<NotFound />} />
+                       <Route path="/templates" element={<Templates />} />
+                       <Route path="/emerging-tech" element={<EmergingTech />} />
+                       <Route path="/admin" element={
+                         <ProtectedRoute requireAdmin={true}>
+                           <Admin />
+                         </ProtectedRoute>
+                       } />
+                       <Route path="*" element={<NotFound />} />
                     </Routes>
                     <EnhancedChatbot />
                   </div>
