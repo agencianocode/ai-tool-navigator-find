@@ -78,6 +78,12 @@ verify_jwt = true
 [functions.analytics-tracker]
 verify_jwt = false
 
+[functions.send-push-notification]
+verify_jwt = true
+
+[functions.send-alert-email]
+verify_jwt = true
+
 [functions.purchase-template]
 verify_jwt = true
 

@@ -17,6 +17,8 @@ import {
   Trash2,
   Save
 } from "lucide-react";
+import { NotificationPreferences } from "@/components/NotificationPreferences";
+import { PushNotificationManager } from "@/components/notifications/PushNotificationManager";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -144,79 +146,8 @@ const Settings = () => {
           </Card>
 
           {/* Notification Settings */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Bell className="h-5 w-5" />
-                Notificaciones
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">Reseñas de herramientas</p>
-                    <p className="text-sm text-gray-600">Recibe notificaciones sobre nuevas reseñas</p>
-                  </div>
-                  <Switch
-                    checked={notifications.emailReviews}
-                    onCheckedChange={(checked) => 
-                      setNotifications(prev => ({ ...prev, emailReviews: checked }))
-                    }
-                  />
-                </div>
-                
-                <Separator />
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">Actualizaciones de hojas de ruta</p>
-                    <p className="text-sm text-gray-600">Notificaciones cuando se actualicen tus hojas de ruta</p>
-                  </div>
-                  <Switch
-                    checked={notifications.emailRoadmapUpdates}
-                    onCheckedChange={(checked) => 
-                      setNotifications(prev => ({ ...prev, emailRoadmapUpdates: checked }))
-                    }
-                  />
-                </div>
-                
-                <Separator />
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">Nuevas herramientas</p>
-                    <p className="text-sm text-gray-600">Alertas sobre nuevas herramientas agregadas</p>
-                  </div>
-                  <Switch
-                    checked={notifications.emailNewTools}
-                    onCheckedChange={(checked) => 
-                      setNotifications(prev => ({ ...prev, emailNewTools: checked }))
-                    }
-                  />
-                </div>
-                
-                <Separator />
-                
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-medium">Resumen semanal</p>
-                    <p className="text-sm text-gray-600">Un resumen de tu actividad cada semana</p>
-                  </div>
-                  <Switch
-                    checked={notifications.emailWeeklyDigest}
-                    onCheckedChange={(checked) => 
-                      setNotifications(prev => ({ ...prev, emailWeeklyDigest: checked }))
-                    }
-                  />
-                </div>
-              </div>
-              <Button onClick={handleSaveNotifications} className="w-full md:w-auto">
-                <Save className="mr-2 h-4 w-4" />
-                Guardar Preferencias
-              </Button>
-            </CardContent>
-          </Card>
+          <NotificationPreferences />
+          <PushNotificationManager />
 
           {/* Privacy Settings */}
           <Card>

@@ -29,6 +29,7 @@ import Templates from "./pages/Templates";
 import EmergingTech from "./pages/EmergingTech";
 import EnhancedTools from "./pages/EnhancedTools";
 import Admin from "./pages/Admin";
+import AlertsManagement from "./pages/AlertsManagement";
 import NotFound from "./pages/NotFound";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { EnhancedChatbot } from "@/components/ai/EnhancedChatbot";
@@ -82,6 +83,11 @@ function App() {
                        <Route path="/admin" element={
                          <ProtectedRoute requireAdmin={true}>
                            <Admin />
+                         </ProtectedRoute>
+                       } />
+                       <Route path="/alerts" element={
+                         <ProtectedRoute requireAdmin={true}>
+                           <AlertsManagement />
                          </ProtectedRoute>
                        } />
                        <Route path="*" element={<NotFound />} />
