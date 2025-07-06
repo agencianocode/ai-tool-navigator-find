@@ -1,77 +1,73 @@
 
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Sparkles, Target, Zap } from "lucide-react";
+import { ArrowRight, Sparkles, Target, Clock } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto text-center">
-        {/* Badge */}
-        <Badge variant="secondary" className="mb-6 px-4 py-2 text-sm font-medium bg-white/60 backdrop-blur-sm border border-purple-200">
-          <Sparkles className="w-4 h-4 mr-2 text-purple-600" />
-          Encuentra las mejores herramientas IA para tu proyecto
-        </Badge>
+    <section className="relative py-24 px-6 text-center bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100">
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+            Encuentra las
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+              {" "}Herramientas de IA{" "}
+            </span>
+            Perfectas
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Responde unas preguntas simples y obtén una hoja de ruta personalizada 
+            con las mejores herramientas de IA para tu proyecto.
+          </p>
+        </div>
 
-        {/* Main heading */}
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-          Descubre las{" "}
-          <span className="bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            Herramientas IA
-          </span>{" "}
-          perfectas para tu negocio
-        </h1>
-
-        {/* Subtitle */}
-        <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-          Nuestro cuestionario inteligente analiza tus necesidades y te recomienda las mejores herramientas de IA, 
-          creando una hoja de ruta personalizada para optimizar tu flujo de trabajo.
-        </p>
-
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-          <Button 
-            size="lg" 
-            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
-            asChild
-          >
-            <a href="/questionnaire">
-              Comenzar Evaluación
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+          <Button asChild size="lg" className="text-lg px-8 py-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
+            <Link to="/questionnaire">
+              Crear Mi Hoja de Ruta
               <ArrowRight className="ml-2 h-5 w-5" />
-            </a>
+            </Link>
           </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="px-8 py-3 text-lg font-semibold border-2 border-purple-200 hover:border-purple-300 hover:bg-purple-50 transition-all duration-200"
-            asChild
-          >
-            <a href="/tools">
+          <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
+            <Link to="/tools">
               Explorar Herramientas
-            </a>
+            </Link>
           </Button>
         </div>
 
-        {/* Feature highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          <div className="flex items-center justify-center gap-3 p-4 bg-white/40 backdrop-blur-sm rounded-lg border border-purple-100">
-            <Target className="h-6 w-6 text-purple-600" />
-            <span className="text-gray-700 font-medium">Recomendaciones Personalizadas</span>
+        {/* Features destacadas */}
+        <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="text-center p-6 rounded-2xl bg-white/50 backdrop-blur-sm border border-white/20">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-purple-100 to-blue-100 mb-4">
+              <Sparkles className="h-8 w-8 text-purple-600" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">IA Personalizada</h3>
+            <p className="text-gray-600">
+              Recomendaciones inteligentes basadas en tus necesidades específicas
+            </p>
           </div>
-          <div className="flex items-center justify-center gap-3 p-4 bg-white/40 backdrop-blur-sm rounded-lg border border-blue-100">
-            <Zap className="h-6 w-6 text-blue-600" />
-            <span className="text-gray-700 font-medium">Hojas de Ruta Detalladas</span>
+          
+          <div className="text-center p-6 rounded-2xl bg-white/50 backdrop-blur-sm border border-white/20">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-green-100 to-blue-100 mb-4">
+              <Target className="h-8 w-8 text-green-600" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Totalmente Gratis</h3>
+            <p className="text-gray-600">
+              Acceso completo a todas las herramientas y recomendaciones sin costo
+            </p>
           </div>
-          <div className="flex items-center justify-center gap-3 p-4 bg-white/40 backdrop-blur-sm rounded-lg border border-indigo-100">
-            <Sparkles className="h-6 w-6 text-indigo-600" />
-            <span className="text-gray-700 font-medium">Base de Datos Actualizada</span>
+          
+          <div className="text-center p-6 rounded-2xl bg-white/50 backdrop-blur-sm border border-white/20">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-orange-100 to-red-100 mb-4">
+              <Clock className="h-8 w-8 text-orange-600" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">En 5 Minutos</h3>
+            <p className="text-gray-600">
+              Obtén tu hoja de ruta personalizada en menos de 5 minutos
+            </p>
           </div>
         </div>
       </div>
-
-      {/* Background decorations */}
-      <div className="absolute top-1/2 left-1/4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-      <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse delay-1000"></div>
     </section>
   );
 };

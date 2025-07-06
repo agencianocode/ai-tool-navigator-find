@@ -17,7 +17,7 @@ import UserMenu from "./UserMenu";
 
 const Navigation = () => {
   const location = useLocation();
-  const { user, isAdmin } = useAuth();
+  const { user } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
@@ -27,25 +27,16 @@ const Navigation = () => {
   const navigationItems = [
     { href: "/", label: "Inicio" },
     { href: "/tools", label: "Herramientas" },
-    { href: "/content", label: "Contenido" },
-    { href: "/community", label: "Comunidad" },
-    { href: "/emerging-tech", label: "IA & AR/VR" },
   ];
 
   const authenticatedItems = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/favorites", label: "Favoritos" },
-    { href: "/analytics", label: "Analytics" },
-  ];
-
-  const adminItems = [
-    { href: "/admin", label: "Admin", requireAdmin: true },
+    { href: "/dashboard", label: "Mi Dashboard" },
   ];
 
   return (
     <header className="bg-background sticky top-0 z-50 border-b">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="font-bold text-2xl">
+        <Link to="/" className="font-bold text-2xl text-primary">
           AI Tool Navigator
         </Link>
         
@@ -63,18 +54,6 @@ const Navigation = () => {
           ))}
           
           {user && authenticatedItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive(item.href) ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-
-          {user && isAdmin && adminItems.map((item) => (
             <Link
               key={item.label}
               to={item.href}
@@ -107,7 +86,7 @@ const Navigation = () => {
             <SheetHeader>
               <SheetTitle>Menu</SheetTitle>
               <SheetDescription>
-                Explora AI Tool Navigator
+                Navega por AI Tool Navigator
               </SheetDescription>
             </SheetHeader>
             <div className="grid gap-4 py-4">
@@ -125,19 +104,6 @@ const Navigation = () => {
               ))}
               
               {user && authenticatedItems.map((item) => (
-                <Link
-                  key={item.label}
-                  to={item.href}
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
-                    isActive(item.href) ? "text-primary" : "text-muted-foreground"
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-
-              {user && isAdmin && adminItems.map((item) => (
                 <Link
                   key={item.label}
                   to={item.href}
