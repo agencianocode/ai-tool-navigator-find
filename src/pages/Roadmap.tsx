@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, RefreshCw, Loader2, Clock, CheckCircle, AlertTriangle } from "lucide-react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams, useParams } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { generateRoadmap } from "@/utils/roadmapGenerator";
@@ -40,6 +40,7 @@ interface RoadmapData {
 }
 
 const Roadmap = () => {
+  const { id: roadmapId } = useParams<{ id: string }>();
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -54,15 +55,15 @@ const Roadmap = () => {
   useEffect(() => {
     const loadRoadmap = async () => {
       // Primero intentar obtener desde URL params
-      const roadmapId = searchParams.get('id') || location.state?.roadmapId;
+      const finalRoadmapId = roadmapId || searchParams.get('id') || location.state?.roadmapId;
       
-      if (roadmapId && user) {
-        console.log('Loading roadmap with ID:', roadmapId);
+      if (finalRoadmapId && user) {
+        console.log('Loading roadmap with ID:', finalRoadmapId);
         try {
           const { data, error } = await supabase
             .from('roadmaps')
             .select('*')
-            .eq('id', roadmapId)
+            .eq('id', finalRoadmapId)
             .eq('user_id', user.id)
             .single();
 
@@ -116,7 +117,7 @@ const Roadmap = () => {
     };
 
     loadRoadmap();
-  }, [searchParams, location.state, user]);
+  }, [roadmapId, searchParams, location.state, user]);
 
   const generateInitialRoadmap = async (answers: any, selectedTools: any[]) => {
     setIsGenerating(true);
