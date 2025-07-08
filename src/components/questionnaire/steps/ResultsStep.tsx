@@ -179,7 +179,7 @@ const ResultsStep = () => {
 
       // Navegar a la hoja de ruta generada después de un breve delay
       setTimeout(() => {
-        navigate(`/roadmap?id=${savedRoadmap.id}`);
+        navigate(`/roadmap/${savedRoadmap.id}`);
       }, 1500);
 
     } catch (error) {
